@@ -1,0 +1,37 @@
+/* Entrada e interacción de los logotipos de las tres pantallas. */
+
+.institutional-logo {
+  transform-origin: 50% 60%;
+  animation: logo-enter var(--logo-entrance-duration) cubic-bezier(.2, .8, .2, 1) backwards;
+  transition: transform var(--logo-interaction-duration) ease-out, filter var(--logo-interaction-duration) ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .institutional-logo:hover {
+    transform: translateY(-3px) scale(1.025) rotate(-.6deg);
+    filter: drop-shadow(var(--logo-hover-shadow));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .map-brand:focus-visible .institutional-logo,
+  .department-brand:focus-visible .institutional-logo {
+    transform: translateY(-3px) scale(1.025) rotate(-.6deg);
+    filter: drop-shadow(var(--logo-hover-shadow));
+  }
+}
+
+@keyframes logo-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(.94) rotate(-2deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-1px) scale(1.015) rotate(.4deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

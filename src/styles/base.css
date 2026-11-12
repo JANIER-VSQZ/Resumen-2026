@@ -1,0 +1,118 @@
+/* Fuentes locales, estructura general, accesibilidad y movimiento reducido. */
+
+:root {
+  font-family: var(--font-body);
+  color: var(--color-dark);
+  background: var(--color-background);
+  font-synthesis: none;
+  color-scheme: light;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/assets/fonts/dm-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/assets/fonts/manrope-latin-wght-normal.woff2') format('woff2');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: background var(--duration-fast), color var(--duration-fast), border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+button:disabled {
+  cursor: default;
+  opacity: .45;
+}
+
+button, a, input, select, textarea, [tabindex] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+main:focus {
+  outline: none;
+}
+
+button svg {
+  flex-shrink: 0;
+}
+
+button, select {
+  touch-action: manipulation;
+}
+
+input[type='checkbox'], input[type='range'] {
+  accent-color: var(--color-dark);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app > main {
+  flex: 1;
+}
+
+.skip-link {
+  position: fixed;
+  left: var(--space-20);
+  top: var(--space-12);
+  transform: translateY(-160%);
+  padding: var(--space-14) var(--space-20);
+  border-radius: var(--radius-12);
+  background: var(--color-dark);
+  color: var(--color-white);
+  z-index: 300;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.section-marker {
+  color: var(--color-dark);
+  font-size: var(--font-size-10);
+  line-height: var(--line-height-caption);
+  letter-spacing: 1.3px;
+  font-weight: var(--font-weight-bold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "file": "honduras-departments.json",
+  "boundaryID": "HND-ADM1-10453824",
+  "boundaryYearRepresented": "2017",
+  "version": "9469f09",
+  "provider": "geoBoundaries",
+  "source": "OpenStreetMap, Wambacher",
+  "metadataURL": "https://www.geoboundaries.org/api/current/gbOpen/HND/ADM1/",
+  "downloadURL": "https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/9469f09/releaseData/gbOpen/HND/ADM1/geoBoundaries-HND-ADM1_simplified.geojson",
+  "license": "Open Data Commons Open Database License 1.0",
+  "licenseSource": "https://www.openstreetmap.org/copyright",
+  "sha256": "f58a4e14721b7d6356d082f995350457c8a0df5b329efa1f7fb778f1cfd7e666"
+}

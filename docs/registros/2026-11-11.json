@@ -1,0 +1,538 @@
+{
+  "date": "2026-11-11",
+  "timezone": "America/Tegucigalpa",
+  "kind": "observed-project-state",
+  "versionControl": "No Git repository",
+  "files": [
+    {
+      "path": "desktop/main.cjs",
+      "bytes": 4336,
+      "sha256": "b4926c1efa09c73be0d34c7dcbe49d437b29b7f3093593a91b8dbbd414763ded"
+    },
+    {
+      "path": "electron-builder.cjs",
+      "bytes": 491,
+      "sha256": "a3183d9c9d06e32fca0635c2d7cb02dc621e5c1ae5b019f0367e8a8b334ebb23"
+    },
+    {
+      "path": "index.html",
+      "bytes": 465,
+      "sha256": "ffe0bad5b614610825591e31b21d4abcda6a3bc06fecc61bc3b82cdc68e35c34"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 163760,
+      "sha256": "51aaab8f86c35362d895f68016d7c673a345f0b2f935d596d991a2c4ae1b026a"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1213,
+      "sha256": "8bf374ce692d76e10f9d59c8194c14edb9a6d68ea2754cedc73a69eaed3b3598"
+    },
+    {
+      "path": "public/assets/asonog-logo.png",
+      "bytes": 339736,
+      "sha256": "67d841c7ab25e20ab98838025593aa8e9c1ff77b30ce0a0aae09b7c12bbc5de7"
+    },
+    {
+      "path": "public/assets/fonts/dm-sans-latin-wght-normal.woff2",
+      "bytes": 36932,
+      "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
+    },
+    {
+      "path": "public/assets/fonts/manrope-latin-wght-normal.woff2",
+      "bytes": 24836,
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
+    },
+    {
+      "path": "public/assets/offline/foto-03ccd4ae32264c6e.jpg",
+      "bytes": 42375,
+      "sha256": "90d6508daaf9eba999c7811c21b7ac59513bb5cb44885c2fd4b0b508e1c3d868"
+    },
+    {
+      "path": "public/assets/offline/foto-0cc0043de59ad477.jpg",
+      "bytes": 11989,
+      "sha256": "7918e03a48f81a3555a151ec56b5db0873470c6361a14d592ca7db02291fa12f"
+    },
+    {
+      "path": "public/assets/offline/foto-1e8b1348d36502ab.jpg",
+      "bytes": 222159,
+      "sha256": "d0058bc28a193a97e58712c4a4d35526fc22afe9a46aad9028c63071f073eea8"
+    },
+    {
+      "path": "public/assets/offline/foto-219f9b8ba3b7153a.jpg",
+      "bytes": 122941,
+      "sha256": "531f3602e71c553332a48b0268d020397593788f162df03be34e6b193baee56f"
+    },
+    {
+      "path": "public/assets/offline/foto-242d159b78c469da.jpg",
+      "bytes": 122065,
+      "sha256": "121e1867a8e7751d10f81de900969f41cf25c7f5e653780c182d7a1c215babb7"
+    },
+    {
+      "path": "public/assets/offline/foto-324f40fc41f85bdf.jpg",
+      "bytes": 125734,
+      "sha256": "3022ceb637e7cbad23258ec87f0e6012b3458ccef3e32991c17ed81ce846afff"
+    },
+    {
+      "path": "public/assets/offline/foto-3c489e7e0d824c7d.jpg",
+      "bytes": 288863,
+      "sha256": "930c05be265e595d72a0423a3f7624766c8187d16da5bc9ee3c988489310a8dd"
+    },
+    {
+      "path": "public/assets/offline/foto-3e07f4fd953afed5.jpg",
+      "bytes": 240108,
+      "sha256": "03fdd41dc411f2b50cf2b4f88c401865bd31f194df31f34290f33d0116545aed"
+    },
+    {
+      "path": "public/assets/offline/foto-4a80fcb9d210bae0.jpg",
+      "bytes": 64770,
+      "sha256": "7b04186b348e987aaf4db2f51f2479120f4226169762acc00b95ae9fe52f2a04"
+    },
+    {
+      "path": "public/assets/offline/foto-4f4190fe9f37334b.jpg",
+      "bytes": 13444,
+      "sha256": "68aa4b89a61ef53821734437f6c4fe4346b68b0ea34f4662c2a13a7a0eefbbbd"
+    },
+    {
+      "path": "public/assets/offline/foto-4f521767c3b7f12a.jpg",
+      "bytes": 47344,
+      "sha256": "8f853dc21ab824bb71d8142c5a1552c5139d8688550f72063ad2ec4045fc0907"
+    },
+    {
+      "path": "public/assets/offline/foto-5007fe5fb3812705.jpg",
+      "bytes": 7108,
+      "sha256": "acade240576446d44f6e067e8ca7f5ef8986309725ef5c1faf9e048ab9cc5884"
+    },
+    {
+      "path": "public/assets/offline/foto-5744a6b981f4e020.jpg",
+      "bytes": 178609,
+      "sha256": "b13cd0a8fc23113f52cdcaf6e002fa07d26f4bc26d9420c829e23782ad101520"
+    },
+    {
+      "path": "public/assets/offline/foto-5f66a021bc2ecf1f.jpg",
+      "bytes": 56246,
+      "sha256": "d992755c6f3cc78cdd3edd7bff860808c74a0fa3a4a82ae94ad6843f57210ce4"
+    },
+    {
+      "path": "public/assets/offline/foto-689800f490dc2d5c.jpg",
+      "bytes": 30529,
+      "sha256": "a4e0f2b7b6e49741dc48c8096fce2b03b128f28f6b8d3572d90a09264d74e627"
+    },
+    {
+      "path": "public/assets/offline/foto-76e2a22c075fc0c4.jpg",
+      "bytes": 42702,
+      "sha256": "e764d610ea11d870b0a471a884155bb1eef41caea4daa3083468053c3fa5fb6a"
+    },
+    {
+      "path": "public/assets/offline/foto-84f6a1bfad13a257.jpg",
+      "bytes": 248395,
+      "sha256": "b0ac2da8976404905d7fb4acc9497154bb9e6794837f76e62ebcdd4e29f716e5"
+    },
+    {
+      "path": "public/assets/offline/foto-8c5418831376cb46.jpg",
+      "bytes": 14031,
+      "sha256": "e1cd91db28149f21f3c410ffa074d0fb8bc8950740ba140c7eaae130f0493464"
+    },
+    {
+      "path": "public/assets/offline/foto-91b20dd7a12e301e.jpg",
+      "bytes": 36653,
+      "sha256": "83235c3655dfc65b529724b5e2dee1a4039528db10f0f53e6219c636657c5d6f"
+    },
+    {
+      "path": "public/assets/offline/foto-9427423f7a687376.jpg",
+      "bytes": 248248,
+      "sha256": "4685976143532a5dcc4814c616d6ae487f315655eaec5b5eaa3d9099fec542c6"
+    },
+    {
+      "path": "public/assets/offline/foto-9b05acf81b97bec4.jpg",
+      "bytes": 10181,
+      "sha256": "bd6c5ab897b6a45e0ab3252059a27987727ecb532dec9109bde32cbb85f5b20d"
+    },
+    {
+      "path": "public/assets/offline/foto-ac401c8876de1879.jpg",
+      "bytes": 33866,
+      "sha256": "7954a1b91859f5a24595683685e486836cb7665967d26ab0132a0f02082f8d29"
+    },
+    {
+      "path": "public/assets/offline/foto-b1e0a4261c516a9c.jpg",
+      "bytes": 232461,
+      "sha256": "29003cb2ea0d7716443058caeaabbfa7390739ef08d73cb0bd3e3fde2757038c"
+    },
+    {
+      "path": "public/assets/offline/foto-de7ed08f003f6d9d.jpg",
+      "bytes": 22676,
+      "sha256": "adee1aff1ef7bbdafe1b9772f8200e1643e7d778563f94955db0d4d56673fc72"
+    },
+    {
+      "path": "public/assets/offline/foto-dec76eec3ead2982.jpg",
+      "bytes": 24964,
+      "sha256": "3b4e6d73c83376be571ecb2a9c982c5bc303202b6e4a8b8216d3bda45704afad"
+    },
+    {
+      "path": "public/assets/offline/foto-ed6ecfcee3504e85.jpg",
+      "bytes": 395103,
+      "sha256": "f7152b1c2f55ee170731881419674cfc34737660e0d55f9026c08a4eed4f6ea6"
+    },
+    {
+      "path": "public/assets/offline/foto-ee5c375d780c3046.jpg",
+      "bytes": 205348,
+      "sha256": "b999c940b1a03ec6480591eceae93e81d42511eee0206f6743f975d45d915d45"
+    },
+    {
+      "path": "public/assets/offline/foto-f1eb73b53190bcfd.jpg",
+      "bytes": 34632,
+      "sha256": "cc00170f91f496b891c7ddc85fa5b7df2fd97c043cb5b0c559c654193da3c48c"
+    },
+    {
+      "path": "public/assets/offline/foto-f341f5502f7dfe63.jpg",
+      "bytes": 37151,
+      "sha256": "a86fe34e6df3fd94f5ec03ce087b042f7cd58ed602c5ccd1aa0cb73d4044109b"
+    },
+    {
+      "path": "public/assets/offline/foto-f8ef4e1de4968792.jpg",
+      "bytes": 6520,
+      "sha256": "78f12d6ed19049f736e300fa2a6776f2da538c55e61fc1d9cc8eb87e1ce86de9"
+    },
+    {
+      "path": "public/assets/offline/sources.json",
+      "bytes": 5774,
+      "sha256": "6fc51bbda2254a51e3ff7a7b6557cbc92bc03f17471e701928f5570f5c4172a1"
+    },
+    {
+      "path": "public/geoJson/geoBoundaries-HND-ADM1.geojson",
+      "bytes": 2556158,
+      "sha256": "498b87ac1c3691d53cda4097e2b0b4d0d6a14933274fa9fccfdb0f4447299b3b"
+    },
+    {
+      "path": "public/licenses/DM-Sans-OFL.txt",
+      "bytes": 4502,
+      "sha256": "6fbd040a29c2037a765dfb9f2561e9965b5c95c6dcb5dce516089d63d5f17af7"
+    },
+    {
+      "path": "public/licenses/Manrope-OFL.txt",
+      "bytes": 4383,
+      "sha256": "d826ab6583b12c26807d8716a545bdbbb672df04f48608a364ba9efdbe501c30"
+    },
+    {
+      "path": "public/licenses/honduras-departments.source.json",
+      "bytes": 655,
+      "sha256": "6dc2ee1aac34c5cc5651ae9067325d0d5ca1a26e1be6daf9cad4620d0ee7e209"
+    },
+    {
+      "path": "scripts/check-desktop.mjs",
+      "bytes": 149,
+      "sha256": "8ae95050766072a24dc3e4e5244b92b8756f8a801bf8fc41864c3b2ae0d2a4b1"
+    },
+    {
+      "path": "scripts/check-ui.mjs",
+      "bytes": 31747,
+      "sha256": "a3fcb3d292cce3000d1ed89997d2d167074e8b99cff7cc6b2d2b5b8980211b7a"
+    },
+    {
+      "path": "scripts/content.test.mjs",
+      "bytes": 5632,
+      "sha256": "cabd4125e96d7d4755198d44f6238025e8fb938d00f4c17eade4ba0ed5ed42bb"
+    },
+    {
+      "path": "scripts/navigation.test.mjs",
+      "bytes": 1698,
+      "sha256": "78dd82f545a4406a7b6239b093f4638ed630c1a715ab648465c54ad056b9aab4"
+    },
+    {
+      "path": "scripts/prepare-offline.mjs",
+      "bytes": 5232,
+      "sha256": "2973c838771eb0304332baac079c186c0827c0b2d6ff5ab69f6359e7b290dabc"
+    },
+    {
+      "path": "src/App.jsx",
+      "bytes": 3730,
+      "sha256": "ec053ed45c0a38d7985a5f97be35c111120de4d685029a19c82689e772d1f388"
+    },
+    {
+      "path": "src/assets/honduras-departments.json",
+      "bytes": 1510005,
+      "sha256": "59428aa98bc5583fb12bef1e68f58b6a262c05a45f4cf5cbd299d251f6f8bce6"
+    },
+    {
+      "path": "src/assets/honduras-departments.source.json",
+      "bytes": 655,
+      "sha256": "6dc2ee1aac34c5cc5651ae9067325d0d5ca1a26e1be6daf9cad4620d0ee7e209"
+    },
+    {
+      "path": "src/components/common/FilterChips.jsx",
+      "bytes": 738,
+      "sha256": "623faf55d47626da8682380bd477483144b4b86e1b6fe495d63e27f95cfb3c43"
+    },
+    {
+      "path": "src/components/common/FilterSelect.jsx",
+      "bytes": 716,
+      "sha256": "747682707fae5dc76eebbc9e79ad71a316e4c1de38840a25ee47ded49f2c3443"
+    },
+    {
+      "path": "src/components/common/Modal.jsx",
+      "bytes": 708,
+      "sha256": "4b82f89f7d98c863b540232a1a9d4ff3c100022845f47378a12f56af0278a60d"
+    },
+    {
+      "path": "src/components/cover/CoverHero.jsx",
+      "bytes": 821,
+      "sha256": "753547f7db39f9f3714885747c45eb10c7ff25a8747bdae89aa30fdfd9557822"
+    },
+    {
+      "path": "src/components/cover/CoverThemes.jsx",
+      "bytes": 1072,
+      "sha256": "6315bf1970a05474b37493a80cef9bb0c0494603ef623d2fea02a04de9c1367d"
+    },
+    {
+      "path": "src/components/help/HelpModal.jsx",
+      "bytes": 1460,
+      "sha256": "9a9b690b1bf401b19b62ab078719e9654f3e85757e1784fca934d39b93c5a6ce"
+    },
+    {
+      "path": "src/components/layout/AppFooter.jsx",
+      "bytes": 641,
+      "sha256": "99eee2713ee9967346886f233708e341808bb576006138984521124ac5b51cf5"
+    },
+    {
+      "path": "src/components/layout/AppHeader.jsx",
+      "bytes": 795,
+      "sha256": "ad100c8840fc85033c9d8fc35aa812bff161d40856e42dbbf2395a5f0b1f7684"
+    },
+    {
+      "path": "src/components/map/DepartmentExplorer.jsx",
+      "bytes": 2656,
+      "sha256": "72373b2974119f5841c08af6e62c566bd6649be6c890209764e579fe1864c81a"
+    },
+    {
+      "path": "src/components/map/MapControls.jsx",
+      "bytes": 589,
+      "sha256": "94b8a7693139ae990717afe715d75ab61eff3628cc095d094f2e762857e92031"
+    },
+    {
+      "path": "src/components/map/MapDepartment.jsx",
+      "bytes": 2649,
+      "sha256": "12899f5be777512116a64846b598a52e0896578a2ef3a77eef3b8d61cf0f99a4"
+    },
+    {
+      "path": "src/components/map/MapFeedback.jsx",
+      "bytes": 1635,
+      "sha256": "e0709464bbc7fa6d6517472fad480ed41f960fdf28b492e386dedd58eefe6b4c"
+    },
+    {
+      "path": "src/components/map/MapFilters.jsx",
+      "bytes": 1040,
+      "sha256": "e737772e5ca7abe1c60dfa5d6cc17dbec453767c29aa9fd79cf2e8d0297febda"
+    },
+    {
+      "path": "src/components/map/MapLegend.jsx",
+      "bytes": 363,
+      "sha256": "0846e62c166db595ee086753fa7edef00363e591070197497c3bbf5a737cfe58"
+    },
+    {
+      "path": "src/components/map/MapMetrics.jsx",
+      "bytes": 792,
+      "sha256": "3311a884b7a91e32d198047aa6928547095e4fa38e651d8681b5b8c513e94650"
+    },
+    {
+      "path": "src/components/map/MapPreview.jsx",
+      "bytes": 2195,
+      "sha256": "b073f29535ae1c44c9bb10a37eb7516d70f88376e88a4f4502d0121867bc310d"
+    },
+    {
+      "path": "src/components/map/TerritoryMap.jsx",
+      "bytes": 2542,
+      "sha256": "a3b3d842f927cb9a01b6c69e87aac3d74c5a3926621b11f31fe43440ab9001f5"
+    },
+    {
+      "path": "src/components/photos/GalleryPhoto.jsx",
+      "bytes": 1770,
+      "sha256": "a39ab5f44da78c5f881eae7a28840317bab7fd51ffa625d33bc9d1fdc2be6b0f"
+    },
+    {
+      "path": "src/components/photos/PhotoPlaceholder.jsx",
+      "bytes": 411,
+      "sha256": "80c7c93ee3183f40016259e5388fe24351894bf2dd4c04adcf06d09e38745e29"
+    },
+    {
+      "path": "src/components/photos/PhotoViewer.jsx",
+      "bytes": 1501,
+      "sha256": "2c0713d70c65d0641538026bc063401a57e9ee5de902ad85b43e1795f9689e80"
+    },
+    {
+      "path": "src/components/photos/ViewerCaption.jsx",
+      "bytes": 1156,
+      "sha256": "0841673836fb71fa4bdfce1627a3326b6826169274f4dda5ad5e9090223f5997"
+    },
+    {
+      "path": "src/components/photos/ViewerStage.jsx",
+      "bytes": 756,
+      "sha256": "266a15a9300a6d00d9106e01cc4f3554a50cb4b1af434a5771ac407ab0a18a4f"
+    },
+    {
+      "path": "src/components/photos/ViewerThumbnails.jsx",
+      "bytes": 768,
+      "sha256": "a9f89ef10bfff974a6572a963a547996f4fa35bfb1974cc86db4f2e5c401491c"
+    },
+    {
+      "path": "src/components/photos/ViewerToolbar.jsx",
+      "bytes": 979,
+      "sha256": "7c4d4c8794d19c81655138165d901ada5ad51089ba5b43a18a8878e760192092"
+    },
+    {
+      "path": "src/components/projects/ProjectFilters.jsx",
+      "bytes": 1022,
+      "sha256": "43fa2b9d8d7247548693f78327f4fdae3bd9b75121c51d415fd2348d7c85a4f7"
+    },
+    {
+      "path": "src/components/projects/ProjectGallery.jsx",
+      "bytes": 1190,
+      "sha256": "3264c0433cca67f5a15be240321f11d98d3e883b6fd8ceed8f836f31fa52014a"
+    },
+    {
+      "path": "src/components/projects/ProjectInformation.jsx",
+      "bytes": 1768,
+      "sha256": "ed9196aef2c1c6f92a8bd048a55060427859d9e301d9cdaff6013af06e73881f"
+    },
+    {
+      "path": "src/components/projects/ProjectSection.jsx",
+      "bytes": 983,
+      "sha256": "38accdc29554f30a128d6a4cb55bfe7d9f54c87b2ab8e81fe921f2c6f6107b90"
+    },
+    {
+      "path": "src/content.js",
+      "bytes": 7133,
+      "sha256": "2ee801d015c3607473446d02d9409c28d7e1352920f3771e4a22c7c8cfb6d1b3"
+    },
+    {
+      "path": "src/content.json",
+      "bytes": 15291,
+      "sha256": "18415dd440619d8b57dd770dd54a2eadc86a174b5d2b1476cf59b1bde4d158e9"
+    },
+    {
+      "path": "src/data.js",
+      "bytes": 304,
+      "sha256": "8f22df1b8c3fb585f776648f7591659a7c5ef47f741b0a0c1b38599f8d6f99c3"
+    },
+    {
+      "path": "src/geometry.js",
+      "bytes": 3533,
+      "sha256": "acf3d8ba9ee3d0f4ea9f1a3eeafc7ff25c7e4f25b0e9da78e3e7fd5984a70ff0"
+    },
+    {
+      "path": "src/hooks/useDialog.js",
+      "bytes": 2024,
+      "sha256": "bb6f9280f2fa81564052d0cb954b702d255bd8ff20cb47a6eabbf5d0af9135ba"
+    },
+    {
+      "path": "src/hooks/useFullscreen.js",
+      "bytes": 669,
+      "sha256": "d3d4d8c917de45517e50b3815962557db5014b7cd632ff72072cbece3f96e381"
+    },
+    {
+      "path": "src/hooks/useMapCamera.js",
+      "bytes": 3164,
+      "sha256": "505827c0e9319bc3b1ee2ffe7c20740f97f765cde7ab46fb0125b1364741b26c"
+    },
+    {
+      "path": "src/hooks/useMapExplorer.js",
+      "bytes": 2928,
+      "sha256": "075b6cee51cc9a23fb9f4260337ec0629cf362c26643cabe5671b0c5dcb31b0f"
+    },
+    {
+      "path": "src/hooks/useMapHover.js",
+      "bytes": 1766,
+      "sha256": "54f47aa8b5d79d55d008cfeeda64907ad350aaf74b17c0e483641756e9daa874"
+    },
+    {
+      "path": "src/hooks/usePhotoViewer.js",
+      "bytes": 4519,
+      "sha256": "54f26b0da25c5c86f77d881885779411aab53921c521b22aa3dd7d66a802ba7c"
+    },
+    {
+      "path": "src/hooks/usePresentationKeyboard.js",
+      "bytes": 747,
+      "sha256": "29693c6e33586bced36f3c9750bddbad3a2c21a87aa6e138eaa861eb3752256d"
+    },
+    {
+      "path": "src/main.jsx",
+      "bytes": 183,
+      "sha256": "5235a5961b0c453a1f1f522fe1063ef53d803fe05efc8ca117f27d990313bbba"
+    },
+    {
+      "path": "src/navigation.js",
+      "bytes": 976,
+      "sha256": "00196227391e4c3695739bcd3b3dc4ac691ed2b7aba8af3c1903df1065a34268"
+    },
+    {
+      "path": "src/pages/CoverPage.jsx",
+      "bytes": 511,
+      "sha256": "28f93fc4fc6772030f03194bdd11a281d17402f7031256f2c4fa9c23397a71fa"
+    },
+    {
+      "path": "src/pages/DepartmentDetail.jsx",
+      "bytes": 3014,
+      "sha256": "7a436e3d612de6d70fe1e8f065087d5e5d237fa25b16481a8472d6e6d15720d3"
+    },
+    {
+      "path": "src/pages/MapPage.jsx",
+      "bytes": 1707,
+      "sha256": "33ffeaeee4e14952d0eb5f56c20a09201cd624eb0e1812b9eaefadd80b369483"
+    },
+    {
+      "path": "src/style.css",
+      "bytes": 463,
+      "sha256": "2c524dbb0564df203aec6199cc7602259f485e3f5a7dc2f716860b38b957f05d"
+    },
+    {
+      "path": "src/styles/base.css",
+      "bytes": 2263,
+      "sha256": "f064784026cd91bb8d197f119b73808e100043026671777afd4c8a42f8974e44"
+    },
+    {
+      "path": "src/styles/cover.css",
+      "bytes": 7637,
+      "sha256": "a48ec006f9d5db6430a458caa6e0c7bca2b441a10adc97877b4d503eb6caa313"
+    },
+    {
+      "path": "src/styles/gallery.css",
+      "bytes": 4447,
+      "sha256": "dd33d55eb4e74a7bab292d5c4f757779919d978b2f51d73e83cb5b5f7c499194"
+    },
+    {
+      "path": "src/styles/layout.css",
+      "bytes": 4266,
+      "sha256": "424093cb73c642ce5dc39dfba72c5f0cc19dbc5a877d7c9ca90940718bfcd96b"
+    },
+    {
+      "path": "src/styles/map.css",
+      "bytes": 15449,
+      "sha256": "0b1eedf22fa1b1597a4fbc3ae8bf32edcc310b4e125b3ddad17407d69ae1523c"
+    },
+    {
+      "path": "src/styles/modal.css",
+      "bytes": 2135,
+      "sha256": "c42d57a13ac5acb950742f4b16e7fccf4866b35ff2ad07bfd0ed380068de81e4"
+    },
+    {
+      "path": "src/styles/projects.css",
+      "bytes": 6822,
+      "sha256": "e23301aa069e9a0bc02604099fbfb06129ee61d0225c27ecaafbc4bd7b895522"
+    },
+    {
+      "path": "src/styles/shared.css",
+      "bytes": 4188,
+      "sha256": "9160e18a2b4a97e23ca9be5b35b87b9c6e02acd9f556666dba2b0f064922dffe"
+    },
+    {
+      "path": "src/styles/variables.css",
+      "bytes": 7778,
+      "sha256": "ca0314d65652858e0c451e6f41bd6ed70fdbc012d89e9a5a0494a7756cdc0a91"
+    },
+    {
+      "path": "src/styles/viewer.css",
+      "bytes": 7262,
+      "sha256": "01795baf5fd96ce33b3f6ee41cf8a958321895e5f95ee1f472c458efe948325c"
+    }
+  ]
+}
