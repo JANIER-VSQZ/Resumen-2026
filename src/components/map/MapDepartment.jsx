@@ -1,10 +1,10 @@
 import React from 'react';
-import { hasContent, isPublished, orderedPhotos, photoMatches } from '../../content';
+import { hasContent, isPublished } from '../../content';
 
-export default function MapDepartment({ feature, department, visible, hovered, labels, zoom, filters, failedSources, onPhotoError, onHover, onOpen }) {
+export default function MapDepartment({ feature, department, visible, hovered, labels, zoom, failedSources, onPhotoError, onHover, onOpen }) {
   const content = hasContent(department);
-  const photos = content ? orderedPhotos(department.photos).filter(photo => photoMatches(photo, filters)) : [];
-  const photo = photos.find(photo => photo.src && !failedSources.has(photo.src));
+  const thumbnail = department?.mapThumbnail;
+  const showThumbnail = thumbnail && !failedSources.has(thumbnail);
   const [cx, cy] = feature.center;
   const classes = ['department', content && visible && 'has-content', department?.demo && 'is-demo', !visible && 'filtered-out', hovered && 'hovered'].filter(Boolean).join(' ');
 
@@ -16,7 +16,7 @@ export default function MapDepartment({ feature, department, visible, hovered, l
       <title>{feature.name}: {department?.demo ? 'Demostración' : isPublished(department) ? 'Registro publicado' : 'Sin información publicada'}</title>
       <g id={'map-visual-' + feature.key} className={'department-visual' + (visible && hovered ? ' is-highlighted' : '')}>
         <path className="dept-base" d={feature.path} fillRule="evenodd" />
-        {visible && photo && <image href={photo.thumbnail || photo.src} x={feature.bounds.x} y={feature.bounds.y} width={feature.bounds.width} height={feature.bounds.height} preserveAspectRatio="xMidYMid slice" clipPath={`url(#dept-${feature.key})`} onError={() => onPhotoError(photo.src)} />}
+        {visible && showThumbnail && <image href={thumbnail} x={feature.bounds.x} y={feature.bounds.y} width={feature.bounds.width} height={feature.bounds.height} preserveAspectRatio="xMidYMid slice" clipPath={`url(#dept-${feature.key})`} onError={() => onPhotoError(thumbnail)} />}
         <path className="dept-border" d={feature.path} fillRule="evenodd" />
         {labels && visible && (
           <text className={'map-name' + (content ? ' with-content' : '')} x={cx} y={cy} textAnchor="middle" fontSize={zoom >= 2 ? 12 / Math.sqrt(zoom / 2) : 13}>

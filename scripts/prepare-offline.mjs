@@ -19,16 +19,18 @@ function validateImage(buffer, file) {
 }
 
 const photos = Object.values(content.departments || {}).flatMap(department => department.projects.flatMap(project => project.photos));
+const images = [
+  ...Object.values(content.departments || {}).flatMap(department => ['coverMapThumbnail', 'mapThumbnail'].map(field => [field, department[field]])),
+  ...photos.flatMap(photo => [['src', photo.src], ['thumbnail', photo.thumbnail]]),
+];
 // Solo se leen las rutas manuales. Este paso no descarga ni reescribe contenido.
-for (const photo of photos) {
-  for (const field of ['src', 'thumbnail']) {
-    if (!photo[field] || photo[field].startsWith('data:')) continue;
-    if (/^https?:\/\//i.test(photo[field])) throw new Error(`El ejecutable sin conexión requiere imágenes locales. Guarda la imagen en public/assets/ y escribe su ruta /assets/... en ${field}: ${photo[field]}. El enlace no se ha modificado.`);
-    if (!photo[field].startsWith('/') || photo[field].startsWith('//')) throw new Error('La fotografía debe usar una ruta local: ' + photo[field]);
-    const file = path.resolve(publicRoot, '.' + decodeURIComponent(new URL(photo[field], 'http://local').pathname));
-    if (!file.startsWith(publicRoot + path.sep)) throw new Error('Ruta fuera de public: ' + photo[field]);
-    validateImage(await readFile(file), file);
-  }
+for (const [field, source] of images) {
+  if (!source || source.startsWith('data:')) continue;
+  if (/^https?:\/\//i.test(source)) throw new Error(`El ejecutable sin conexión requiere imágenes locales. Guarda la imagen en public/assets/ y escribe su ruta /assets/... en ${field}: ${source}. El enlace no se ha modificado.`);
+  if (!source.startsWith('/') || source.startsWith('//')) throw new Error('La imagen debe usar una ruta local: ' + source);
+  const file = path.resolve(publicRoot, '.' + decodeURIComponent(new URL(source, 'http://local').pathname));
+  if (!file.startsWith(publicRoot + path.sep)) throw new Error('Ruta fuera de public: ' + source);
+  validateImage(await readFile(file), file);
 }
 
 const licenses = path.join(publicRoot, 'licenses');

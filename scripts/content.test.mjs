@@ -39,6 +39,32 @@ test('combined filters must match the same photograph and the featured order sta
   assert.deepEqual(orderedPhotos(photos).filter(photo => photoMatches(photo, { project: 'A', axis: 'Y' })).map(photo => photo.src), ['c']);
   assert.equal(photos[0].src, 'a');
 });
+test('cover and interactive map thumbnails remain independent of each other and project photographs', () => {
+  const input = { departments: { Lempira: { demo: true, coverMapThumbnail: '/assets/mapas/lempira-portada.jpg', mapThumbnail: '/assets/mapas/lempira.jpg', projects: [projectRecord()] } } };
+  const department = validateContent(input).departments.Lempira;
+  assert.equal(department.coverMapThumbnail, '/assets/mapas/lempira-portada.jpg');
+  assert.equal(department.mapThumbnail, '/assets/mapas/lempira.jpg');
+  assert.equal(department.photos.length, 6);
+  assert.ok(department.photos.every(photo => photo.src !== department.mapThumbnail && photo.src !== department.coverMapThumbnail));
+  input.departments.Lempira.projects[0].photos[0].src = '/assets/otra-foto.jpg';
+  input.departments.Lempira.projects[0].photos[0].featured = true;
+  assert.equal(validateContent(input).departments.Lempira.mapThumbnail, department.mapThumbnail);
+  assert.equal(validateContent(input).departments.Lempira.coverMapThumbnail, department.coverMapThumbnail);
+  input.departments.Lempira.mapThumbnail = '/assets/mapas/otro-mapa.jpg';
+  assert.equal(validateContent(input).departments.Lempira.coverMapThumbnail, department.coverMapThumbnail);
+  input.departments.Lempira.coverMapThumbnail = '';
+  assert.equal(validateContent(input).departments.Lempira.mapThumbnail, '/assets/mapas/otro-mapa.jpg');
+  assert.equal(department.photos[0].src, '/assets/foto-0.jpg');
+});
+
+test('map thumbnails are optional and reject invalid image addresses', () => {
+  for (const field of ['coverMapThumbnail', 'mapThumbnail']) {
+    const input = value => ({ departments: { Lempira: { [field]: value, projects: [projectRecord()] } } });
+    for (const value of [undefined, null, '', '/assets/mapas/lempira.jpg', 'https://example.com/mapa.jpg', 'data:image/png;base64,aGVsbG8=']) assert.doesNotThrow(() => validateContent(input(value)));
+    for (const value of [42, {}, [], 'javascript:alert(1)', '//example.com/mapa.jpg', 'mapa.jpg']) assert.throws(() => validateContent(input(value)), new RegExp(`Miniatura del mapa.*${field}`));
+  }
+});
+
 test('invalid manually edited content fails validation', () => {
   const input = overrides => ({ departments: { Lempira: { projects: [projectRecord()], ...overrides } } });
   assert.throws(() => validateContent(input({ photos: [] })), /Mueve photos/);

@@ -78,7 +78,7 @@ Los valores compartidos están agrupados en `src/styles/variables.css`, dentro d
 - Bordes y efectos: `--color-border`, `--border-default`, `--shadow`, `--focus-ring` y `--duration-fast`.
 - Distribución: `--content-max-width`, `--page-gutter`, `--header-gutter`, `--cover-gutter` y tamaños compartidos como `--size-40`.
 - Proyectos: `--project-info-width` (ancho de la tarjeta), `--project-gallery-columns` (columnas de fotografías) y `--project-photo-ratio` (proporción de las imágenes).
-- Logotipo: en Inicio aparece encima de «Nuestra labor» y usa `--cover-logo-width`; en el mapa y el detalle se muestra en la cabecera.
+- Portada y mapa interactivo: sus títulos aparecen en la esquina superior izquierda, usan `--font-size-hero` y dejan el ancho disponible al mapa. Los logotipos se sitúan en la parte inferior; `--cover-logo-width` controla su tamaño. El detalle conserva el logotipo en la cabecera. Los títulos usan el peso 800.
 - Título de cabecera: `--header-page-title-size` controla el texto del mapa y el nombre del departamento en la vista de detalle.
 - Flotación del mapa de inicio: `--cover-map-float-duration` (duración del ciclo), `--cover-map-float-distance` (desplazamiento), `--cover-map-float-tilt` (inclinación) y las variables `--cover-map-elevation-shadow` y `--cover-map-ground-*` (sombras). El movimiento es más suave en móvil y se desactiva cuando el sistema solicita movimiento reducido.
 - Seguimiento del cursor en ese mapa: `--cover-map-hover-distance` (desplazamiento máximo), `--cover-map-hover-duration` y `--cover-map-hover-easing` (suavidad). El comportamiento está en `hooks/useMapHover.js`; vuelve al centro al salir del mapa y respeta el movimiento reducido y los gestos táctiles.
@@ -94,7 +94,7 @@ Edita los archivos de `src/` y vuelve a compilar para actualizar `dist/` o el ej
 
 ## Completar los resultados manualmente
 
-1. Edita `src/content.json`. Cada departamento contiene un resumen, personas registradas y una lista `projects`. Cada proyecto reúne su nombre, eje, resumen, comunidades de intervención, **4 actividades destacadas, 2 logros y 6 fotografías**.
+1. Edita `src/content.json`. Cada departamento contiene un resumen, miniaturas independientes para el mapa de portada (`coverMapThumbnail`) y el mapa interactivo (`mapThumbnail`), personas registradas y una lista `projects`. Cada proyecto reúne su nombre, eje, resumen, comunidades de intervención, **4 actividades destacadas, 2 logros y 6 fotografías**.
 2. Copia las fotografías reales a `public/assets/`, por ejemplo `public/assets/fotos/taller.jpg`, y utiliza `/assets/fotos/taller.jpg` como `src`.
 3. Revisa el contenido y genera una nueva compilación web o un nuevo ejecutable.
 
@@ -105,10 +105,14 @@ Ejemplo de estructura para completar dentro de `departments`:
   "verified": false,
   "demo": false,
   "summary": "",
+  "mapThumbnail": "/assets/mapas/lempira.jpg",
+  "coverMapThumbnail": "/assets/mapas/lempira-portada.jpg",
   "beneficiaries": null,
   "projects": []
 }
 ```
+
+`coverMapThumbnail` define la imagen del departamento en el mapa de portada; `mapThumbnail` define la del mapa interactivo. Copia las imágenes a `public/assets/mapas/` y escribe sus rutas `/assets/mapas/...`. Ambos campos se configuran fuera de `projects` y no se incluyen en las galerías ni en sus conteos. Las miniaturas se muestran también con `verified: false`, `demo: false` y sin proyectos; el estado de publicación controla el acceso a los proyectos y las cifras. Si omites uno, lo dejas vacío o falla su carga, ese mapa muestra el color de fondo del departamento. Cada mapa utiliza únicamente su propio campo. Los filtros pueden ocultar departamentos, pero no cambian su miniatura.
 
 Dentro de `projects`, añade un objeto por proyecto con esta estructura:
 
@@ -157,7 +161,7 @@ La aplicación muestra siempre los archivos incluidos en su compilación; los da
 ## Recorrido
 
 - El mapa muestra fotos dentro de las siluetas departamentales, con zoom, desplazamiento y nombres. Al señalar o enfocar un departamento, su tarjeta muestra los nombres de los proyectos que coinciden con los filtros; las siluetas no llevan contadores de fotografías.
-- La búsqueda admite nombres con o sin tildes. Los filtros por proyecto y eje actualizan departamentos e imágenes y se conservan al volver desde una ficha.
+- La búsqueda admite nombres con o sin tildes. Los filtros por proyecto y eje actualizan los departamentos visibles y se conservan al volver desde una ficha. Cada departamento mantiene su propia `mapThumbnail`.
 - Cada proyecto muestra su tarjeta de información junto a su galería. Los filtros actualizan ambos elementos; al filtrar por comunidad se conservan las actividades y logros del proyecto completo.
 - En móvil se pueden desplegar las actividades y logros de cada proyecto por separado.
 - Las fotografías muestran su descripción completa debajo de la imagen, directamente en el proyecto. Las tarjetas no abren una ventana modal.
@@ -175,7 +179,7 @@ El archivo `release/ASONOG-Nuestra-Labor-2026-Portable.exe` funciona en Windows 
 
 `npm run dev` sirve el proyecto con Vite y conserva los enlaces escritos en `src/content.json`. Las URL externas se utilizan directamente al mostrar las imágenes en la versión web.
 
-`prepare:offline` valida el contenido y las imágenes locales, y prepara las fuentes y licencias. Este paso conserva `photos[].src` y `thumbnail` exactamente como los escribiste: no descarga imágenes ni reescribe `content.json`. Para generar el ejecutable sin conexión, las imágenes deben estar en `public/assets/` con rutas `/assets/...` o estar incrustadas como datos. Si encuentra una URL externa, indica qué ruta debes preparar manualmente.
+`prepare:offline` valida el contenido y las imágenes locales, y prepara las fuentes y licencias. Este paso conserva `coverMapThumbnail`, `mapThumbnail`, `photos[].src` y `thumbnail` exactamente como los escribiste: no descarga imágenes ni reescribe `content.json`. Para generar el ejecutable sin conexión, las imágenes deben estar en `public/assets/` con rutas `/assets/...` o estar incrustadas como datos. Si encuentra una URL externa, indica qué ruta debes preparar manualmente.
 
 Consulta [USO-SIN-CONEXION.md](USO-SIN-CONEXION.md) para distribuir y actualizar el programa.
 

@@ -9,7 +9,7 @@ import { pathToFileURL } from 'node:url';
 
 const execute = promisify(execFile);
 
-async function fixture(t, photoOverrides = {}) {
+async function fixture(t, photoOverrides = {}, departmentOverrides = {}) {
   const root = await mkdtemp(path.join(tmpdir(), 'asonog-offline-test-'));
   t.after(async () => {
     assert.equal(path.dirname(path.resolve(root)), path.resolve(tmpdir()));
@@ -25,7 +25,7 @@ async function fixture(t, photoOverrides = {}) {
       ...photoOverrides,
     })),
   };
-  const original = JSON.stringify({ departments: { Lempira: { demo: true, projects: [project] } } }, null, '\t').replaceAll('\n', '\r\n') + '\r\n';
+  const original = JSON.stringify({ departments: { Lempira: { demo: true, coverMapThumbnail: '/assets/mapas/lempira-portada.jpg', mapThumbnail: '/assets/mapas/lempira.jpg', projects: [project], ...departmentOverrides } } }, null, '\t').replaceAll('\n', '\r\n') + '\r\n';
   const manifest = '{ "original": true }\n';
   const files = {
     'package.json': '{ "type": "module" }',
@@ -34,6 +34,8 @@ async function fixture(t, photoOverrides = {}) {
     'scripts/prepare-offline.mjs': await readFile(new URL('./prepare-offline.mjs', import.meta.url)),
     'src/assets/honduras-departments.source.json': '{ "fixture": true }',
     'public/assets/manual.jpg': Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
+    'public/assets/mapas/lempira.jpg': Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
+    'public/assets/mapas/lempira-portada.jpg': Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
     'public/assets/offline/sources.json': manifest,
     'deny-network.mjs': 'globalThis.fetch = () => { throw new Error("UNEXPECTED_NETWORK_REQUEST"); };\n',
   };
@@ -75,6 +77,29 @@ for (const field of ['src', 'thumbnail']) {
       assert.match(error.stderr, /imágenes locales/);
       assert.match(error.stderr, /public\/assets/);
       assert.doesNotMatch(error.stderr, /UNEXPECTED_NETWORK_REQUEST/);
+      return true;
+    });
+    await setup.assertPreserved();
+  });
+}
+
+for (const field of ['coverMapThumbnail', 'mapThumbnail']) {
+  test(`external ${field} is preserved and never downloaded`, async t => {
+    const setup = await fixture(t, {}, { [field]: 'https://example.com/mapa.jpg' });
+    await assert.rejects(setup.run(), error => {
+      assert.match(error.stderr, /imágenes locales/);
+      assert.match(error.stderr, new RegExp(field));
+      assert.doesNotMatch(error.stderr, /UNEXPECTED_NETWORK_REQUEST/);
+      return true;
+    });
+    await setup.assertPreserved();
+  });
+
+  test(`missing ${field} fails offline preparation without rewriting content`, async t => {
+    const setup = await fixture(t, {}, { [field]: '/assets/mapas/missing.jpg' });
+    await assert.rejects(setup.run(), error => {
+      assert.match(error.stderr, /ENOENT/);
+      assert.match(error.stderr, /missing.jpg/);
       return true;
     });
     await setup.assertPreserved();

@@ -64,8 +64,8 @@
   --map-department-hover-shadow: 0 7px 7px var(--color-shadow);
   --map-department-hover-duration: .22s;
   --map-tooltip-width: 360px;
-  --map-logo-width: clamp(160px, 14vw, 220px);
-  --map-title-size: clamp(28px, 2.5vw, 42px);
+  --map-logo-width: var(--cover-logo-width);
+  --map-title-size: var(--font-size-hero);
 
   /* Fuentes: cambia la familia una sola vez */
   --font-family-body: 'DM Sans';
@@ -219,8 +219,6 @@
     --header-page-title-size: var(--font-size-16);
     --department-logo-width: 112px;
     --department-title-size: var(--font-size-25);
-    --map-logo-width: 112px;
-    --map-title-size: var(--font-size-25);
     --cover-map-float-distance: 7px;
     --cover-map-float-tilt: .3deg;
     --font-size-hero: clamp(40px, 10.5vw, 62px);

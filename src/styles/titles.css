@@ -7,7 +7,7 @@
   animation: title-reveal var(--title-reveal-duration) cubic-bezier(.2, .8, .2, 1) both;
 }
 
-.page-title:not(.page-title--cover)::after {
+.page-title:not(.page-title--cover):not(.page-title--map)::after {
   content: '';
   position: absolute;
   left: 50%;
@@ -23,7 +23,7 @@
   animation: title-underline var(--title-accent-duration) cubic-bezier(.2, .8, .2, 1) .15s both;
 }
 
-.page-title--cover em::after {
+.page-title--cover em::after, .page-title--map em::after {
   transform-origin: left center;
   animation: title-cover-underline var(--title-accent-duration) cubic-bezier(.2, .8, .2, 1) .15s both;
 }

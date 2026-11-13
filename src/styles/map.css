@@ -1,25 +1,34 @@
 /* Mapa interactivo, búsqueda de departamentos y cifras publicadas. */
 
+.app > .mapview {
+  flex: none;
+}
+
 .mapview {
   position: relative;
-  padding: 0px var(--space-10) var(--space-10);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  height: 100svh;
+  min-height: 100svh;
+  padding: var(--space-10) var(--space-20);
   background: var(--color-background);
 }
 
 .map-heading {
   position: absolute;
   top: var(--space-20);
-  inset-inline: var(--space-30);
+  left: var(--space-20);
+  width: min(calc(100% - 2 * var(--space-20)), 480px);
   z-index: 3;
-  display: grid;
-  grid-template-columns: var(--map-logo-width) minmax(0, 1fr) var(--map-logo-width);
-  align-items: center;
-  gap: var(--space-24);
   pointer-events: none;
 }
 
 .map-brand {
-  align-self: start;
+  position: absolute;
+  left: var(--space-20);
+  bottom: var(--space-20);
+  z-index: 3;
+  width: var(--map-logo-width);
   padding: 0;
   border: 0;
   background: transparent;
@@ -34,14 +43,49 @@
 }
 
 .map-heading h1 {
-  align-self: start;
   margin: 0;
-  color: var(--color-green-dark);
+  color: var(--color-dark);
   font-size: var(--map-title-size);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-tight);
-  letter-spacing: -.025em;
-  text-align: center;
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1.14;
+  letter-spacing: -.065em;
+  text-align: left;
+}
+
+.map-heading h1 > span {
+  display: block;
+}
+
+.map-heading .map-title-context {
+  margin-bottom: var(--space-8);
+  font-family: var(--font-body);
+  font-size: var(--font-size-13);
+  line-height: var(--line-height-normal);
+  letter-spacing: 1px;
+}
+
+.map-title-prefix {
+  font-size: var(--font-size-17);
+  letter-spacing: 0;
+}
+
+.map-heading h1 em {
+  position: relative;
+  color: var(--color-green-dark);
+  font-style: normal;
+}
+
+.map-heading h1 em::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  height: .14em;
+  left: 2%;
+  right: -1%;
+  bottom: .06em;
+  background: var(--color-primary);
+  border-radius: var(--radius-circle);
+  transform: rotate(-2deg);
 }
 
 .counter {
@@ -105,7 +149,9 @@
   display: grid;
   grid-template-columns: auto;
   gap: var(--space-20);
-  height: 95vh;
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 0;
+  height: 100%;
 }
 
 .map-panel {
@@ -125,7 +171,8 @@
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-10);
-  padding: var(--space-14) var(--space-16) 0;
+  min-height: var(--size-52);
+  padding: var(--space-14) calc(var(--space-60) + var(--space-20)) 0 var(--space-16);
   z-index: 2;
 }
 
@@ -268,6 +315,7 @@
 
 .map-tooltip {
   position: absolute;
+  z-index: 4;
   bottom: var(--space-12);
   left: var(--space-16);
   display: flex;
@@ -313,6 +361,7 @@
 
 .map-preview-card {
   position: absolute;
+  z-index: 4;
   bottom: var(--space-14);
   left: var(--space-16);
   max-width: min(330px, calc(100% - 90px));
@@ -612,19 +661,6 @@
 
 @media (max-width: 1200px) {
 
-  .map-heading {
-    position: relative;
-    top: auto;
-    inset-inline: auto;
-    grid-template-columns: var(--map-logo-width) minmax(0, 1fr);
-    margin-bottom: var(--space-16);
-    padding: var(--space-16) var(--space-12) 0;
-  }
-
-  .map-heading h1 {
-    align-self: center;
-  }
-
   .mapcontent {
     grid-template-columns: auto;
   }
@@ -650,11 +686,6 @@
 
   .mapcontent {
     grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  .map-panel {
-    height: clamp(320px, 48vw, 440px);
   }
 
   .explore-panel {
@@ -676,13 +707,18 @@
 @media (max-width: 640px) {
 
   .mapview {
-    padding: var(--space-16) var(--space-18) var(--space-28);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: var(--space-20);
+    padding: var(--space-24);
   }
 
   .map-heading {
-    gap: var(--space-16);
-    margin-bottom: var(--space-12);
-    padding: 0;
+    position: static;
+    width: 100%;
+  }
+
+  .map-brand {
+    position: static;
   }
 
   .counter {
@@ -712,7 +748,7 @@
   }
 
   .map-panel {
-    height: 295px;
+    height: 100%;
     border-radius: var(--radius-16);
   }
 

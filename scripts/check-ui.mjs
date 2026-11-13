@@ -146,6 +146,11 @@ try {
   console.log('Presentation uses bundled content and has no editing controls.');
 
   const documented = Object.entries(content.departments).filter(([, department]) => department.demo || department.verified);
+  const mapThumbnails = Object.entries(content.departments).filter(([, department]) => department.mapThumbnail);
+  const coverMapThumbnails = Object.entries(content.departments).filter(([, department]) => department.coverMapThumbnail);
+  for (const [name, department] of coverMapThumbnails) {
+    assert.equal(await evaluate('Array.from(document.querySelectorAll(".preview-department")).find(node => node.querySelector("title").textContent === ' + JSON.stringify(name) + ')?.querySelector("image")?.getAttribute("href")'), department.coverMapThumbnail);
+  }
   // Arrows connect the main pages; selecting the map is the only entry to details.
   await focus('.topbar .iconbutton'); await press('ArrowRight'); await assertScreen('map');
   await focus('.map-zoom button'); await press('ArrowRight'); await assertScreen('cover');
@@ -197,7 +202,8 @@ try {
   await press('ArrowLeft'); await assertScreen('cover');
   console.log('Arrows only connect home/map; details require map selection, ignore Right and return with Left. Focus and expanded information are preserved.');
   const allPhotos = documented.flatMap(([, department]) => department.photos || []);
-  for (const photo of allPhotos) for (const src of [photo.src, photo.thumbnail].filter(Boolean)) {
+  const imageSources = [...allPhotos.flatMap(photo => [photo.src, photo.thumbnail]), ...mapThumbnails.map(([, department]) => department.mapThumbnail), ...coverMapThumbnails.map(([, department]) => department.coverMapThumbnail)].filter(Boolean);
+  for (const src of imageSources) {
     if (src.startsWith('/assets/')) {
       assert.equal(await evaluate(`fetch(${JSON.stringify(src)}).then(response=>response.ok)`), true);
     } else {
@@ -208,7 +214,11 @@ try {
   await click('.map-preview-open');
   await waitFor("document.querySelectorAll('.honduras-map .department').length===18");
   assert.equal(await evaluate("document.querySelector('.map-panel [aria-label=\"Vista del mapa\"]') === null"), true, 'The interactive map must display photographs without a view selector.');
-  assert.equal(await evaluate("document.querySelectorAll('.honduras-map image[clip-path]').length"), documented.filter(([, department]) => department.photos?.length).length);
+  assert.equal(await evaluate("document.querySelectorAll('.honduras-map image[clip-path]').length"), mapThumbnails.length);
+  for (const [name, department] of mapThumbnails) {
+    const selector = '[data-department=' + JSON.stringify(name) + '] image';
+    assert.equal(await evaluate('document.querySelector(' + JSON.stringify(selector) + ')?.getAttribute("href")'), department.mapThumbnail);
+  }
   const layouts = [];
   for (const [width, height] of [[1366, 768], [1024, 600], [820, 768], [390, 844], [375, 667]]) {
     await viewport(width, height);
@@ -248,7 +258,7 @@ try {
     assert.equal(await evaluate("document.querySelectorAll('.dept-list button').length"), documented.length);
     await click('.only-content input');
   }
-  await waitFor("document.querySelectorAll('.honduras-map image').length===" + documented.filter(([, department]) => department.photos?.length).length);
+  await waitFor("document.querySelectorAll('.honduras-map image').length===" + mapThumbnails.length);
   await screenshot('map-desktop');
   const emptyDepartment = await evaluate("document.querySelector('.department:not(.has-content)')?.getAttribute('aria-label')");
   if (emptyDepartment) {
@@ -387,10 +397,8 @@ try {
     const expectedNames = documented.filter(([, department]) => department.photos?.some(photo => photo.project === target.project && photo.axis === target.axis)).map(([name]) => name).sort((a, b) => a.localeCompare(b, 'es'));
     assert.deepEqual(await evaluate("[...document.querySelectorAll('.dept-list strong')].map(element => element.textContent)"), expectedNames);
     for (const name of expectedNames) {
-      const matchingPhotos = content.departments[name].photos.filter(photo => photo.project === target.project && photo.axis === target.axis);
-      const expectedPhoto = matchingPhotos.find(photo => photo.featured) || matchingPhotos[0];
       const selector = '[data-department=' + JSON.stringify(name) + '] image';
-      assert.equal(await evaluate('document.querySelector(' + JSON.stringify(selector) + ').getAttribute("href")'), expectedPhoto.thumbnail || expectedPhoto.src);
+      assert.equal(await evaluate('document.querySelector(' + JSON.stringify(selector) + ')?.getAttribute("href")') || '', content.departments[name].mapThumbnail || '');
     }
     await click('[aria-label="Abrir ' + expectedNames[0] + '"]');
     await assertScreen('detail', expectedNames[0]);

@@ -13,7 +13,7 @@ Solo necesitas copiar el `.exe`. La primera apertura puede tardar unos segundos 
 El contenido se prepara manualmente en el proyecto:
 
 1. Edita `src/content.json`. Dentro de cada departamento, cada objeto de `projects` agrupa su resumen, eje, comunidades de intervención, 4 actividades destacadas, 2 logros y 6 fotografías.
-2. Copia las fotografías a `public/assets/` y añade sus rutas y descripciones dentro del proyecto correspondiente.
+2. Copia las fotografías a `public/assets/` y añade sus rutas y descripciones dentro del proyecto correspondiente. Fuera de `projects`, configura `coverMapThumbnail` para el mapa de portada y `mapThumbnail` para el mapa interactivo; por ejemplo, `/assets/mapas/lempira-portada.jpg` y `/assets/mapas/lempira.jpg`.
 3. Para los registros revisados, utiliza `verified: true` y `demo: false`.
 4. Genera el nuevo ejecutable desde PowerShell, dentro de la carpeta del proyecto:
 

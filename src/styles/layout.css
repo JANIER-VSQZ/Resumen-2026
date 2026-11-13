@@ -17,12 +17,21 @@
   border-bottom: var(--border-default);
 }
 
-.topbar.is-cover {
+.topbar.is-cover, .topbar.is-map {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
   justify-content: flex-end;
-  background: var(--color-background);
+  background: transparent;
+  border-bottom: 0;
+  pointer-events: none;
 }
 
-.topbar.is-map, .topbar.is-detail {
+.topbar.is-cover .righttools, .topbar.is-map .righttools {
+  pointer-events: auto;
+}
+
+.topbar.is-detail {
   display: flex;
   justify-content: flex-end;
   min-height: var(--size-48);

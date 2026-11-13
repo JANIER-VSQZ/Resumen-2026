@@ -42,6 +42,7 @@ export function validateContent(input) {
   for (const [name, department] of Object.entries(input.departments)) {
     if (!DEPARTMENTS.includes(name) || !department || typeof department !== 'object' || Array.isArray(department)) throw Error(`Departamento no válido: ${name}.`);
     if (department.summary != null && typeof department.summary !== 'string') throw Error(`Revisa el resumen en ${name}.`);
+    for (const field of ['coverMapThumbnail', 'mapThumbnail']) if (department[field] != null && (typeof department[field] !== 'string' || (department[field] && !/^(\/assets\/|https?:\/\/|data:image\/(jpeg|png|webp);base64,)/i.test(department[field])))) throw Error(`Miniatura del mapa no válida (${field}) en ${name}.`);
     for (const field of ['communities', 'activities', 'results', 'photos']) if (field in department) throw Error(`Mueve ${field} a su proyecto en ${name}.`);
     if (!Array.isArray(department.projects)) throw Error(`Revisa la lista de proyectos en ${name}.`);
     for (const field of ['verified', 'demo']) if (department[field] != null && typeof department[field] !== 'boolean') throw Error(`Revisa el estado de ${name}.`);

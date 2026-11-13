@@ -29,7 +29,6 @@ export default function TerritoryMap({ features, departments, filters, matches, 
               hovered={hovered === feature.name}
               labels={labels}
               zoom={camera.zoom}
-              filters={filters}
               failedSources={failed}
               onPhotoError={src => setFailed(previous => new Set(previous).add(src))}
               onHover={onHover}
