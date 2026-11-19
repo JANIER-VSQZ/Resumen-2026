@@ -7,7 +7,7 @@ export default function MapPreview({ features, departments, hasContent, onExplor
   const { ref, ...pointerHandlers } = useMapHover();
 
   return <div className="cover-map-preview" ref={ref}>
-    <button className="map-preview-open" onClick={onExplore} aria-label="Abrir el mapa interactivo de Honduras" {...pointerHandlers}>
+    <button className="map-preview-open" onClick={onExplore} aria-label="Abrir el mapa de proyectos de Honduras" {...pointerHandlers}>
       {features ? <svg className="map-preview-svg" viewBox="0 0 1000 635" role="img" aria-label="Mapa de Honduras con miniaturas por departamento">
         <defs>{features.map(feature => <clipPath id={clipId + '-' + feature.key} key={feature.key}>
           <path d={feature.path} clipRule="evenodd" />

@@ -267,7 +267,7 @@
 
 .department.hovered .dept-border, .department:focus-visible .dept-border, .department-visual.is-highlighted .dept-border {
   stroke: var(--color-green-dark);
-  stroke-width: 3;
+  stroke-width: 1;
 }
 
 .department.filtered-out {
@@ -317,7 +317,7 @@
   position: absolute;
   z-index: 4;
   bottom: var(--space-12);
-  left: var(--space-16);
+  right: calc(var(--space-14) + var(--size-36) + var(--space-20));
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -363,7 +363,7 @@
   position: absolute;
   z-index: 4;
   bottom: var(--space-14);
-  left: var(--space-16);
+  right: calc(var(--space-14) + var(--size-36) + var(--space-20));
   max-width: min(330px, calc(100% - 90px));
   padding: var(--space-16);
   border: var(--border-default);
@@ -797,13 +797,13 @@
 
   .map-tooltip {
     bottom: var(--space-5);
-    left: var(--space-10);
+    right: var(--space-60);
     max-width: calc(100% - 65px);
   }
 
   .map-preview-card {
     bottom: var(--space-5);
-    left: var(--space-10);
+    right: var(--space-60);
     padding: var(--space-12);
     max-width: calc(100% - 65px);
   }

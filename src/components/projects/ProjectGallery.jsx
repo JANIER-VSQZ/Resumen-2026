@@ -14,8 +14,8 @@ export default function ProjectGallery({ project, photos, id, onOpenPhoto }) {
           <GalleryPhoto key={photo.id || photo.src + position} photo={photo} featured={position === 0} onClick={onOpenPhoto ? () => onOpenPhoto(photos, position) : undefined} />
         )) : (
           <div className="gallery-empty" role="status">
-            <Camera size={24} /><strong>No hay fotografías de esta comunidad</strong>
-            <p>La comunidad forma parte de este proyecto. Selecciona todas las comunidades para ver sus seis fotografías.</p>
+            <Camera size={24} /><strong>Fotografías pendientes de incorporar</strong>
+            <p>Las fotografías de este proyecto se mostrarán aquí cuando estén disponibles.</p>
           </div>
         )}
       </div>

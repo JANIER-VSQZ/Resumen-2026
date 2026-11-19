@@ -1,5 +1,66 @@
 # Registro de cambios
 
+## 2026-11-18 · Detalles limitados al departamento consultado
+
+- Los detalles abiertos desde un departamento mantienen su selección y evidencia. Los demás departamentos quedan deshabilitados en los mapas y las cápsulas, también en las páginas con varios proyectos.
+- El mapa conserva el zoom, el desplazamiento y la cobertura del proyecto. La exploración de departamentos sigue disponible al abrir el proyecto completo desde el panel general.
+- El ejecutable se mantiene sin actualizar.
+
+## 2026-11-18 · Deselección del departamento al volver al mapa
+
+- Al regresar desde un detalle individual o conjunto, el mapa general limpia la selección del departamento y recupera los proyectos que coinciden con los filtros de proyecto y actividad.
+- El regreso mediante los botones, el teclado y el historial del navegador aplica el mismo comportamiento. El ejecutable se mantiene sin actualizar.
+
+## 2026-11-18 · Proyectos del departamento en una sola página
+
+- Los departamentos con varios proyectos muestran sus detalles completos en una misma página, sin un paso de selección intermedio.
+- Cada proyecto conserva su mapa, actividades, logros y galería, con controles independientes. La vista inicial muestra la evidencia del departamento elegido.
+- Los filtros eligen los proyectos que corresponden a la selección sin recortar sus detalles. Los mapas y las secciones utilizan identificadores únicos para coexistir correctamente.
+- Incorporadas pruebas con dos proyectos y varios mapas en la misma página. Actualizados el código y la versión web; el ejecutable se conserva sin actualizar, según la preferencia indicada.
+
+## 2026-11-18 · Acceso a los proyectos al seleccionar un departamento
+
+- El clic en el mapa general abre directamente el detalle cuando el departamento tiene un solo proyecto entre los resultados actuales.
+- Si hay varios, se abre una página con los proyectos del departamento y enlaces a sus detalles. Un departamento sin proyectos muestra un estado vacío con acceso de vuelta al mapa.
+- Los detalles se abren con las actividades e imágenes del departamento elegido, manteniendo el mapa y la opción de mostrar el proyecto completo.
+- Enlaces territoriales compatibles con recarga e historial, y selección conservada al volver al mapa general. Los mapas, las miniaturas independientes y el contenido de los proyectos se mantienen.
+
+## 2026-11-18 · Miniaturas separadas para los tres mapas
+
+- `mapThumbnails` contiene grupos independientes `cover`, `interactive` y `detail`, cada uno con entradas por departamento.
+- Conservadas las dieciocho fotografías de la portada en `cover`. Las entradas de `interactive` y `detail` quedan vacías hasta que se decidan sus imágenes.
+- El mapa interactivo y los mapas del detalle colorean los departamentos donde hay proyectos y muestran el resto en gris. No toman imágenes de la portada ni de las galerías como reemplazo.
+- Los mapas del detalle están preparados para mostrar las miniaturas de su grupo cuando se incorporen. Los proyectos, actividades y fotografías de sus galerías se mantienen intactos.
+- Adaptados el esquema de edición, la validación y la preparación sin conexión a los tres grupos de miniaturas.
+
+## 2026-11-18 · Mapa general con protagonismo y filtros
+
+- Recuperado un mapa fotográfico que ocupa la pantalla principal, con zoom, desplazamiento y nombres de departamentos.
+- Panel compacto con filtros por proyecto y actividad principal, lista de proyectos y acceso a sus detalles. Seleccionar un departamento muestra los proyectos de ese territorio.
+- Los filtros combinados utilizan la misma intervención para mostrar su cobertura real. Al cambiar de proyecto se elimina una actividad incompatible.
+- Conservados los mapas y la evidencia completa de cada detalle. Volver al mapa general mantiene los filtros y el departamento seleccionado.
+- En móvil y tableta la lista de proyectos se puede desplegar y ocultar para dejar espacio al mapa.
+- Ruta general `#/mapa`, con compatibilidad para `#/proyectos`; enlaces directos a los detalles conservados. El JSON y las imágenes existentes mantienen su estructura y contenido.
+
+## 2026-11-18 · JSON organizado por proyecto
+
+- `content.json` contiene una lista `projects`; cada proyecto define su nombre, identificador y estado una sola vez, y carga sus bloques territoriales en `departments`.
+- Cada bloque utiliza `names` para uno o varios departamentos y conserva sus comunidades, actividades, logros y fotografías. Los bloques compartidos mantienen todos los departamentos en el mapa sin duplicar evidencia.
+- Miniaturas de portada separadas en `mapThumbnails`. La vista por departamento se genera internamente para la portada.
+- Conservados los dos proyectos, las ocho actividades y las dieciséis fotografías durante la migración. Respaldo del formato anterior guardado en `docs/registros/content-antes-de-organizar-por-proyectos-2026-11-18.json`.
+- Incorporados un esquema JSON para autocompletado, una plantilla y una guía de carga. Las listas admiten datos incompletos y los enlaces dependen del identificador del proyecto.
+- Adaptadas la validación, las cifras, la preparación sin conexión y las pruebas a la nueva estructura.
+
+## 2026-11-18 · Navegación por proyectos
+
+- Nuevo recorrido: portada → menú de proyectos → mapa del proyecto con sus actividades, logros y fotografías.
+- Los registros territoriales con el mismo nombre se agrupan en un proyecto; ACTUAH reúne Choluteca, Comayagua y Santa Bárbara sin mezclar su evidencia.
+- El campo opcional `projects[].departments` declara cobertura adicional. El proyecto de derechos humanos incluye La Paz e Intibucá, según el resumen existente, sin duplicar actividades ni imágenes.
+- El mapa destaca la cobertura del proyecto. Seleccionar un departamento muestra su evidencia y permite recuperar todos los departamentos con un botón.
+- Enlaces directos por proyecto, recarga e historial del navegador, navegación por teclado y actividades desplegadas inicialmente en móvil.
+- La validación admite las cantidades reales de actividades, logros y fotografías y las rutas de imágenes de cualquier carpeta de `public/`.
+- Conservados los archivos y contenidos manuales. Documentación y comprobaciones adaptadas al nuevo recorrido.
+
 ## 2026-11-11 · Texto adaptable en mapas y proyectos
 
 - Incorporada una escala tipográfica fluida con cuatro variables globales para metadatos, cuerpo, encabezados y títulos de proyecto.

@@ -1,6 +1,6 @@
 # Nuestra Labor 2026 · ASONOG
 
-Presentación de resultados institucionales en React + Vite, con una aplicación portátil para Windows. Incluye mapa fotográfico de Honduras, filtros, cifras y galerías. Todo el contenido se prepara manualmente en el proyecto y se distribuye junto con la aplicación.
+Presentación de resultados institucionales en React + Vite, con una aplicación portátil para Windows. Incluye un mapa general a pantalla completa con filtros por proyecto y actividad, y detalles de proyecto con su propio mapa, actividades, logros y galerías. Todo el contenido se prepara manualmente en el proyecto y se distribuye junto con la aplicación.
 
 El estado actual de la interfaz y los ajustes manuales están documentados en [CAMBIOS.md](CAMBIOS.md). Algunas secciones descritas en este README se conservan en el código y están comentadas en las vistas actuales.
 
@@ -20,7 +20,7 @@ npm.cmd run build
 
 ```text
 src/
-  pages/                 Portada, mapa y detalle del departamento
+  pages/                 Portada, mapa general con filtros y detalle del proyecto
   components/
     layout/              Cabecera y pie de página
     cover/               Presentación y temas de la portada
@@ -31,12 +31,14 @@ src/
     help/                Contenido de la ventana de ayuda
   hooks/                 Navegación de teclado, filtros, foco, zoom y gestos
   styles/                Variables globales y estilos por sección
-  content.json           Resultados que se completan manualmente
+  content.json           Proyectos con sus departamentos y resultados
+  content.schema.json    Ayuda de edición y validación de la estructura
   config.js              Opciones de presentación, como activar el visor de fotos
   data.js                Preparación inicial del contenido y la cartografía
   content.js             Reglas, validación y cálculos del contenido
   geometry.js            Preparación y validación del mapa
-  navigation.js          Orden del recorrido y reglas de los atajos
+  projects.js            Preparación del menú y la cobertura de cada proyecto
+  navigation.js          Rutas de proyectos y reglas de los atajos
   style.css              Entrada que importa los archivos de estilos
 ```
 
@@ -50,7 +52,8 @@ Para realizar cambios puntuales:
 | Portada | `components/cover/CoverHero.jsx` y `CoverThemes.jsx` | `styles/cover.css` |
 | Siluetas y fotografías del mapa | `components/map/MapDepartment.jsx` | `styles/map.css` |
 | Zoom y controles del mapa | `components/map/MapControls.jsx` y `hooks/useMapCamera.js` | `styles/map.css` |
-| Buscador y lista de departamentos | `components/map/DepartmentExplorer.jsx` | `styles/map.css` |
+| Mapa general, filtros y accesos a proyectos | `pages/ProjectsPage.jsx` | `styles/map-explorer.css` |
+| Detalle del proyecto y su mapa | `pages/MapPage.jsx` | `styles/project-navigation.css` |
 | Cifras publicadas | `components/map/MapMetrics.jsx` | `styles/map.css` |
 | Tarjeta de información a la derecha | `components/projects/ProjectInformation.jsx` | `styles/projects.css` |
 | Distribución de los proyectos | `components/projects/ProjectSection.jsx` | `styles/projects.css` |
@@ -94,77 +97,84 @@ Edita los archivos de `src/` y vuelve a compilar para actualizar `dist/` o el ej
 
 ## Completar los resultados manualmente
 
-1. Edita `src/content.json`. Cada departamento contiene un resumen, miniaturas independientes para el mapa de portada (`coverMapThumbnail`) y el mapa interactivo (`mapThumbnail`), personas registradas y una lista `projects`. Cada proyecto reúne su nombre, eje, resumen, comunidades de intervención, **4 actividades destacadas, 2 logros y 6 fotografías**.
-2. Copia las fotografías reales a `public/assets/`, por ejemplo `public/assets/fotos/taller.jpg`, y utiliza `/assets/fotos/taller.jpg` como `src`.
-3. Revisa el contenido y genera una nueva compilación web o un nuevo ejecutable.
+Edita `src/content.json`. Cada proyecto se escribe una sola vez en `projects` y contiene sus bloques de departamentos. Los nombres y estados ya no se repiten por departamento.
 
-Ejemplo de estructura para completar dentro de `departments`:
+La [guía para cargar proyectos](docs/COMO-CARGAR-PROYECTOS.md) incluye instrucciones y ejemplos. Puedes copiar [esta plantilla](docs/plantilla-proyecto.json) como una nueva entrada de `projects`.
 
-```json
-"Lempira": {
-  "verified": false,
-  "demo": false,
-  "summary": "",
-  "mapThumbnail": "/assets/mapas/lempira.jpg",
-  "coverMapThumbnail": "/assets/mapas/lempira-portada.jpg",
-  "beneficiaries": null,
-  "projects": []
-}
-```
-
-`coverMapThumbnail` define la imagen del departamento en el mapa de portada; `mapThumbnail` define la del mapa interactivo. Copia las imágenes a `public/assets/mapas/` y escribe sus rutas `/assets/mapas/...`. Ambos campos se configuran fuera de `projects` y no se incluyen en las galerías ni en sus conteos. Las miniaturas se muestran también con `verified: false`, `demo: false` y sin proyectos; el estado de publicación controla el acceso a los proyectos y las cifras. Si omites uno, lo dejas vacío o falla su carga, ese mapa muestra el color de fondo del departamento. Cada mapa utiliza únicamente su propio campo. Los filtros pueden ocultar departamentos, pero no cambian su miniatura.
-
-Dentro de `projects`, añade un objeto por proyecto con esta estructura:
+Ejemplo de la nueva estructura:
 
 ```json
 {
-  "id": "lempira-proyecto-1",
-  "name": "Nombre del proyecto",
-  "axis": "Eje de intervención",
-  "summary": "Resumen del trabajo realizado durante el año.",
-  "communities": ["Comunidad A", "Comunidad B"],
-  "activities": ["Actividad destacada 1", "Actividad destacada 2", "Actividad destacada 3", "Actividad destacada 4"],
-  "achievements": ["Logro documentado 1", "Logro documentado 2"],
-  "photos": [
-    { "src": "/assets/fotos/foto-1.jpg", "community": "Comunidad A" },
-    { "src": "/assets/fotos/foto-2.jpg", "community": "Comunidad A" },
-    { "src": "/assets/fotos/foto-3.jpg", "community": "Comunidad A" },
-    { "src": "/assets/fotos/foto-4.jpg", "community": "Comunidad B" },
-    { "src": "/assets/fotos/foto-5.jpg", "community": "Comunidad B" },
-    { "src": "/assets/fotos/foto-6.jpg", "community": "Comunidad B" }
-  ]
+  "$schema": "./content.schema.json",
+  "institution": "ASONOG",
+  "period": "2026",
+  "projects": [
+    {
+      "id": "nombre-del-proyecto",
+      "name": "Nombre del proyecto",
+      "verified": true,
+      "demo": false,
+      "beneficiaries": null,
+      "departments": [
+        {
+          "names": ["Choluteca"],
+          "axis": "Actividad principal",
+          "summary": "Resumen del trabajo realizado.",
+          "communities": ["Comunidad A"],
+          "activities": ["Actividad realizada"],
+          "achievements": ["Logro documentado"],
+          "photos": [
+            {
+              "src": "/FotosProyectos/taller.png",
+              "description": "Descripción de la actividad",
+              "community": "Comunidad A",
+              "date": "2026-10-27"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mapThumbnails": {
+    "cover": { "Choluteca": "/fotosMapaCover/thumb-choluteca.jpg" },
+    "interactive": { "Choluteca": "" },
+    "detail": { "Choluteca": "" }
+  }
 }
 ```
 
-Usa identificadores `id` y nombres distintos dentro de cada departamento. El nombre del proyecto y su eje se heredan en las fotografías: no se repiten dentro de cada foto. Las comunidades de las fotos deben figurar en `communities` del mismo proyecto. La preparación del ejecutable valida las cantidades exactas de actividades, logros y fotografías e indica el proyecto que debes corregir.
+- `id` identifica el proyecto y su enlace. Debe ser único, en minúsculas y sin espacios ni tildes. Cambiar `name` conserva el enlace si mantienes el mismo `id`.
+- `verified: true` y `demo: false` publican el proyecto completo. `demo: true` identifica una demostración y la excluye de las cifras institucionales.
+- Cada bloque de `departments` contiene `names`, una lista de nombres exactos de departamentos. Usa bloques separados cuando tengan información distinta.
+- Para trabajo compartido, escribe por ejemplo `"names": ["La Paz", "Intibucá"]` en un solo bloque. Ambos departamentos aparecen en el mapa y la evidencia se cuenta una vez.
+- `axis` y `summary` son opcionales. Puedes definirlos en el proyecto para que los hereden los bloques que no indiquen sus propios valores.
+- `communities`, `activities`, `achievements` y `photos` admiten cualquier cantidad, incluso listas vacías. Pueden omitirse mientras completas la información. Un proyecto publicado necesita al menos un bloque con departamentos.
+- `beneficiaries` corresponde al proyecto completo y puede quedar en `null`. Las cifras usan proyectos publicados: departamentos únicos, comunidades únicas por grupo territorial y actividades contadas una vez por bloque.
 
-Cuando la información esté revisada y lista para mostrarse, establece `verified: true` y `demo: false`. Los registros con `demo: true` son ejemplos visuales y quedan excluidos de las cifras publicadas. Las cifras generales se calculan desde los proyectos de los departamentos publicados; una comunidad compartida entre varios proyectos se cuenta una vez dentro de su departamento. Las personas se suman por departamento y pueden repetirse entre departamentos. `beneficiaries: null` indica un dato pendiente. Los ejemplos actuales reutilizan fotografías de muestra entre proyectos; reemplázalas por las seis fotografías reales de cada uno.
+Copia las fotografías a una carpeta de `public/`. Por ejemplo, `public/FotosProyectos/taller.png` se escribe como `/FotosProyectos/taller.png`. En cada foto solo `src` es obligatorio. Puedes añadir `description`, `community`, `date`, `featured`, `thumbnail`, `width`, `height`, `thumbnailWidth`, `focalX` y `focalY`. El nombre del proyecto, su identificador, el eje y los departamentos se heredan automáticamente. `featured: true` coloca la imagen al principio y los valores de encuadre van de 0 a 100.
 
-Cada fotografía puede incluir:
+`mapThumbnails` separa las miniaturas en tres grupos por departamento: `cover` para la portada, `interactive` para el mapa con filtros y `detail` para los mapas dentro de cada proyecto. La portada conserva sus imágenes; los otros grupos están vacíos hasta que se elijan sus fotografías. Cada mapa usa únicamente su grupo. Si una entrada está vacía, falta o falla su carga, se muestra el color del departamento. En los mapas interactivo y de detalle, el verde señala los departamentos con proyectos y el resto aparece en gris. Estas miniaturas no forman parte de las galerías ni de sus conteos.
 
-```json
-{
-  "src": "/assets/fotos/taller.jpg",
-  "community": "",
-  "date": "",
-  "description": "",
-  "featured": false,
-  "focalX": 50,
-  "focalY": 50
-}
-```
+`$schema` apunta al esquema local que ofrece autocompletado, nombres de departamentos y avisos de estructura en editores compatibles. La preparación y las pruebas también validan los datos. La aplicación genera internamente la vista territorial de la portada a partir de los proyectos; no hay que mantener otra lista de resultados por departamento.
 
-`featured: true` sitúa la imagen al principio de la galería de su proyecto. `focalX` y `focalY` ajustan el encuadre entre 0 y 100. Puedes añadir una versión ligera mediante `thumbnail`, y las dimensiones `width`, `height` y `thumbnailWidth` para imágenes adaptables. Usa originales de al menos 1600 píxeles cuando sea posible.
+El respaldo previo a esta migración está en [content-antes-de-organizar-por-proyectos-2026-11-18.json](docs/registros/content-antes-de-organizar-por-proyectos-2026-11-18.json).
 
-La aplicación muestra siempre los archivos incluidos en su compilación; los datos guardados por versiones anteriores en cada computadora no sustituyen ese contenido. Para actualizar la presentación, edita el proyecto y vuelve a compilar.
+La aplicación muestra los datos incluidos en su compilación. Después de editar el contenido, vuelve a compilar la versión web o el ejecutable.
 
 ## Recorrido
 
-- El mapa muestra fotos dentro de las siluetas departamentales, con zoom, desplazamiento y nombres. Al señalar o enfocar un departamento, su tarjeta muestra los nombres de los proyectos que coinciden con los filtros; las siluetas no llevan contadores de fotografías.
-- La búsqueda admite nombres con o sin tildes. Los filtros por proyecto y eje actualizan los departamentos visibles y se conservan al volver desde una ficha. Cada departamento mantiene su propia `mapThumbnail`.
-- Cada proyecto muestra su tarjeta de información junto a su galería. Los filtros actualizan ambos elementos; al filtrar por comunidad se conservan las actividades y logros del proyecto completo.
-- En móvil se pueden desplegar las actividades y logros de cada proyecto por separado.
-- Las fotografías muestran su descripción completa debajo de la imagen, directamente en el proyecto. Las tarjetas no abren una ventana modal.
+- La portada ofrece «Explorar el mapa» y su mapa fotográfico como accesos al mapa general.
+- El mapa general ocupa casi toda la pantalla, con zoom, arrastre y nombres opcionales. Colorea los departamentos donde hay proyectos; sus miniaturas independientes se incorporarán cuando se seleccionen.
+- El panel permite filtrar por proyecto y actividad principal. El mapa resalta únicamente los departamentos donde se realizó la intervención que coincide con ambos filtros.
+- Hacer clic en un departamento abre directamente su proyecto cuando solo hay uno. Si hay varios, muestra todos los proyectos completos en la misma página, uno debajo del otro, con sus mapas, actividades, logros y fotografías; si no hay proyectos, muestra un aviso.
+- La vista de un departamento mantiene sus actividades e imágenes, tanto si contiene un proyecto como varios. Los demás departamentos quedan deshabilitados en sus mapas y cápsulas. Cada mapa conserva el zoom, el desplazamiento y la cobertura completa del proyecto.
+- Para consultar otro departamento, vuelve al mapa general. Al volver, el departamento se deselecciona automáticamente; «Limpiar filtros» restablece toda la cobertura.
+- «Ver detalle del proyecto» abre su ficha completa, con su propio mapa, departamentos, actividades, logros e imágenes. El filtro de actividad del mapa general no recorta el contenido del detalle.
+- «Volver al mapa» conserva los filtros de proyecto y actividad, y limpia la selección del departamento. Esto también se aplica al regresar con el teclado o el historial del navegador. Al abrir el proyecto completo desde el panel, puedes seleccionar departamentos y usar «Mostrar todos los departamentos» para recuperar toda su evidencia.
+- En móvil y tableta los filtros aparecen sobre el mapa y «Ver proyectos» despliega una lista compacta de accesos a los detalles.
+- El mapa general utiliza `#/mapa`; `#/proyectos` sigue siendo compatible. Los enlaces `#/proyectos/<identificador>/mapa` conservan el acceso directo al detalle y funcionan con recarga e historial.
+- Los enlaces de detalle admiten `?departamento=Choluteca` para abrir su evidencia territorial. La vista conjunta de los proyectos de un departamento utiliza `#/departamentos/<nombre>/proyectos`.
+- El JSON continúa organizado por proyecto. La navegación y los archivos locales funcionan también sin conexión.
 
 El visor de fotografías se conserva en `components/photos/PhotoViewer.jsx`, sus componentes auxiliares, `hooks/usePhotoViewer.js` y `styles/viewer.css`. Para reactivarlo, cambia `PHOTO_VIEWER_ENABLED` de `false` a `true` en `src/config.js`; volverán la apertura al hacer clic, el zoom, las miniaturas y la navegación por fotografías.
 
@@ -175,11 +185,11 @@ npm.cmd run build:exe
 npm.cmd run check:desktop
 ```
 
-El archivo `release/ASONOG-Nuestra-Labor-2026-Portable.exe` funciona en Windows 10/11 de 64 bits. Incluye su navegador, cartografía, fuentes, fotos y miniaturas. Basta con copiar ese ejecutable al equipo de destino.
+El archivo `release/ASONOG-proyectos-2026.exe` funciona en Windows 10/11 de 64 bits. Incluye su navegador, cartografía, fuentes, fotos y miniaturas. Basta con copiar ese ejecutable al equipo de destino.
 
 `npm run dev` sirve el proyecto con Vite y conserva los enlaces escritos en `src/content.json`. Las URL externas se utilizan directamente al mostrar las imágenes en la versión web.
 
-`prepare:offline` valida el contenido y las imágenes locales, y prepara las fuentes y licencias. Este paso conserva `coverMapThumbnail`, `mapThumbnail`, `photos[].src` y `thumbnail` exactamente como los escribiste: no descarga imágenes ni reescribe `content.json`. Para generar el ejecutable sin conexión, las imágenes deben estar en `public/assets/` con rutas `/assets/...` o estar incrustadas como datos. Si encuentra una URL externa, indica qué ruta debes preparar manualmente.
+`prepare:offline` valida el contenido y las imágenes locales, y prepara las fuentes y licencias. Este paso conserva `mapThumbnails`, las rutas de `photos[].src` y `thumbnail` exactamente como los escribiste: no descarga imágenes ni reescribe `content.json`. Para generar el ejecutable sin conexión, las fotografías y miniaturas pueden estar en cualquier carpeta de `public/`, con rutas desde la raíz: por ejemplo, `public/FotosProyectos/taller.png` se escribe como `/FotosProyectos/taller.png`. Las imágenes pueden estar incrustadas como datos. Si encuentra una URL externa, indica qué ruta debes preparar manualmente.
 
 Consulta [USO-SIN-CONEXION.md](USO-SIN-CONEXION.md) para distribuir y actualizar el programa.
 
@@ -191,11 +201,15 @@ npm.cmd run check:ui
 npm.cmd run check:desktop
 ```
 
-Las pruebas revisan los datos, el mapa fotográfico, cinco tamaños de pantalla, filtros, visor, gestos y foco de teclado. También comprueban que el contenido incluido prevalece sobre datos locales de versiones anteriores y que el recorrido solo muestra resultados.
+Las pruebas revisan los datos, la agrupación de proyectos, sus rutas, la cobertura del mapa, cinco tamaños de pantalla, fotografías, gestos y foco de teclado. También comprueban que el contenido incluido prevalece sobre datos locales de versiones anteriores y que el recorrido solo muestra resultados.
 
-La navegación se verifica con la interfaz simplificada actual: las flechas alternan Inicio/Mapa, los departamentos se abren desde el mapa y → conserva el detalle sin cambios. La búsqueda y los filtros se comprueban cuando sus controles están visibles; en el informe, `null` indica que una comprobación opcional no se ejecutó.
+La navegación se verifica con el recorrido Inicio → Mapa general → Detalle del proyecto. Las pruebas comprueban el tamaño del mapa, los filtros combinados, la deselección del departamento al volver sin perder los filtros, los mapas del detalle, los enlaces directos, la recarga, el historial y la selección de departamentos.
 
 `check:ui` utiliza un navegador Chromium oculto con perfil temporal; por defecto Microsoft Edge en Windows. Puedes elegir otro ejecutable con `ASONOG_TEST_BROWSER`. Las capturas web se guardan en una carpeta temporal. `check:desktop` desactiva la red y guarda el informe en `release/verificacion-sin-conexion.json`. Se conserva el comando `node scripts/check-desktop.mjs`.
+
+Las capturas y la selección física mediante ratón y pinza se verifican en el navegador web. La ventana oculta de Electron comprueba carga de datos e imágenes, distribución, enlaces, selección de departamentos y teclado; los campos `mouseMapSelection` y `mapPinchZoom` quedan en `null` porque esa ventana no ofrece una superficie fiable para esas entradas físicas.
+
+El plegado automático de la lista al cambiar a una pantalla estrecha se comprueba en web. En Electron oculto se verifica el botón de despliegue; `mobileResultsAutoCollapse` queda en `null` porque los avisos de media query pueden esperar un fotograma visible.
 
 ## Cartografía y fuentes
 
@@ -207,10 +221,8 @@ Las fuentes DM Sans y Manrope se incluyen localmente.
 
 ## Atajos
 
-En las pantallas principales, tanto ← como → alternan únicamente entre **Inicio ↔ Mapa**. Los departamentos se abren seleccionándolos en el mapa, mediante clic o con Enter/Espacio al enfocarlos con el teclado.
+En Inicio y el mapa general, tanto ← como → alternan entre esas dos pantallas. En los detalles individuales y en la vista conjunta de un departamento, ← vuelve al mapa general y → conserva la vista seleccionada.
 
-Dentro del detalle de un departamento, ← vuelve al mapa y → no hace nada. Las flechas no abren departamentos ni permiten saltar de uno a otro; para cambiar de departamento hay que volver al mapa y seleccionarlo.
+Tab recorre departamentos, filtros, proyectos y controles; Enter abre el elemento enfocado, y Espacio también selecciona departamentos. En el mapa general, seleccionar un departamento abre su proyecto o la vista conjunta de todos sus proyectos y enfoca el contenido de la nueva página. En cada detalle, seleccionar un departamento enfoca sus actividades e imágenes. Las flechas conservan el comportamiento normal de los selectores y no repiten la navegación al mantenerlas pulsadas.
 
-Las flechas funcionan también cuando el foco está en un botón o enlace. La ventana de información se cierra si la flecha cambia de pantalla. Si se reactiva el visor, las flechas cambian únicamente de fotografía dentro de él; Esc lo cierra y devuelve el foco a la galería. En los campos de búsqueda y filtros, las flechas conservan su función habitual.
-
-F: pantalla completa. Esc: cerrar ventanas. Con el visor activado, + y − ajustan el zoom. Una pulsación de flecha cambia una pantalla; mantenerla presionada no salta varias pantallas.
+F: pantalla completa. Esc: cerrar ventanas. Los controles + y − amplían o reducen el mapa; arrastrar desplaza la vista sin seleccionar un departamento. Si se activa el visor de fotografías, sus atajos se conservan dentro de él.

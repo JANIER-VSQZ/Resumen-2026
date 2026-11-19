@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Check, ChevronDown, MapPin } from 'lucide-react';
 
-export default function ProjectInformation({ project, community, id }) {
-  const [expanded, setExpanded] = useState(false);
+export default function ProjectInformation({ project, community, id, expandedByDefault = false }) {
+  const [expanded, setExpanded] = useState(expandedByDefault);
   return (
     <aside className={'project-info' + (expanded ? ' info-expanded' : '')} aria-label={'Información de ' + project.name}>
+      {project.axis && (
+        <header className="project-info-heading">
+          <span>Actividad principal</span>
+          <h4>{project.axis}</h4>
+        </header>
+      )}
       {project.summary && <p className="project-summary">{project.summary}</p>}
       <section className="info-block project-communities">
         <h4><MapPin size={14} aria-hidden="true" />Comunidades de intervención</h4>

@@ -1,0 +1,20 @@
+{
+  "id": "nuevo-proyecto",
+  "name": "Nombre del proyecto",
+  "verified": false,
+  "demo": false,
+  "beneficiaries": null,
+  "departments": [
+    {
+      "names": [
+        "Choluteca"
+      ],
+      "axis": "",
+      "summary": "",
+      "communities": [],
+      "activities": [],
+      "achievements": [],
+      "photos": []
+    }
+  ]
+}

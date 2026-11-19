@@ -1,29 +1,41 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { content, mapFeatures } from './data';
+import { content, mapFeatures, projects } from './data';
 import { PHOTO_VIEWER_ENABLED } from './config';
-import { hasContent, isPublished } from './content';
-import { getAdjacentScreen } from './navigation';
+import { getAdjacentScreen, getDepartmentDestination, getScreenFromHash, getScreenHref } from './navigation';
 import useFullscreen from './hooks/useFullscreen';
-import useMapExplorer from './hooks/useMapExplorer';
 import usePresentationKeyboard from './hooks/usePresentationKeyboard';
 import AppHeader from './components/layout/AppHeader';
 import AppFooter from './components/layout/AppFooter';
 import HelpModal from './components/help/HelpModal';
 import PhotoViewer from './components/photos/PhotoViewer';
 import CoverPage from './pages/CoverPage';
+import ProjectsPage from './pages/ProjectsPage';
 import MapPage from './pages/MapPage';
-import DepartmentDetail from './pages/DepartmentDetail';
+import DepartmentProjectsPage from './pages/DepartmentProjectsPage';
+import { getDepartmentProjects } from './projects';
 
 export default function App() {
-  const [view, setView] = useState('cover');
-  const [selected, setSelected] = useState(null);
-  const [filters, setFilters] = useState({ community: '', project: '', axis: '' });
+  const [screen, setScreen] = useState(() => getScreenFromHash(window.location.hash, projects));
   const [lightbox, setLightbox] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
+  const [mapFilters, setMapFilters] = useState({ project: '', axis: '' });
+  const [mapDepartment, setMapDepartment] = useState(() => screen.department || null);
   const firstView = useRef(true);
   const { fullscreen, toggleFullscreen } = useFullscreen();
-  const explorer = useMapExplorer(content.departments);
-  const { filters: mapFilters, setPreview, clearSelection } = explorer;
+  const { view, selected } = screen;
+  const project = projects.find(item => item.id === selected);
+
+  useEffect(() => {
+    const syncScreen = () => {
+      const next = getScreenFromHash(window.location.hash, projects);
+      setScreen(next);
+      setMapDepartment(next.department || null);
+      setShowHelp(false);
+      setLightbox(null);
+    };
+    window.addEventListener('hashchange', syncScreen);
+    return () => window.removeEventListener('hashchange', syncScreen);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -31,53 +43,42 @@ export default function App() {
     firstView.current = false;
   }, [view, selected]);
 
-  const enterDepartment = useCallback(name => {
-    if (!hasContent(content.departments[name])) {
-      setPreview(name);
-      return;
-    }
-    setSelected(name);
-    setFilters({ community: '', ...mapFilters });
-    setView('detail');
-    clearSelection();
-  }, [mapFilters, setPreview, clearSelection]);
-
+  const goTo = useCallback(next => { window.location.hash = getScreenHref(next); }, []);
+  const openDepartment = useCallback((department, candidates) => {
+    setMapDepartment(department);
+    goTo(getDepartmentDestination(candidates, department));
+  }, [goTo]);
+  const changeProjectDepartment = useCallback(department => {
+    const next = { view: 'map', selected, ...(department ? { department } : {}) };
+    setScreen(next);
+    window.history.replaceState(null, '', getScreenHref(next));
+  }, [selected]);
   const navigate = useCallback(direction => {
-    const next = getAdjacentScreen({ view }, direction);
-    if (!next) return;
-    setShowHelp(false);
-    clearSelection();
-    setView(next.view);
-  }, [view, clearSelection]);
+    const next = getAdjacentScreen(screen, direction);
+    if (next) goTo(next);
+  }, [screen, goTo]);
 
   usePresentationKeyboard({ disabled: PHOTO_VIEWER_ENABLED && Boolean(lightbox), onNavigate: navigate, onFullscreen: toggleFullscreen });
-  const detail = content.departments[selected] || {};
 
   return (
     <div className="app">
-      <a className="skip-link" href="#main-content">Ir al contenido</a>
-      <AppHeader
-        view={view}
-        fullscreen={fullscreen}
-        onToggleFullscreen={toggleFullscreen}
-      />
-      {view === 'cover' && (
-        <CoverPage content={content} features={mapFeatures} hasDemos={explorer.demoCount > 0} onExplore={() => setView('map')} onHelp={() => setShowHelp(true)} />
-      )}
-      {view === 'map' && (
-        <MapPage content={content} features={mapFeatures} explorer={explorer} onHome={() => setView('cover')} onOpenDepartment={enterDepartment} />
-      )}
-      {view === 'detail' && (
-        <DepartmentDetail
-          key={selected}
-          name={selected}
-          detail={detail}
+      <a className="skip-link" href="#main-content" onClick={event => { event.preventDefault(); document.getElementById('main-content')?.focus(); }}>Ir al contenido</a>
+      <AppHeader view={view} fullscreen={fullscreen} onToggleFullscreen={toggleFullscreen} />
+      {view === 'cover' && <CoverPage content={content} features={mapFeatures} onExplore={() => goTo({ view: 'projects' })} />}
+      {view === 'projects' && <ProjectsPage projects={projects} content={content} features={mapFeatures} filters={mapFilters} onFilterChange={setMapFilters} department={mapDepartment} onSelectDepartment={setMapDepartment} onOpenDepartment={openDepartment} onHome={() => goTo({ view: 'cover' })} />}
+      {view === 'department-projects' && <DepartmentProjectsPage department={screen.department} projects={getDepartmentProjects(projects, screen.department, mapFilters)} hasFilters={Boolean(mapFilters.project || mapFilters.axis)} period={content.period} features={mapFeatures} thumbnails={content.mapThumbnails.detail} onOpenPhoto={PHOTO_VIEWER_ENABLED ? (photos, index) => setLightbox({ photos, index }) : undefined} onClearFilters={() => setMapFilters({ project: '', axis: '' })} onBack={() => goTo({ view: 'projects' })} onHome={() => goTo({ view: 'cover' })} />}
+      {view === 'map' && project && (
+        <MapPage
+          key={project.id}
+          project={project}
           period={content.period}
-          verified={isPublished(detail)}
-          filters={filters}
-          onFilterChange={setFilters}
-          onHome={() => setView('cover')}
-          onBack={() => setView('map')}
+          features={mapFeatures}
+          thumbnails={content.mapThumbnails.detail}
+          department={screen.department}
+          departmentLocked={Boolean(mapDepartment)}
+          onDepartmentChange={changeProjectDepartment}
+          onBack={() => goTo({ view: 'projects' })}
+          onHome={() => goTo({ view: 'cover' })}
           onOpenPhoto={PHOTO_VIEWER_ENABLED ? (photos, index) => setLightbox({ photos, index }) : undefined}
         />
       )}

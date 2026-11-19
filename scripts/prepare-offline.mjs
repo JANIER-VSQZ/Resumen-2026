@@ -18,9 +18,9 @@ function validateImage(buffer, file) {
   throw new Error('El archivo no tiene un formato de imagen válido: ' + file);
 }
 
-const photos = Object.values(content.departments || {}).flatMap(department => department.projects.flatMap(project => project.photos));
+const photos = content.projects.flatMap(project => project.departments.flatMap(department => department.photos || []));
 const images = [
-  ...Object.values(content.departments || {}).flatMap(department => ['coverMapThumbnail', 'mapThumbnail'].map(field => [field, department[field]])),
+  ...Object.entries(content.mapThumbnails || {}).flatMap(([context, thumbnails]) => Object.entries(thumbnails).map(([name, source]) => ['mapThumbnails.' + context + '.' + name, source])),
   ...photos.flatMap(photo => [['src', photo.src], ['thumbnail', photo.thumbnail]]),
 ];
 // Solo se leen las rutas manuales. Este paso no descarga ni reescribe contenido.

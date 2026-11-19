@@ -1,0 +1,499 @@
+/* Recorrido por proyectos: menú, cobertura geográfica y evidencia territorial. */
+
+.topbar.is-projects,
+.topbar.is-department-projects {
+  position: absolute;
+  inset: 0 0 auto;
+  justify-content: flex-end;
+  background: transparent;
+  border: 0;
+  pointer-events: none;
+}
+
+.topbar.is-projects .righttools,
+.topbar.is-department-projects .righttools {
+  pointer-events: auto;
+}
+
+.projectsview,
+.project-map-page {
+  --font-size-info-body: clamp(1rem, calc(.9rem + .2vw), 1.15rem);
+  --font-size-info-small: .875rem;
+  width: 100vw;
+  margin-inline: auto;
+  padding: var(--space-24) var(--page-gutter) var(--space-36);
+}
+
+.project-map-page {
+  display: block;
+  height: auto;
+  min-height: 100svh;
+}
+
+.project-page-nav {
+  display: grid;
+  grid-template-columns: minmax(0, var(--cover-logo-width)) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-16);
+  padding-right: var(--space-60);
+  margin-bottom: var(--space-10);
+}
+
+.project-page-brand {
+  width: var(--cover-logo-width);
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.project-page-brand img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-page-nav .back,
+.project-map-page .back {
+  font-size: .875rem;
+}
+
+.project-page-nav .back {
+  justify-self: end;
+  max-width: 100%;
+}
+
+.projects-intro,
+.project-map-heading {
+  margin-bottom: var(--space-10);
+}
+
+.projects-intro .eyebrow,
+.project-map-heading .eyebrow {
+  font-size: .875rem;
+}
+
+.project-page-nav .project-nav-title {
+  min-width: 0;
+  margin: 0;
+  color: var(--color-green-dark);
+  font-size: clamp(1.25rem, 2.6vw, 2.5rem);
+  line-height: var(--line-height-tight);
+  letter-spacing: -.04em;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.project-page-nav .page-title::after,
+.project-map-heading .page-title::after {
+  display: none;
+}
+
+.project-map-embedded .project-map-heading .page-title {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.projects-intro p,
+.project-map-heading p {
+  max-width: 66ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: var(--line-height-relaxed);
+}
+
+.project-menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-24);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-menu>li {
+  min-width: 0;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: var(--border-default);
+  border-radius: var(--radius-20);
+  background: var(--color-white);
+  color: var(--color-dark);
+  text-decoration: none;
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.project-card:hover {
+  border-color: var(--color-green-dark);
+  box-shadow: var(--shadow);
+}
+
+.project-card-image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 8;
+  overflow: hidden;
+  background: var(--color-border);
+  color: var(--color-green-dark);
+}
+
+.project-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--space-24);
+}
+
+.project-card h2 {
+  margin: 0 0 var(--space-16);
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: var(--line-height-tight);
+  overflow-wrap: anywhere;
+}
+
+.project-card-coverage {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  margin: 0 0 var(--space-16);
+  font-size: 1rem;
+  line-height: var(--line-height-relaxed);
+}
+
+.project-card-coverage svg {
+  flex-shrink: 0;
+  margin-top: var(--space-4);
+  color: var(--color-green-dark);
+}
+
+.project-card-counts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin: auto 0 var(--space-20);
+  font-size: .875rem;
+  line-height: var(--line-height-relaxed);
+}
+
+.project-card-action {
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-10);
+  background: var(--color-primary);
+  color: var(--color-dark);
+  font-size: 1rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.project-card-demo {
+  position: absolute;
+  top: var(--space-12);
+  left: var(--space-12);
+  padding: var(--space-6) var(--space-10);
+  background: var(--color-white);
+  border-radius: var(--radius-7);
+  font-size: .875rem;
+}
+
+.cover-projects-button {
+  font-size: 1rem;
+}
+
+.project-map-overview {
+  display: grid;
+  grid-template-columns: minmax(240px, .8fr) minmax(0, 2fr);
+  gap: var(--space-24);
+  align-items: stretch;
+  height: 65dvh;
+}
+
+.project-coverage {
+  min-width: 0;
+  height: fit-content;
+  padding: var(--space-24);
+  border: var(--border-default);
+  border-radius: var(--radius-20);
+  background: var(--color-white);
+}
+
+.project-coverage .project-coverage-title {
+  display: flex;
+  gap: var(--space-8);
+  align-items: center;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.project-coverage .project-coverage-title svg {
+  flex-shrink: 0;
+  color: var(--color-green-dark);
+}
+
+.project-coverage p {
+  font-size: 1rem;
+  line-height: var(--line-height-relaxed);
+}
+
+.project-territories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.project-territories button {
+  min-height: var(--size-42);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-green-dark);
+  border-radius: var(--radius-10);
+  background: var(--color-white);
+  color: var(--color-green-dark);
+  font-size: 1rem;
+}
+
+.project-territories button:not(:disabled):hover,
+.project-territories button[aria-pressed='true'] {
+  background: var(--color-green-dark);
+  color: var(--color-white);
+}
+
+.project-totals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+  margin: var(--space-24) 0 0;
+  padding-top: var(--space-20);
+  border-top: var(--border-default);
+}
+
+.project-totals div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-4);
+}
+
+.project-totals dt {
+  font-size: .875rem;
+}
+
+.project-totals dd {
+  margin: 0;
+  color: var(--color-green-dark);
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.project-territory-map {
+  min-height: 440px;
+  background: var(--color-white);
+}
+
+.project-territory-map .map-toolbar {
+  min-height: var(--size-42);
+  padding: var(--space-12) var(--space-16) 0;
+}
+
+.project-territory-map .map-labels {
+  font-size: .875rem;
+}
+
+.project-territory-map .map-stage {
+  min-height: 330px;
+}
+
+.project-territory-map .honduras-map {
+  position: absolute;
+  inset: 0;
+  filter: none;
+}
+
+.project-territory-map .department.filtered-out {
+  opacity: 1;
+}
+
+.project-territory-map .department[aria-disabled='true'] {
+  cursor: default;
+}
+
+.project-territory-map .department.filtered-out .dept-base {
+  fill: var(--color-background);
+}
+
+.project-territory-map .department.filtered-out .dept-border {
+  stroke: var(--color-border);
+}
+
+.project-territory-map .department.is-project-location .dept-base {
+  fill: var(--color-green-dark);
+}
+
+.project-territory-map .department.is-project-location .map-name {
+  fill: var(--color-white);
+  stroke: var(--color-green-dark);
+}
+
+.project-territory-map .department.is-selected .dept-border {
+  stroke: var(--color-primary);
+  stroke-width: 1;
+}
+
+.project-territory-map .department.is-selected .dept-base {
+  fill: var(--color-secondary);
+}
+
+.project-territory-map .map-legend {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-12);
+  padding: var(--space-12);
+  font-size: .875rem;
+}
+
+.project-territory-map .map-legend span::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: var(--border-default);
+  border-radius: var(--radius-3);
+  background: var(--color-green-dark);
+}
+
+.project-territory-map .map-legend .project-legend-other::before {
+  background: var(--color-background);
+}
+
+.project-evidence {
+  margin-top: var(--space-36);
+}
+
+.project-evidence-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+  margin-bottom: var(--space-24);
+}
+
+.project-evidence-heading .project-evidence-title {
+  margin: 0 0 var(--space-10);
+  font-size: var(--font-size-section);
+  line-height: var(--line-height-tight);
+  scroll-margin-top: var(--space-24);
+}
+
+.project-evidence-heading p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0;
+  font-size: 1rem;
+  line-height: var(--line-height-relaxed);
+}
+
+.project-evidence .project-heading {
+  text-align: left;
+}
+
+.project-evidence .project-heading .project-section-title {
+  max-width: none;
+  margin-inline: 0;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  text-shadow: none;
+  letter-spacing: -.03em;
+}
+
+.project-evidence .section-marker {
+  font-size: .875rem;
+}
+
+.project-bottom-back {
+  margin-top: var(--space-30);
+}
+
+@media (max-width: 900px) {
+  .project-map-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .project-coverage {
+    padding: var(--space-20);
+  }
+
+  .project-totals {
+    max-width: 340px;
+  }
+
+  .project-territory-map {
+    min-height: 430px;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .projectsview,
+  .project-map-page {
+    padding: var(--space-20) var(--space-16) var(--space-28);
+  }
+
+  .project-page-nav {
+    grid-template-columns: clamp(48px, 15vw, 64px) minmax(0, 1fr) 72px;
+    padding-right: var(--space-60);
+    gap: var(--space-8);
+  }
+
+  .project-page-nav .project-nav-title {
+    font-size: 1rem;
+    letter-spacing: -.02em;
+  }
+
+  .project-page-nav .back {
+    padding-inline: var(--space-8);
+  }
+
+  .project-menu {
+    grid-template-columns: 1fr;
+    gap: var(--space-20);
+  }
+
+  .project-card-body {
+    padding: var(--space-20);
+  }
+
+  .project-territory-map {
+    min-height: 350px;
+  }
+
+  .project-territory-map .map-stage {
+    min-height: 250px;
+  }
+
+  .project-territory-map .map-stage:not(.show-mobile-labels) .map-name {
+    display: block;
+  }
+
+  .project-territory-map .map-legend {
+    font-size: .875rem;
+  }
+
+  .project-evidence-heading {
+    align-items: flex-start;
+  }
+
+  .project-evidence-heading p {
+    align-items: flex-start;
+  }
+}

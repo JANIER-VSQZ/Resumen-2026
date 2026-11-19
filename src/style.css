@@ -11,5 +11,7 @@
 @import './styles/titles.css';
 @import './styles/logos.css';
 @import './styles/gallery.css';
+@import './styles/project-navigation.css';
+@import './styles/map-explorer.css';
 @import './styles/viewer.css';
 @import './styles/modal.css';

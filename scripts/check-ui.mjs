@@ -6,6 +6,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizeContent } from '../src/content.js';
 import { PHOTO_VIEWER_ENABLED } from '../src/config.js';
+import { buildProjectCatalog, getDepartmentProjects } from '../src/projects.js';
+import { getDepartmentDestination, getScreenHref } from '../src/navigation.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const desktop = process.argv.includes('--desktop');
@@ -16,12 +18,12 @@ let stderr = '';
 const pending = new Map();
 const keepAlive = setInterval(() => {}, 1000);
 try {
-  const executable = desktop ? path.resolve(root, process.argv.slice(2).find(argument => /\.exe$/i.test(argument)) || 'release/ASONOG-Nuestra-Labor-2026-Portable.exe') : process.env.ASONOG_TEST_BROWSER || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+  const executable = desktop ? path.resolve(root, process.argv.slice(2).find(argument => /\.exe$/i.test(argument)) || 'release/ASONOG-proyectos-2026.exe') : process.env.ASONOG_TEST_BROWSER || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
   await access(executable);
   let origin;
   if (!desktop) {
     const { createServer } = await import('vite');
-    server = await createServer({ root, server: { host: '127.0.0.1', port: 0 } });
+    server = await createServer({ root, server: { host: '127.0.0.1', port: 0, watch: { ignored: ['**/release/**', '**/dist/**'] } } });
     await server.listen(); origin = 'http://127.0.0.1:' + server.httpServer.address().port;
   }
   const environment = { ...process.env }; delete environment.ELECTRON_RUN_AS_NODE;
@@ -104,21 +106,21 @@ try {
     await settle();
   };
   const press = async (key, options = {}) => {
-    const codes = { ArrowLeft: 37, ArrowRight: 39, Escape: 27 };
+    const codes = { ArrowLeft: 37, ArrowRight: 39, Escape: 27, Enter: 13, ' ': 32 };
     await command('Input.dispatchKeyEvent', { type: 'keyDown', key, code: key, windowsVirtualKeyCode: codes[key], ...options });
     await command('Input.dispatchKeyEvent', { type: 'keyUp', key, code: key, windowsVirtualKeyCode: codes[key], modifiers: options.modifiers || 0 });
     await settle();
   };
   const focus = selector => evaluate('document.querySelector(' + JSON.stringify(selector) + ').focus({ preventScroll: true })');
   const assertScreen = async (view, selected) => {
-    const screen = await evaluate("(() => { const main = document.querySelector('main'); return { view: main.classList.contains('cover') ? 'cover' : main.classList.contains('mapview') ? 'map' : 'detail', selected: main.classList.contains('detailview') ? document.querySelector('#page-title')?.textContent || null : null }; })()");
+    const screen = await evaluate("(() => { const main = document.querySelector('main'); return { view: main.classList.contains('cover') ? 'cover' : main.classList.contains('department-projects-page') ? 'department-projects' : main.classList.contains('projectsview') ? 'projects' : 'map', selected: main.dataset.selectedProject || null }; })()");
     assert.deepEqual(screen, { view, selected: selected || null });
   };
   const viewport = async (width, height) => { await command('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: width < 641 }); await settle(); };
-  const reload = async () => {
+  const reload = async (ready = "document.querySelectorAll('.preview-department').length === 18 && !!document.querySelector('.cover-copy > p')") => {
     await evaluate("document.documentElement.dataset.checkReload = 'pending'");
     await command('Page.reload');
-    await waitFor("document.documentElement.dataset.checkReload !== 'pending' && document.querySelectorAll('.preview-department').length === 18 && !!document.querySelector('.cover-copy > p')");
+    await waitFor("document.documentElement.dataset.checkReload !== 'pending' && (" + ready + ")");
   };
   // Hidden Electron windows do not expose a screenshot surface on Windows.
   // Visual screenshots come from the web run; desktop checks use the same DOM/layout assertions.
@@ -145,291 +147,352 @@ try {
   assert.equal(await evaluate("JSON.parse(localStorage.getItem('asonog-2026-content')).subtitle"), stale.subtitle, 'Old data should be left untouched.');
   console.log('Presentation uses bundled content and has no editing controls.');
 
-  const documented = Object.entries(content.departments).filter(([, department]) => department.demo || department.verified);
-  const mapThumbnails = Object.entries(content.departments).filter(([, department]) => department.mapThumbnail);
-  const coverMapThumbnails = Object.entries(content.departments).filter(([, department]) => department.coverMapThumbnail);
-  for (const [name, department] of coverMapThumbnails) {
-    assert.equal(await evaluate('Array.from(document.querySelectorAll(".preview-department")).find(node => node.querySelector("title").textContent === ' + JSON.stringify(name) + ')?.querySelector("image")?.getAttribute("href")'), department.coverMapThumbnail);
+  const projects = buildProjectCatalog(content.projects);
+  const assertOverviewDepartmentCleared = async (expectedProjects = projects) => {
+    await assertScreen('projects');
+    assert.equal(await evaluate("document.querySelectorAll('.map-explorer-page .department.is-selected').length"), 0, 'Returning to the general map must clear the department selection.');
+    assert.equal(await evaluate("document.querySelector('.overview-clear-department') === null"), true);
+    assert.equal(await evaluate("document.querySelector('#overview-results-title').textContent"), 'Proyectos disponibles');
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('.map-project-result')].map(node=>node.dataset.projectLink).sort()"), expectedProjects.map(project => project.id).sort(), 'The results must follow the project filters without retaining a department.');
+  };
+  const assertDepartmentLocked = async (name, pointer = false) => {
+    const snapshot = () => evaluate("({hash:location.hash,selected:[...document.querySelectorAll('.department.is-selected')].map(node=>node.dataset.department),pressed:[...document.querySelectorAll('.project-territories button[aria-pressed=\"true\"]')].map(node=>node.textContent),photos:[...document.querySelectorAll('.gallery-img img')].map(node=>node.getAttribute('src')),activities:[...document.querySelectorAll('.project-activities li')].map(node=>node.textContent)})");
+    const before = await snapshot();
+    assert.ok(before.selected.length > 0);
+    assert.ok(before.selected.every(department => department === name));
+    assert.ok(before.pressed.every(department => department === name));
+    assert.equal(await evaluate("[...document.querySelectorAll('.project-territories button[aria-pressed=\"false\"]')].every(node=>node.disabled)"), true);
+    assert.equal(await evaluate("[...document.querySelectorAll('.honduras-map .department:not(.is-selected)')].every(node=>node.getAttribute('aria-disabled')==='true'&&node.tabIndex===-1)"), true);
+    assert.equal(await evaluate("document.querySelectorAll('.project-evidence-heading .back').length"), 0, 'Department details must keep the evidence scoped to the chosen department.');
+    const ids = await evaluate("[...document.querySelectorAll('[data-project-detail]')].map(node=>node.dataset.projectDetail)");
+    for (const id of ids) {
+      const root = '[data-project-detail=' + JSON.stringify(id) + ']';
+      const other = root + ' .is-project-location:not(.is-selected)';
+      if (!await evaluate('!!document.querySelector(' + JSON.stringify(other) + ')')) continue;
+      await click(other); await press('Enter'); await press(' ');
+      await click(root + ' .project-territories button[aria-pressed="false"]');
+      assert.deepEqual(await snapshot(), before, 'Disabled map regions and capsules must not change the department or evidence.');
+      if (pointer && !desktop) {
+        await evaluate('document.querySelector(' + JSON.stringify(root + ' .map-panel') + ').scrollIntoView({block:"center"})');
+        const tap = await evaluate("(()=>{const path=document.querySelector(" + JSON.stringify(other + ' .department-hit-area') + ");const box=path.getBBox();for(let row=1;row<10;row++)for(let col=1;col<10;col++){const point=new DOMPoint(box.x+box.width*col/10,box.y+box.height*row/10);if(path.isPointInFill(point)){const screen=point.matrixTransform(path.getScreenCTM());return {x:screen.x,y:screen.y}}}})()");
+        assert.ok(tap);
+        await command('Input.dispatchMouseEvent', { type: 'mousePressed', ...tap, button: 'left', clickCount: 1 });
+        await command('Input.dispatchMouseEvent', { type: 'mouseReleased', ...tap, button: 'left', clickCount: 1 });
+        await command('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, ...tap }] });
+        await command('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+        await settle();
+        assert.deepEqual(await snapshot(), before, 'Mouse and touch must respect the locked department.');
+      }
+    }
+    const original = await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')");
+    await click('[aria-label="Ampliar mapa"]');
+    assert.notEqual(await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')"), original, 'The map must still support zoom in department details.');
+    await click('[aria-label="Mostrar todo Honduras"]');
+    assert.deepEqual(await snapshot(), before);
+    await focus('#main-content');
+    await evaluate('window.scrollTo(0,0)');
+  };
+  const layouts = [];
+  const imageSources = [
+    ...projects.flatMap(project => project.photos.flatMap(photo => [photo.src, photo.thumbnail])),
+    ...Object.values(content.mapThumbnails || {}).flatMap(thumbnails => Object.values(thumbnails)),
+  ].filter(Boolean);
+  for (const src of imageSources) {
+    if (src.startsWith('/') && !src.startsWith('//')) assert.equal(await evaluate('fetch(' + JSON.stringify(src) + ').then(response=>response.ok)'), true, src);
+    else assert.ok(src.startsWith('data:image/') || (!desktop && /^https?:\/\//i.test(src)));
   }
-  // Arrows connect the main pages; selecting the map is the only entry to details.
-  await focus('.topbar .iconbutton'); await press('ArrowRight'); await assertScreen('map');
-  await focus('.map-zoom button'); await press('ArrowRight'); await assertScreen('cover');
-  await focus('.global-footer .map-credit a'); await press('ArrowLeft'); await assertScreen('map');
-  await press('ArrowRight', { autoRepeat: true }); await assertScreen('map');
-  await press('ArrowRight', { modifiers: 2 }); await assertScreen('map');
-  await focus('.map-labels input'); await press('ArrowLeft'); await assertScreen('map');
-  await focus('#main-content');
-  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowRight', 'ArrowLeft']) {
-    await press(key); await assertScreen('cover');
-    await press(key); await assertScreen('map');
-  }
-  for (const [name] of documented) {
-    await click('[aria-label="Abrir ' + name + '"]'); await assertScreen('detail', name);
-    assert.equal(await evaluate("document.activeElement.id === 'main-content'"), true);
-    const photosBefore = await evaluate("document.querySelectorAll('.gallery-img').length");
-    await press('ArrowRight'); await assertScreen('detail', name);
-    await focus('.back'); await press('ArrowRight'); await assertScreen('detail', name);
-    assert.equal(await evaluate("document.activeElement.classList.contains('back')"), true);
-    assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), photosBefore);
-    await viewport(390, 844);
-    await click('.information-toggle'); await press('ArrowRight'); await assertScreen('detail', name);
-    assert.equal(await evaluate("document.querySelector('.information-toggle').getAttribute('aria-expanded')"), 'true');
-    await viewport(1366, 768);
-    await click('.global-footer button'); await press('ArrowRight'); await assertScreen('detail', name);
-    assert.equal(await evaluate("!!document.querySelector('.help-modal')"), true);
-    await press('ArrowLeft'); await assertScreen('map');
-    assert.equal(await evaluate("!document.querySelector('.help-modal') && !document.querySelector('main').inert"), true);
-    await press('ArrowLeft'); await assertScreen('cover');
-    await press('ArrowLeft'); await assertScreen('map');
-  }
+  const coverImages = Object.values(content.mapThumbnails.cover).filter(Boolean).length;
+  assert.equal(await evaluate("document.querySelectorAll('.preview-department image').length"), coverImages, 'The cover must retain its own thumbnails.');
+  await click('.cover-projects-button'); await assertScreen('projects');
+  assert.equal(await evaluate("!!document.querySelector('.map-explorer-page')"), true);
+  assert.equal(await evaluate("document.querySelectorAll('.honduras-map .department').length"), 18);
+  assert.equal(await evaluate("document.querySelectorAll('.honduras-map image').length"), Object.values(content.mapThumbnails.interactive).filter(Boolean).length, 'The interactive map must not inherit cover thumbnails.');
+  const projectDepartments = [...new Set(projects.flatMap(project => project.departments))].sort();
+  assert.deepEqual(await evaluate("[...document.querySelectorAll('.department.has-content')].map(node=>node.dataset.department).sort()"), projectDepartments);
+  assert.equal(await evaluate("(()=>{const active=document.querySelector('.department.has-content .dept-base');const empty=document.querySelector('.department:not(.has-content) .dept-base');return !active||!empty||getComputedStyle(active).fill!==getComputedStyle(empty).fill;})()"), true, 'Project coverage must use a different color.');
+  assert.equal(await evaluate("document.querySelectorAll('.map-project-result').length"), projects.length);
+  assert.deepEqual(await evaluate("[...document.querySelectorAll('.map-project-result h3')].map(node=>node.textContent)"), projects.map(project => project.name));
+  assert.equal(await evaluate("document.activeElement.id"), 'main-content');
+  assert.equal(await evaluate("document.querySelector('.map-labels').getBoundingClientRect().left > document.querySelector('.map-explorer-heading').getBoundingClientRect().right"), true, 'Map controls must not overlap the title.');
+  await click('.skip-link'); await assertScreen('projects');
+  await focus('.topbar .iconbutton'); await press('ArrowLeft'); await assertScreen('cover');
+  await click('.map-preview-open'); await assertScreen('projects');
+  await press('ArrowRight', { autoRepeat: true }); await assertScreen('projects');
+  await press('ArrowRight', { modifiers: 2 }); await assertScreen('projects');
   await click('.global-footer button'); await press('ArrowRight'); await assertScreen('cover');
   assert.equal(await evaluate("!document.querySelector('.help-modal') && !document.querySelector('main').inert"), true);
-  await click('.global-footer button'); await press('ArrowLeft'); await assertScreen('map');
-  const hasSearch = await evaluate("!!document.querySelector('[aria-label=\"Buscar departamento\"]')");
-  const hasMapFilters = await evaluate("!!document.querySelector('.map-filters')");
-  if (hasSearch) {
-    await input('[aria-label="Buscar departamento"]', 'Departamento inexistente');
-    await focus('[aria-label="Buscar departamento"]');
-    await evaluate("document.querySelector('[aria-label=\"Buscar departamento\"]').setSelectionRange(4, 4)");
-    await press('ArrowLeft'); await assertScreen('map');
-    assert.equal(await evaluate("document.querySelector('[aria-label=\"Buscar departamento\"]').selectionStart"), 3);
-    await focus('#main-content'); await press('ArrowRight'); await assertScreen('cover');
-    await press('ArrowLeft'); await assertScreen('map');
-    assert.equal(await evaluate("!!document.querySelector('.map-empty')"), true);
-    await click('.map-empty .clear-filters');
-  }
-  await focus('#main-content');
-  await press('ArrowLeft'); await assertScreen('cover');
-  console.log('Arrows only connect home/map; details require map selection, ignore Right and return with Left. Focus and expanded information are preserved.');
-  const allPhotos = documented.flatMap(([, department]) => department.photos || []);
-  const imageSources = [...allPhotos.flatMap(photo => [photo.src, photo.thumbnail]), ...mapThumbnails.map(([, department]) => department.mapThumbnail), ...coverMapThumbnails.map(([, department]) => department.coverMapThumbnail)].filter(Boolean);
-  for (const src of imageSources) {
-    if (src.startsWith('/assets/')) {
-      assert.equal(await evaluate(`fetch(${JSON.stringify(src)}).then(response=>response.ok)`), true);
-    } else {
-      assert.ok(src.startsWith('data:image/') || (!desktop && /^https?:\/\//i.test(src)), 'Desktop images must be local: ' + src);
+  await click('.cover-projects-button'); await assertScreen('projects');
+
+  if (projects.length) {
+    const project = projects[0];
+    await select('#overview-project', project.id);
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('.department:not(.filtered-out)')].map(node=>node.dataset.department).sort()"), [...project.departments].sort());
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('.map-project-result')].map(node=>node.dataset.projectLink)"), [project.id]);
+    const axis = project.entries.find(entry => entry.project.axis)?.project.axis;
+    if (axis) {
+      await select('#overview-axis', axis);
+      const coverage = [...new Set(project.entries.filter(entry => entry.project.axis === axis).flatMap(entry => entry.departments))].sort();
+      assert.deepEqual(await evaluate("[...document.querySelectorAll('.department:not(.filtered-out)')].map(node=>node.dataset.department).sort()"), coverage);
+      await focus('#overview-axis'); await press('ArrowLeft'); await assertScreen('projects');
+      await select('#overview-axis', axis);
+      await click('[data-project-link="' + project.id + '"]'); await assertScreen('map', project.id);
+      assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), project.photos.length, 'The detail must retain the complete project.');
+      await click('.project-page-nav .back'); await assertScreen('projects');
+      assert.equal(await evaluate("document.querySelector('#overview-project').value"), project.id);
+      assert.equal(await evaluate("document.querySelector('#overview-axis').value"), axis);
+      await click('[data-department=' + JSON.stringify(coverage[0]) + ']');
+      await assertScreen('map', project.id);
+      await assertDepartmentLocked(coverage[0]);
+      await click('.project-page-nav .back');
+      await assertOverviewDepartmentCleared([project]);
+      assert.equal(await evaluate("document.querySelector('#overview-project').value"), project.id);
+      assert.equal(await evaluate("document.querySelector('#overview-axis').value"), axis);
+      const other = projects.find(item => item.id !== project.id && !item.entries.some(entry => entry.project.axis === axis));
+      if (other) {
+        await select('#overview-project', other.id);
+        assert.equal(await evaluate("document.querySelector('#overview-axis').value"), '', 'Changing projects should clear an incompatible activity filter.');
+      }
+    }
+    await click('.map-clear-filters');
+    const assertDepartmentDestination = async (name, checkFocus = true) => {
+      const destination = getDepartmentDestination(projects, name);
+      await assertScreen(destination.view, destination.selected);
+      if (checkFocus) assert.equal(await evaluate("document.activeElement.id"), 'main-content');
+      if (destination.view === 'map') {
+        const item = projects.find(project => project.id === destination.selected);
+        const entries = item.entries.filter(entry => entry.departments.includes(name));
+        assert.equal(await evaluate("document.querySelector('.project-territories button[aria-pressed=\"true\"]')?.textContent"), name);
+        assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), entries.reduce((count, entry) => count + entry.project.photos.length, 0));
+        assert.equal(await evaluate("document.querySelector('.department.is-selected')?.dataset.department"), name);
+        assert.equal(await evaluate("new URLSearchParams(location.hash.split('?')[1]||'').get('departamento')"), name);
+      } else {
+        assert.equal(await evaluate("document.querySelector('main').dataset.departmentProjects"), name);
+        assert.deepEqual(await evaluate("[...document.querySelectorAll('[data-project-detail]')].map(node=>node.dataset.projectDetail).sort()"), projects.filter(project => project.departments.includes(name)).map(project => project.id).sort());
+        const expected = getDepartmentProjects(projects, name);
+        assert.equal(await evaluate("document.querySelectorAll('.honduras-map').length"), expected.length);
+        assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), expected.reduce((count, project) => count + project.entries.filter(entry => entry.departments.includes(name)).reduce((total, entry) => total + entry.project.photos.length, 0), 0));
+      }
+      return destination;
+    };
+    const name = project.departments[0];
+    await click('[data-department=' + JSON.stringify(name) + ']');
+    const destination = await assertDepartmentDestination(name);
+    await assertDepartmentLocked(name, true);
+    await reload(destination.view === 'map' ? "document.querySelector('main')?.dataset.selectedProject === " + JSON.stringify(destination.selected) : "document.querySelector('main')?.dataset.departmentProjects === " + JSON.stringify(name));
+    await assertDepartmentDestination(name, false);
+    await assertDepartmentLocked(name);
+    await click('.project-page-nav .back'); await assertScreen('projects');
+    await assertOverviewDepartmentCleared();
+    const empty = Object.keys(content.departments).find(name => !projects.some(item => item.departments.includes(name)));
+    if (empty) {
+      await click('[data-department=' + JSON.stringify(empty) + ']');
+      await assertDepartmentDestination(empty);
+      assert.equal(await evaluate("!!document.querySelector('.gallery-empty')"), true);
+      await click('.project-page-nav .back'); await assertScreen('projects');
+      await assertOverviewDepartmentCleared();
+    }
+    const shared = Object.keys(content.departments).find(name => projects.filter(project => project.departments.includes(name)).length > 1);
+    if (shared) {
+      await click('[data-department=' + JSON.stringify(shared) + ']');
+      await assertDepartmentDestination(shared);
+      assert.equal(await evaluate("document.querySelectorAll('[data-project-link]').length"), 0);
+      await assertDepartmentLocked(shared);
+      await screenshot('department-projects-together-desktop');
+      await viewport(390, 844);
+      assert.equal(await evaluate("document.documentElement.scrollWidth>innerWidth"), false);
+      await assertDepartmentLocked(shared, true);
+      await screenshot('department-projects-together-mobile');
+      await viewport(1366, 768);
+      assert.equal(await evaluate("(()=>{const ids=[...document.querySelectorAll('[id]')].map(node=>node.id);return ids.length===new Set(ids).size;})()"), true);
+      await click('.project-bottom-back');
+      await assertOverviewDepartmentCleared();
+      await evaluate('history.back()');
+      await waitFor("document.querySelector('main')?.dataset.departmentProjects === " + JSON.stringify(shared));
+      await assertDepartmentDestination(shared);
+      await evaluate('history.back()');
+      await waitFor("!!document.querySelector('.map-explorer-page')");
+      await assertOverviewDepartmentCleared();
+      await evaluate('history.forward()');
+      await waitFor("document.querySelector('main')?.dataset.departmentProjects === " + JSON.stringify(shared));
+      await assertDepartmentDestination(shared);
+      await evaluate('history.forward()');
+      await waitFor("!!document.querySelector('.map-explorer-page')");
+      await assertOverviewDepartmentCleared();
+    }
+    // La página conjunta muestra todos los detalles sin elegir un proyecto.
+    await evaluate("location.hash=" + JSON.stringify(getScreenHref({ view: 'department-projects', department: name })));
+    await waitFor("document.querySelector('main')?.dataset.departmentProjects === " + JSON.stringify(name));
+    await assertScreen('department-projects');
+    await viewport(390, 844);
+    assert.equal(await evaluate("document.documentElement.scrollWidth>innerWidth"), false);
+    await screenshot('department-projects-mobile');
+    await viewport(1366, 768);
+    await screenshot('department-projects-desktop');
+    const departmentProjects = getDepartmentProjects(projects, name);
+    assert.equal(await evaluate("document.querySelectorAll('[data-project-link]').length"), 0);
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('[data-project-detail]')].map(node=>node.dataset.projectDetail).sort()"), departmentProjects.map(project => project.id).sort());
+    assert.equal(await evaluate("document.querySelectorAll('.honduras-map').length"), departmentProjects.length);
+    assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), departmentProjects.reduce((count, project) => count + project.entries.filter(entry => entry.departments.includes(name)).reduce((total, entry) => total + entry.project.photos.length, 0), 0));
+    assert.equal(await evaluate("(()=>{const ids=[...document.querySelectorAll('[id]')].map(node=>node.id);return ids.length===new Set(ids).size;})()"), true, 'Multiple project maps must have independent element IDs.');
+    await assertDepartmentLocked(name);
+    await click('.project-page-nav .back'); await assertScreen('projects');
+    await assertOverviewDepartmentCleared();
+    if (!desktop) {
+      const tap = await evaluate("(()=>{const path=document.querySelector('.department.has-content .department-hit-area');const box=path.getBBox();for(let row=1;row<10;row++)for(let col=1;col<10;col++){const point=new DOMPoint(box.x+box.width*col/10,box.y+box.height*row/10);if(path.isPointInFill(point)){const screen=point.matrixTransform(path.getScreenCTM());return {x:screen.x,y:screen.y,name:path.closest('[data-department]').dataset.department}}}})()");
+      assert.ok(tap);
+      await command('Input.dispatchMouseEvent', { type: 'mouseMoved', x: tap.x, y: tap.y });
+      await command('Input.dispatchMouseEvent', { type: 'mousePressed', x: tap.x, y: tap.y, button: 'left', clickCount: 1 });
+      await command('Input.dispatchMouseEvent', { type: 'mouseReleased', x: tap.x, y: tap.y, button: 'left', clickCount: 1 });
+      await settle();
+      await assertDepartmentDestination(tap.name);
+      await click('.project-page-nav .back'); await assertScreen('projects');
+      await assertOverviewDepartmentCleared();
     }
   }
-  console.log('Bundled map, fonts, original photographs and thumbnails available.');
-  await click('.map-preview-open');
-  await waitFor("document.querySelectorAll('.honduras-map .department').length===18");
-  assert.equal(await evaluate("document.querySelector('.map-panel [aria-label=\"Vista del mapa\"]') === null"), true, 'The interactive map must display photographs without a view selector.');
-  assert.equal(await evaluate("document.querySelectorAll('.honduras-map image[clip-path]').length"), mapThumbnails.length);
-  for (const [name, department] of mapThumbnails) {
-    const selector = '[data-department=' + JSON.stringify(name) + '] image';
-    assert.equal(await evaluate('document.querySelector(' + JSON.stringify(selector) + ')?.getAttribute("href")'), department.mapThumbnail);
-  }
-  const layouts = [];
-  for (const [width, height] of [[1366, 768], [1024, 600], [820, 768], [390, 844], [375, 667]]) {
+  for (const [width, height] of [[1366, 768], [1024, 600], [820, 768], [390, 844], [320, 667]]) {
     await viewport(width, height);
-    const layout = await evaluate(`({width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth,mapTop:document.querySelector('.map-panel').getBoundingClientRect().top,mapBottom:document.querySelector('.map-panel').getBoundingClientRect().bottom})`);
-    assert.equal(layout.overflow, false, JSON.stringify(layout));
-    assert.ok(layout.mapBottom > layout.mapTop, 'Map must have a positive height: ' + JSON.stringify(layout));
+    const layout = await evaluate("(()=>{const main=document.querySelector('.map-explorer-page').getBoundingClientRect();const map=document.querySelector('.honduras-map').getBoundingClientRect();const panel=document.querySelector('.map-project-panel').getBoundingClientRect();return {width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth,pageHeight:main.height,mapWidth:map.width,mapHeight:map.height,panelTop:panel.top,panelBottom:panel.bottom};})()");
+    assert.equal(layout.overflow, false, 'Overview overflows at ' + width);
+    assert.ok(layout.pageHeight >= height * .97, 'The general map should fill the viewport.');
+    assert.ok(layout.mapWidth >= width * (width > 760 ? .6 : .85), 'The map should remain the dominant area.');
+    assert.ok(layout.mapHeight > 250, 'The map needs enough room at every screen size.');
+    assert.ok(layout.panelTop >= -1 && layout.panelBottom <= height + 1, 'Filters should remain within the viewport.');
     layouts.push(layout);
   }
-  await screenshot('map-mobile');
-  await viewport(1366, 768);
-  const originalViewBox = await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')");
-  await click('[aria-label="Ampliar mapa"]');
-  assert.notEqual(await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')"), originalViewBox);
-  const beforeDrag = await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')");
-  // Dragging changes the camera without opening a department.
-  const point = await evaluate("(()=>{const box=document.querySelector('.honduras-map').getBoundingClientRect();return {x:box.x+box.width*.6,y:box.y+box.height*.6};})()");
-  await command('Input.dispatchMouseEvent', { type: 'mousePressed', x: point.x, y: point.y, button: 'left', clickCount: 1 });
-  await command('Input.dispatchMouseEvent', { type: 'mouseMoved', x: point.x - 60, y: point.y, button: 'left', buttons: 1 });
-  await command('Input.dispatchMouseEvent', { type: 'mouseReleased', x: point.x - 60, y: point.y, button: 'left', clickCount: 1 });
-  await settle(); assert.equal(await evaluate("!!document.querySelector('.honduras-map')"), true);
-  assert.notEqual(await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')"), beforeDrag, 'Map drag did not move camera.');
-  await click('[aria-label="Mostrar todo Honduras"]');
-  assert.equal(await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')"), originalViewBox);
+  // Los avisos de media query pueden esperar un fotograma en Electron oculto.
+  // El plegado automático se verifica en web; el botón se comprueba en ambos.
+  if (!desktop) assert.equal(await evaluate("document.querySelector('#overview-project-results').hidden"), true);
+  if (await evaluate("!document.querySelector('#overview-project-results').hidden")) await click('.overview-results-toggle');
   await viewport(390, 844);
-  const mapPinch = await evaluate("(()=>{const box=document.querySelector('.honduras-map').getBoundingClientRect();return {x:box.x+box.width/2,y:box.y+box.height/2};})()");
-  await command('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, x: mapPinch.x - 35, y: mapPinch.y }, { id: 2, x: mapPinch.x + 35, y: mapPinch.y }] });
-  await command('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, x: mapPinch.x - 65, y: mapPinch.y }, { id: 2, x: mapPinch.x + 65, y: mapPinch.y }] });
-  await command('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  await settle();
-  assert.notEqual(await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')"), originalViewBox, 'Map pinch did not zoom.');
-  await click('[aria-label="Mostrar todo Honduras"]'); await viewport(1366, 768);
-  if (hasSearch) {
-    await input('[aria-label="Buscar departamento"]', 'Intibuca');
-    assert.equal(await evaluate("document.querySelectorAll('.dept-list button').length"), 1);
-    await input('[aria-label="Buscar departamento"]', '');
-    await click('.only-content input');
-    assert.equal(await evaluate("document.querySelectorAll('.dept-list button').length"), documented.length);
-    await click('.only-content input');
-  }
-  await waitFor("document.querySelectorAll('.honduras-map image').length===" + mapThumbnails.length);
-  await screenshot('map-desktop');
-  const emptyDepartment = await evaluate("document.querySelector('.department:not(.has-content)')?.getAttribute('aria-label')");
-  if (emptyDepartment) {
-    await click('[aria-label=' + JSON.stringify(emptyDepartment) + ']');
-    assert.equal(await evaluate("!!document.querySelector('.map-preview-card')"), true);
-    await click('[aria-label="Cerrar ficha del mapa"]');
-  }
-  const [firstName, firstDepartment] = documented[0];
-  const firstCount = firstDepartment.projects[0].photos.length;
-  const featuredPhoto = firstDepartment.projects[0].photos[0];
-  const thumbnailIndex = Math.min(4, firstCount);
-  await click('[aria-label="Abrir ' + firstName + '"]');
-  await waitFor("document.querySelectorAll('.gallery-img').length===" + firstDepartment.photos.length + " && document.querySelector('.gallery-img img')?.complete");
-  const groupedProjects = await evaluate("[...document.querySelectorAll('.project-section')].map(section => ({name:section.querySelector('.project-heading h3').textContent,activities:section.querySelectorAll('.project-activities li').length,achievements:section.querySelectorAll('.project-achievements li').length,photos:section.querySelectorAll('.gallery-img').length,communities:[...section.querySelectorAll('.project-communities li')].map(item=>item.textContent)}))");
-  assert.deepEqual(groupedProjects, firstDepartment.projects.map(project => ({name:project.name,activities:4,achievements:2,photos:6,communities:project.communities})));
-  for (const [width, height] of [[1366,768], [1024,600], [820,768], [390,844], [375,667]]) {
-    await viewport(width, height);
-    assert.equal(await evaluate('document.documentElement.scrollWidth>innerWidth'), false, `Project detail overflows at ${width}px.`);
-  }
-  await viewport(1366,768);
-  const caption = await evaluate("(()=>{const photo=document.querySelector('.gallery-img');return {image:photo.querySelector('.photo-frame').getBoundingClientRect().bottom,caption:photo.querySelector('.photo-caption').getBoundingClientRect().top};})()");
-  assert.ok(caption.caption >= caption.image - 1, 'Caption overlaps image.');
-  await screenshot('gallery-desktop');
-  const descriptions = firstDepartment.projects.flatMap(project => project.photos).filter(photo => photo.description).map(photo => photo.description);
-  assert.deepEqual(await evaluate("[...document.querySelectorAll('.photo-description')].map(element=>element.textContent)"), descriptions);
-  assert.equal(await evaluate("[...document.querySelectorAll('.photo-description')].every(element=>element.scrollHeight<=element.clientHeight+1)"), true, 'Photo descriptions are clipped.');
-  if (PHOTO_VIEWER_ENABLED) {
-  await click('.gallery-img');
-  await waitFor("document.querySelector('.viewer-stage img')?.naturalWidth > 0");
-  assert.equal(await evaluate("!!document.activeElement.closest('.lightbox') && document.querySelector('main').inert && document.body.style.overflow==='hidden'"), true);
-  assert.equal(await evaluate("document.querySelector('.viewer-stage img').getAttribute('src')"), featuredPhoto.src, 'The viewer must use the original image URL.');
-  await press('ArrowRight'); await assertScreen('detail', firstName);
-  assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), Math.min(2, firstCount) + ' / ' + firstCount);
-  await press('ArrowLeft');
-  assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), '1 / ' + firstCount);
-  await press('ArrowRight', { modifiers: 2 });
-  assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), '1 / ' + firstCount);
-  await click('[aria-label="Ampliar fotografía"]');
-  assert.equal(await evaluate("document.querySelector('.zoom-value').textContent.includes('150%')"), true);
-  if (firstCount > 1) await click('[aria-label="Fotografía siguiente"]');
-  assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), Math.min(2, firstCount) + ' / ' + firstCount);
-  await click('[aria-label="Ver fotografía ' + thumbnailIndex + '"]');
-  assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), thumbnailIndex + ' / ' + firstCount);
-  await screenshot('viewer-desktop');
-  // Tab loops back into the dialog and Escape restores the original gallery button.
-  await evaluate("[...document.querySelectorAll('.viewer-thumbnails button')].at(-1).focus()");
-  await command('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
-  await command('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
-  assert.equal(await evaluate("!!document.activeElement.closest('.lightbox')"), true);
-  await command('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
-  await settle();
-  assert.equal(await evaluate("document.activeElement.classList.contains('gallery-img') && !document.querySelector('main').inert && document.body.style.overflow!== 'hidden'"), true);
-  } else {
-    assert.equal(await evaluate("document.querySelectorAll('button.gallery-img, .gallery-img[role=\"button\"], .photo-zoom').length"), 0);
-    assert.equal(await evaluate("[...document.querySelectorAll('.gallery-img')].every(element=>element.tagName==='FIGURE' && !!element.querySelector('figcaption'))"), true);
-    await click('.gallery-img'); await assertScreen('detail', firstName);
-    assert.equal(await evaluate("!document.querySelector('.lightbox') && !document.querySelector('main').inert && document.body.style.overflow!=='hidden'"), true);
-  }
-  await viewport(390, 844); await evaluate('window.scrollTo(0,0)');
-  assert.equal(await evaluate("document.documentElement.scrollWidth>innerWidth"), false);
-  assert.ok(await evaluate("document.querySelector('.project-heading').getBoundingClientRect().top < innerHeight"));
-  assert.equal(await evaluate("getComputedStyle(document.querySelector('.detail-information')).display"), 'none');
-  await click('.information-toggle'); assert.notEqual(await evaluate("getComputedStyle(document.querySelector('.detail-information')).display"), 'none');
-  await click('.information-toggle');
-  await evaluate("document.querySelector('.project-heading').scrollIntoView({block:'start'})");
-  await screenshot('detail-mobile');
-  assert.equal(await evaluate("[...document.querySelectorAll('.photo-description')].every(element=>element.scrollHeight<=element.clientHeight+1)"), true);
-  if (PHOTO_VIEWER_ENABLED) {
-  await click('.gallery-img'); await screenshot('viewer-mobile');
-  const swipe = await evaluate("(()=>{const r=document.querySelector('.viewer-stage').getBoundingClientRect();return {x:r.x+r.width*.7,y:r.y+r.height*.5};})()");
-  await command('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, x: swipe.x - 70, y: swipe.y }, { id: 2, x: swipe.x, y: swipe.y }] });
-  await command('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, x: swipe.x - 110, y: swipe.y }, { id: 2, x: swipe.x + 30, y: swipe.y }] });
-  await command('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  await settle(); assert.notEqual(await evaluate("document.querySelector('.zoom-value').textContent.trim()"), '100%', 'Photo pinch did not zoom.');
-  await click('[aria-label="Restablecer fotografía"]');
-  await command('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: swipe.x, y: swipe.y }] });
-  await command('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: swipe.x - 100, y: swipe.y }] });
-  await command('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  await settle(); assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), Math.min(2, firstCount) + ' / ' + firstCount);
-  await click('[aria-label="Cerrar fotografía"]');
-  } else {
-    await click('.gallery-img'); await assertScreen('detail', firstName);
-    assert.equal(await evaluate("document.querySelector('.lightbox')===null"), true);
-    await evaluate("document.querySelector('.gallery-img img').dispatchEvent(new Event('error'))"); await settle();
-    assert.equal(await evaluate("!!document.querySelector('.gallery-img .photo-placeholder') && !!document.querySelector('.gallery-img .photo-description')"), true, 'A missing image must retain its description.');
-  }
-  await click('.back'); await viewport(1366, 768);
-  console.log('Responsive layout, map gestures, inline photo descriptions, keyboard focus and current gallery interaction passed.');
-
-  const multiple = documented.find(([, department]) => department.projects.length > 1);
-  if (multiple) {
-    await click('[aria-label="Abrir ' + multiple[0] + '"]');
-    assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), multiple[1].projects.length);
-    const second = multiple[1].projects[1];
+  await screenshot('general-map-mobile');
+  await click('.overview-results-toggle');
+  assert.equal(await evaluate("document.querySelector('#overview-project-results').hidden"), false);
+  await screenshot('general-map-mobile-projects');
+  await viewport(1366, 768); await evaluate('window.scrollTo(0,0)'); await screenshot('general-map-desktop');
+  for (const project of projects) {
+    await click('[data-project-link="' + project.id + '"]'); await assertScreen('map', project.id);
+    assert.equal(await evaluate("document.querySelector('#page-title').textContent"), project.name);
+    assert.equal(await evaluate("document.activeElement.id"), 'main-content');
+    assert.equal(await evaluate("document.querySelectorAll('.honduras-map .department').length"), 18);
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('.is-project-location')].map(node=>node.dataset.department).sort()"), [...project.departments].sort());
+    assert.equal(await evaluate("document.querySelectorAll('.department[tabindex=\"0\"]').length"), project.departments.length);
+    assert.equal(await evaluate("document.querySelectorAll('.honduras-map image').length"), project.departments.filter(name => content.mapThumbnails.detail[name]).length, 'Detail thumbnails must come only from the detail set.');
+    assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), project.entries.length);
+    assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), project.photos.length);
+    assert.equal(await evaluate("document.querySelectorAll('.project-activities li').length"), project.activityCount);
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('.photo-description')].map(node=>node.textContent)"), project.entries.flatMap(entry => entry.project.photos).filter(photo => photo.description).map(photo => photo.description));
+    await evaluate("Promise.all([...document.querySelectorAll('.gallery-img img')].map(img=>{img.loading='eager';return img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true})})}))");
+    assert.equal(await evaluate("[...document.querySelectorAll('.gallery-img img')].every(img=>img.naturalWidth>0)"), true);
+    await press('ArrowRight'); await assertScreen('map', project.id);
+    await reload("document.querySelector('main')?.dataset.selectedProject === " + JSON.stringify(project.id));
+    await assertScreen('map', project.id);
+    for (const name of project.departments) {
+      const expected = project.entries.filter(entry => entry.departments.includes(name));
+      await click('[data-department=' + JSON.stringify(name) + ']');
+      assert.equal(await evaluate("document.querySelector('.project-territories button[aria-pressed=\"true\"]')?.textContent"), name);
+      assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), expected.length);
+      assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), expected.reduce((count, entry) => count + entry.project.photos.length, 0));
+      assert.equal(await evaluate("document.querySelector('.department.is-selected')?.dataset.department"), name);
+      await click('.project-evidence-heading .back');
+      assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), project.photos.length);
+      assert.equal(await evaluate("document.querySelectorAll('.department.is-selected, .project-territories button[aria-pressed=\"true\"]').length"), 0);
+    }
+    await viewport(390, 844);
+    assert.equal(await evaluate("[...document.querySelectorAll('.detail-information')].every(node=>getComputedStyle(node).display!=='none')"), true, 'Activities should initially be visible on mobile.');
+    await click('.information-toggle');
+    assert.equal(await evaluate("getComputedStyle(document.querySelector('.detail-information')).display"), 'none');
+    await click('.information-toggle');
+    for (const [width, height] of [[1366, 768], [1024, 600], [820, 768], [390, 844], [320, 667]]) {
+      await viewport(width, height);
+      assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"), false, project.name + ' overflows at ' + width);
+      assert.equal(await evaluate("[...document.querySelectorAll('.photo-description')].every(node=>node.scrollHeight<=node.clientHeight+1)"), true, 'Descriptions are clipped.');
+      const mapHeight = await evaluate("document.querySelector('.map-panel').getBoundingClientRect().height");
+      assert.ok(mapHeight > 300, 'The map must remain usable on each screen size.');
+    }
+    await viewport(1366, 768); await evaluate('window.scrollTo(0,0)'); await screenshot('project-map-' + project.id);
+    await evaluate("document.querySelector('.project-evidence').scrollIntoView({block:'start'})"); await screenshot('project-activities-' + project.id);
+    await viewport(390, 844); await evaluate("document.querySelector('.project-evidence').scrollIntoView({block:'start'})"); await screenshot('project-mobile-' + project.id);
+    await viewport(1366, 768);
     if (PHOTO_VIEWER_ENABLED) {
-    await click('.project-section:nth-child(2) .gallery-img:last-child');
-    assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), '6 / 6');
-    assert.equal(await evaluate("document.querySelector('.viewer-tags span').textContent"), second.name);
-    await press('ArrowRight');
-    assert.equal(await evaluate("document.querySelector('.viewer-metadata small').textContent.trim()"), '1 / 6');
-    assert.equal(await evaluate("document.querySelector('.viewer-tags span').textContent"), second.name);
-    await press('Escape');
+      await click('.gallery-img'); await waitFor("document.querySelector('.viewer-stage img')?.naturalWidth > 0");
+      await press('ArrowRight'); await assertScreen('map', project.id);
+      await press('Escape');
+      assert.equal(await evaluate("!document.querySelector('main').inert"), true);
     } else {
-      assert.deepEqual(await evaluate("[...document.querySelectorAll('.project-section:nth-child(2) .photo-description')].map(element=>element.textContent)"), second.photos.filter(photo=>photo.description).map(photo=>photo.description));
-      await click('.project-section:nth-child(2) .gallery-img:last-child');
-      assert.equal(await evaluate("document.querySelector('.lightbox')===null"), true);
+      assert.equal(await evaluate("document.querySelectorAll('button.gallery-img, .photo-zoom').length"), 0);
+      await click('.gallery-img'); await assertScreen('map', project.id);
     }
-    if (await evaluate("!!document.querySelector('[aria-label=\"Proyecto\"]')")) {
-      await select('[aria-label="Proyecto"]', second.name);
-      assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), 1);
-      assert.equal(await evaluate("document.querySelector('.project-heading h3').textContent"), second.name);
-      assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), 6);
-      const community = second.communities[1] || second.communities[0];
-      await select('[aria-label="Comunidad"]', community);
-      assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), 1);
-      assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), second.photos.filter(photo=>photo.community===community).length);
-      await click('.clear-filters');
-      assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), multiple[1].projects.length);
-    }
-    await viewport(390,844);
-    await click('.project-section:first-child .information-toggle');
-    assert.notEqual(await evaluate("getComputedStyle(document.querySelector('.project-section:first-child .detail-information')).display"), 'none');
-    assert.equal(await evaluate("getComputedStyle(document.querySelector('.project-section:nth-child(2) .detail-information')).display"), 'none');
-    await viewport(1366,768); await evaluate("document.querySelector('.project-heading').scrollIntoView({block:'start'})");
-    await screenshot('projects-desktop');
-    await click('.back');
+    await click('.project-page-nav .back'); await assertScreen('projects');
+    await evaluate('history.back()'); await waitFor("document.querySelector('main')?.dataset.selectedProject === " + JSON.stringify(project.id));
+    await assertScreen('map', project.id);
+    await evaluate('history.forward()'); await waitFor("!!document.querySelector('.projectsview')");
+    await assertOverviewDepartmentCleared();
   }
-  console.log('Projects keep their activities, communities, achievements, photographs and descriptions together.');
 
-  const filterable = documented.find(([, department]) => department.photos?.some(photo => photo.project && photo.axis));
-  const checkedMapFilters = Boolean(filterable && hasMapFilters && hasSearch);
-  if (checkedMapFilters) {
-    const target = filterable[1].photos.find(photo => photo.project && photo.axis);
-    await select('.map-filters label:first-child select', target.project);
-    await select('.map-filters label:nth-child(2) select', target.axis);
-    const expectedNames = documented.filter(([, department]) => department.photos?.some(photo => photo.project === target.project && photo.axis === target.axis)).map(([name]) => name).sort((a, b) => a.localeCompare(b, 'es'));
-    assert.deepEqual(await evaluate("[...document.querySelectorAll('.dept-list strong')].map(element => element.textContent)"), expectedNames);
-    for (const name of expectedNames) {
-      const selector = '[data-department=' + JSON.stringify(name) + '] image';
-      assert.equal(await evaluate('document.querySelector(' + JSON.stringify(selector) + ')?.getAttribute("href")') || '', content.departments[name].mapThumbnail || '');
+  let mapPinchZoom = desktop ? null : false;
+  if (projects.length) {
+    const project = projects[0];
+    await click('[data-project-link="' + project.id + '"]'); await assertScreen('map', project.id);
+    await viewport(1366, 768); await evaluate("document.querySelector('.map-panel').scrollIntoView({block:'center'})");
+    const original = await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')");
+    await click('[aria-label="Ampliar mapa"]');
+    const zoomed = await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')");
+    assert.notEqual(zoomed, original);
+    const point = await evaluate("(()=>{const box=document.querySelector('.honduras-map').getBoundingClientRect();return {x:box.x+box.width*.6,y:box.y+box.height*.6};})()");
+    await command('Input.dispatchMouseEvent', { type: 'mousePressed', x: point.x, y: point.y, button: 'left', clickCount: 1 });
+    await command('Input.dispatchMouseEvent', { type: 'mouseMoved', x: point.x - 60, y: point.y, button: 'left', buttons: 1 });
+    await command('Input.dispatchMouseEvent', { type: 'mouseReleased', x: point.x - 60, y: point.y, button: 'left', clickCount: 1 });
+    await settle(); await assertScreen('map', project.id);
+    assert.notEqual(await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')"), zoomed);
+    assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), project.entries.length, 'Dragging should not select a territory.');
+    await click('[aria-label="Mostrar todo Honduras"]');
+    // El clic físico se comprueba en web; Electron oculto no actualiza de forma
+    // fiable su superficie de hit testing después de desplazar el documento.
+    if (!desktop) {
+      const tap = await evaluate("(()=>{const path=document.querySelector('.is-project-location .department-hit-area');const box=path.getBBox();for(let row=1;row<10;row++)for(let col=1;col<10;col++){const point=new DOMPoint(box.x+box.width*col/10,box.y+box.height*row/10);if(path.isPointInFill(point)){const screen=point.matrixTransform(path.getScreenCTM());return {x:screen.x,y:screen.y,name:path.closest('[data-department]').dataset.department}}}})()");
+      assert.ok(tap, 'An active department should have a selectable area.');
+      await command('Input.dispatchMouseEvent', { type: 'mouseMoved', x: tap.x, y: tap.y });
+      await command('Input.dispatchMouseEvent', { type: 'mousePressed', x: tap.x, y: tap.y, button: 'left', clickCount: 1 });
+      await command('Input.dispatchMouseEvent', { type: 'mouseReleased', x: tap.x, y: tap.y, button: 'left', clickCount: 1 });
+      await settle();
+      assert.equal(await evaluate("document.querySelector('.department.is-selected')?.dataset.department"), tap.name, 'Mouse selection should show the chosen territory.');
+      await click('.project-evidence-heading .back');
     }
-    await click('[aria-label="Abrir ' + expectedNames[0] + '"]');
-    await assertScreen('detail', expectedNames[0]);
-    const matchingPhotos = content.departments[expectedNames[0]].photos.filter(photo => photo.project === target.project && photo.axis === target.axis);
-    assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), matchingPhotos.length);
-    if (await evaluate("!!document.querySelector('[aria-label=\"Proyecto\"]')")) {
-      assert.equal(await evaluate("document.querySelector('[aria-label=\"Proyecto\"]').value"), target.project);
-      assert.equal(await evaluate("document.querySelector('[aria-label=\"Eje de intervención\"]').value"), target.axis);
+    for (const key of ['Enter', ' ']) {
+      await focus('.is-project-location'); await press(key);
+      assert.equal(await evaluate("!!document.querySelector('.department.is-selected')"), true, 'Keyboard selection failed: ' + key);
+      await click('.project-evidence-heading .back');
     }
-    await press('ArrowLeft'); await assertScreen('map');
-    assert.equal(await evaluate("document.querySelector('.map-filters label:first-child select').value"), target.project);
-    assert.equal(await evaluate("document.querySelector('.map-filters label:nth-child(2) select').value"), target.axis);
-    await input('[aria-label="Buscar departamento"]', 'Departamento inexistente');
-    assert.equal(await evaluate("!!document.querySelector('.map-empty')"), true);
-    assert.equal(await evaluate("document.querySelectorAll('.honduras-map image').length"), 0);
-    await click('.map-empty .clear-filters');
-  }
-  const published = Object.values(content.departments).filter(department => department.verified && !department.demo);
-  if (await evaluate("!!document.querySelector('.metric strong')")) {
-    assert.equal(await evaluate("document.querySelector('.metric strong').textContent"), String(published.length));
+    if (!desktop) {
+      await viewport(390, 844); await evaluate("document.querySelector('.map-panel').scrollIntoView({block:'center'})");
+      const pinch = await evaluate("(()=>{const box=document.querySelector('.honduras-map').getBoundingClientRect();return {x:box.x+box.width/2,y:box.y+box.height/2};})()");
+      await command('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, x: pinch.x - 35, y: pinch.y }, { id: 2, x: pinch.x + 35, y: pinch.y }] });
+      await command('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, x: pinch.x - 65, y: pinch.y }, { id: 2, x: pinch.x + 65, y: pinch.y }] });
+      await command('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await settle();
+      assert.notEqual(await evaluate("document.querySelector('.honduras-map').getAttribute('viewBox')"), original);
+      mapPinchZoom = true;
+    }
+    await click('[aria-label="Mostrar todo Honduras"]'); await screenshot('project-map-mobile');
+    await click('.project-territories button');
+    assert.equal(await evaluate("!!document.querySelector('.department.is-selected')"), true);
+    await focus('#main-content'); await press('ArrowLeft'); await assertScreen('projects');
+    await assertOverviewDepartmentCleared();
+    await evaluate("location.hash='#/proyectos/no-existe/mapa'"); await settle(); await assertScreen('projects');
+    await click('.map-project-result');
+    await evaluate("document.querySelector('.gallery-img img').dispatchEvent(new Event('error'))"); await settle();
+    assert.equal(await evaluate("!!document.querySelector('.gallery-img .photo-placeholder') && !!document.querySelector('.gallery-img .photo-description')"), true);
   }
   await click('.global-footer button');
-  assert.equal(await evaluate("document.querySelector('.help-modal').textContent.includes('Administración')"), false);
-  await click('.modal-head > button');
-  assert.equal(await evaluate("document.querySelector('.admin-trigger, .admin-modal, [aria-label=\"Editar contenido\"], input[type=\"file\"], form, textarea') === null"), true);
+  assert.equal(await evaluate("document.querySelector('.help-modal').textContent.includes('Ver proyectos')"), true);
+  await press('Escape');
+  assert.equal(await evaluate("document.querySelector('main').inert"), false);
   assert.deepEqual(remoteRequests, [], 'Unexpected remote requests.');
   assert.deepEqual(exceptions, [], 'JavaScript exceptions.');
   assert.deepEqual(errors, [], 'Console errors.');
-  const report = { mode: desktop ? 'desktop' : 'web', executable: desktop ? executable : undefined, offline: desktop, photographs: allPhotos.length, layouts, presentationOnly: true, bundledContentIgnoresOldLocalEdits: true, projectGrouping: true, photoDescriptionsOnPage: true, photoViewerEnabled: PHOTO_VIEWER_ENABLED, projectScopedViewer: PHOTO_VIEWER_ENABLED ? true : null, independentProjectInformation: true, combinedFilters: checkedMapFilters ? true : null, mapPhotoMatchesFilters: checkedMapFilters ? true : null, searchChecked: hasSearch, keyboardFocus: true, mainPageArrowNavigation: true, detailOnlyReturnsToMap: true, mapSelectionRequiredForDepartments: true, arrowNavigationFromFocusedControls: true, touchSwipe: PHOTO_VIEWER_ENABLED ? true : null, mapPinchZoom: true, photoPinchZoom: PHOTO_VIEWER_ENABLED ? true : null, remoteImageRequests, remoteRequests, exceptions, screenshots: desktop ? null : work };
+  const report = { mode: desktop ? 'desktop' : 'web', offline: desktop, projects: projects.length, photographs: projects.reduce((count, project) => count + project.photos.length, 0), layouts, fullViewportMap: true, projectFilters: true, preservedOverviewFilters: true, departmentClickNavigation: true, departmentProjectsTogether: true, mobileResultsAutoCollapse: desktop ? null : true, projectGeographicCoverage: true, territoryScopedEvidence: true, descriptionsVisible: true, directProjectLinks: true, browserHistory: true, keyboardFocus: true, bundledContentIgnoresOldLocalEdits: true, mouseMapSelection: desktop ? null : true, mapPinchZoom, photoViewerEnabled: PHOTO_VIEWER_ENABLED, remoteImageRequests, remoteRequests, exceptions, screenshots: desktop ? null : work };
   await writeFile(path.join(desktop ? path.join(root, 'release') : work, desktop ? 'verificacion-sin-conexion.json' : 'report.json'), JSON.stringify(report, null, 2) + '\n');
-  console.log('Presentation-only interface, bundled content and map-only access to department details passed.');
+  console.log('General map, project filters, preserved detail maps, activities, images and navigation passed.');
   console.log(JSON.stringify(report, null, 2));
   await send('Browser.close').catch(() => {});
 } catch (error) {

@@ -64,6 +64,7 @@
   --map-department-hover-shadow: 0 7px 7px var(--color-shadow);
   --map-department-hover-duration: .22s;
   --map-tooltip-width: 360px;
+  --map-explorer-panel-width: 320px;
   --map-logo-width: var(--cover-logo-width);
   --map-title-size: var(--font-size-hero);
 
@@ -104,7 +105,7 @@
   --font-size-info-small: clamp(.75rem, calc(.6875rem + .2vw), .875rem);
   --font-size-info-body: clamp(.875rem, calc(.8125rem + .2vw), 1.25rem);
   --font-size-info-heading: clamp(1rem, calc(.9375rem + .2vw), 1.50rem);
-  --font-size-project-title: clamp(1.25rem, calc(1.0625rem + .6vw), 2rem);
+  --font-size-project-title: clamp(1.75rem, calc(1.25rem + 1.5vw), 3rem);
 
   /* Pesos y altura de línea */
   --font-weight-semibold: 600;
@@ -195,15 +196,15 @@
   --size-56: 56px;
   --size-60: 60px;
   --size-110: 110px;
-  --project-info-width: 330px;
-  --project-gallery-columns: 3;
+  --project-info-width: 450px;
+  --project-gallery-columns: 2;
   --project-photo-ratio: 4 / 3;
 }
 
 @media (max-width: 1200px) {
   :root {
     --font-size-hero: clamp(44px, 5vw, 64px);
-    --project-info-width: 300px;
+    --project-info-width: 340px;
     --project-gallery-columns: 2;
   }
 }
