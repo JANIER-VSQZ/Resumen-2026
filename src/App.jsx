@@ -19,7 +19,7 @@ export default function App() {
   const [lightbox, setLightbox] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
   const [mapFilters, setMapFilters] = useState({ project: '', axis: '' });
-  const [mapDepartment, setMapDepartment] = useState(() => screen.department || null);
+  const [departmentLocked, setDepartmentLocked] = useState(() => Boolean(screen.department));
   const firstView = useRef(true);
   const { fullscreen, toggleFullscreen } = useFullscreen();
   const { view, selected } = screen;
@@ -29,7 +29,7 @@ export default function App() {
     const syncScreen = () => {
       const next = getScreenFromHash(window.location.hash, projects);
       setScreen(next);
-      setMapDepartment(next.department || null);
+      setDepartmentLocked(Boolean(next.department));
       setShowHelp(false);
       setLightbox(null);
     };
@@ -44,8 +44,10 @@ export default function App() {
   }, [view, selected]);
 
   const goTo = useCallback(next => { window.location.hash = getScreenHref(next); }, []);
+  const goHome = () => goTo({ view: 'cover' });
+  const goToMap = () => goTo({ view: 'projects' });
+  const openPhoto = PHOTO_VIEWER_ENABLED ? (photos, index) => setLightbox({ photos, index }) : undefined;
   const openDepartment = useCallback((department, candidates) => {
-    setMapDepartment(department);
     goTo(getDepartmentDestination(candidates, department));
   }, [goTo]);
   const changeProjectDepartment = useCallback(department => {
@@ -64,9 +66,32 @@ export default function App() {
     <div className="app">
       <a className="skip-link" href="#main-content" onClick={event => { event.preventDefault(); document.getElementById('main-content')?.focus(); }}>Ir al contenido</a>
       <AppHeader view={view} fullscreen={fullscreen} onToggleFullscreen={toggleFullscreen} />
-      {view === 'cover' && <CoverPage content={content} features={mapFeatures} onExplore={() => goTo({ view: 'projects' })} />}
-      {view === 'projects' && <ProjectsPage projects={projects} content={content} features={mapFeatures} filters={mapFilters} onFilterChange={setMapFilters} department={mapDepartment} onSelectDepartment={setMapDepartment} onOpenDepartment={openDepartment} onHome={() => goTo({ view: 'cover' })} />}
-      {view === 'department-projects' && <DepartmentProjectsPage department={screen.department} projects={getDepartmentProjects(projects, screen.department, mapFilters)} hasFilters={Boolean(mapFilters.project || mapFilters.axis)} period={content.period} features={mapFeatures} thumbnails={content.mapThumbnails.detail} onOpenPhoto={PHOTO_VIEWER_ENABLED ? (photos, index) => setLightbox({ photos, index }) : undefined} onClearFilters={() => setMapFilters({ project: '', axis: '' })} onBack={() => goTo({ view: 'projects' })} onHome={() => goTo({ view: 'cover' })} />}
+      {view === 'cover' && <CoverPage content={content} features={mapFeatures} onExplore={goToMap} />}
+      {view === 'projects' && (
+        <ProjectsPage
+          projects={projects}
+          content={content}
+          features={mapFeatures}
+          filters={mapFilters}
+          onFilterChange={setMapFilters}
+          onOpenDepartment={openDepartment}
+          onHome={goHome}
+        />
+      )}
+      {view === 'department-projects' && (
+        <DepartmentProjectsPage
+          department={screen.department}
+          projects={getDepartmentProjects(projects, screen.department, mapFilters)}
+          hasFilters={Boolean(mapFilters.project || mapFilters.axis)}
+          period={content.period}
+          features={mapFeatures}
+          thumbnails={content.mapThumbnails.detail}
+          onOpenPhoto={openPhoto}
+          onClearFilters={() => setMapFilters({ project: '', axis: '' })}
+          onBack={goToMap}
+          onHome={goHome}
+        />
+      )}
       {view === 'map' && project && (
         <MapPage
           key={project.id}
@@ -75,11 +100,11 @@ export default function App() {
           features={mapFeatures}
           thumbnails={content.mapThumbnails.detail}
           department={screen.department}
-          departmentLocked={Boolean(mapDepartment)}
+          departmentLocked={departmentLocked}
           onDepartmentChange={changeProjectDepartment}
-          onBack={() => goTo({ view: 'projects' })}
-          onHome={() => goTo({ view: 'cover' })}
-          onOpenPhoto={PHOTO_VIEWER_ENABLED ? (photos, index) => setLightbox({ photos, index }) : undefined}
+          onBack={goToMap}
+          onHome={goHome}
+          onOpenPhoto={openPhoto}
         />
       )}
       <AppFooter onHelp={() => setShowHelp(true)} />

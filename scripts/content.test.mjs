@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { calculateMetrics, DEPARTMENTS, MAP_THUMBNAIL_CONTEXTS, normalizeContent, orderedPhotos, photoMatches, validateContent } from '../src/content.js';
+import { DEPARTMENTS, MAP_THUMBNAIL_CONTEXTS, normalizeContent, orderedPhotos, validateContent } from '../src/content.js';
 import { validateGeo } from '../src/geometry.js';
 
 const territory = (overrides = {}) => ({
@@ -14,28 +14,34 @@ const territory = (overrides = {}) => ({
 const project = (overrides = {}) => ({ id: 'project-a', name: 'Proyecto A', verified: true, departments: [territory()], ...overrides });
 const document = (record = project(), extra = {}) => ({ projects: [record], ...extra });
 
-test('published metrics use project coverage and exclude drafts and demonstrations', () => {
+test('cover publication states distinguish published projects, drafts and demonstrations', () => {
   const projects = [
-    project({ beneficiaries: 25 }),
-    project({ id: 'b', beneficiaries: 15, departments: [territory({ communities: ['B', 'C'] })] }),
-    project({ id: 'demo', demo: true, beneficiaries: 100 }),
+    project(),
+    project({ id: 'demo', demo: true, departments: [territory({ names: ['La Paz'] })] }),
+    project({ id: 'shared-demo', demo: true }),
     project({ id: 'draft', verified: false, departments: [territory({ names: ['Cortés'] })] }),
   ];
-  assert.deepEqual(calculateMetrics(projects), { departments: 1, communities: 3, activities: 8, beneficiaries: 40 });
+  const result = validateContent({ projects });
+  assert.equal(result.departments.Lempira.verified, true);
+  assert.equal(result.departments.Lempira.demo, false);
+  assert.equal(result.departments['La Paz'].verified, false);
+  assert.equal(result.departments['La Paz'].demo, true);
+  assert.equal(result.departments.Cortés.verified, false);
+  assert.equal(result.departments.Cortés.demo, false);
+  const reversed = validateContent({ projects: [...projects].reverse() });
+  assert.deepEqual(reversed.departments, result.departments, 'A demonstration must not override a published territory.');
   projects[3].verified = true;
-  assert.equal(calculateMetrics(projects).beneficiaries, null);
-  assert.equal(calculateMetrics(projects).departments, 2);
-  assert.equal(calculateMetrics([]).beneficiaries, null);
+  assert.equal(validateContent({ projects }).departments.Cortés.verified, true);
 });
 
-test('shared territorial evidence is counted once while all departments remain in coverage', () => {
+test('shared evidence stays in its project while all departments remain published on the cover', () => {
   const result = validateContent(document(project({ departments: [territory({ names: ['La Paz', 'Intibucá'] })] })));
-  assert.equal(result.metrics.departments, 2);
-  assert.equal(result.metrics.activities, 4);
-  assert.equal(result.metrics.communities, 2);
-  assert.equal(result.projects[0].departments[0].photos.length, 6);
-  assert.equal(result.departments.Intibucá.photos.length, 6);
-  assert.equal(result.departments['La Paz'].photos.length, 6);
+  const [block] = result.projects[0].departments;
+  assert.equal(block.photos.length, 6);
+  assert.equal(block.activities.length, 4);
+  assert.equal(block.communities.length, 2);
+  assert.equal(result.departments.Intibucá.verified, true);
+  assert.equal(result.departments['La Paz'].verified, true);
 });
 
 test('normalization inherits project context and featured order without changing the JSON', () => {
@@ -134,7 +140,7 @@ test('manual errors identify projects, territories, lists and photograph fields'
 
 test('drafts may be created before their first territory and remain absent from the map', () => {
   const result = validateContent(document(project({ verified: false, departments: [] })));
-  assert.equal(result.metrics.departments, 0);
+  assert.deepEqual(result.projects[0].departments, []);
   assert.ok(Object.values(result.departments).every(department => !department.verified && !department.demo));
 });
 
@@ -146,14 +152,14 @@ test('bundled content and the copyable template use the project-first format', a
   const result = validateContent(input);
   for (const record of result.projects) {
     for (const block of record.departments) {
-      assert.equal(block.photos.filter(photo => photoMatches(photo, { project: record.name, axis: block.axis })).length, block.photos.length);
+      assert.ok(block.photos.every(photo => photo.project === record.name && photo.axis === block.axis));
     }
   }
 });
 
-test('combined filters and featured order stay stable', () => {
+test('featured photos sort first while preserving the order of the other photos and the input', () => {
   const photos = [{ src: 'a', project: 'A', axis: 'X' }, { src: 'b', project: 'B', axis: 'Y', featured: true }, { src: 'c', project: 'A', axis: 'Y' }];
-  assert.deepEqual(orderedPhotos(photos).filter(photo => photoMatches(photo, { project: 'A', axis: 'Y' })).map(photo => photo.src), ['c']);
+  assert.deepEqual(orderedPhotos(photos).map(photo => photo.src), ['b', 'a', 'c']);
   assert.equal(photos[0].src, 'a');
 });
 

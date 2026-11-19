@@ -5,7 +5,7 @@ import { PHOTO_VIEWER_ENABLED } from '../../config';
 export default function HelpModal({ onClose }) {
   return (
     <Modal title="Una memoria construida en comunidad." id="help-title" className="help-modal" onClose={onClose}>
-      <p>Abre «Explorar el mapa» desde la portada. El mapa general ocupa la pantalla y permite filtrar por proyecto y actividad principal. Haz clic en un departamento: si tiene un proyecto, se abre directamente su detalle; si tiene varios, se muestran todos completos en la misma página, con sus mapas, actividades, logros y fotografías. También puedes abrir «Ver detalle del proyecto» desde el panel.</p>
+      <p>Selecciona el mapa de la portada para comenzar. El mapa general ocupa la pantalla y permite filtrar por proyecto y actividad principal. Haz clic en un departamento: si tiene un proyecto, se abre directamente su detalle; si tiene varios, se muestran todos completos en la misma página, con sus mapas, actividades, logros y fotografías. También puedes abrir «Ver detalle del proyecto» desde el panel.</p>
       <div className="keyboard-list">
         <div><kbd>→</kbd> Alternar Inicio / Mapa</div>
         <div><kbd>←</kbd> Alternar Inicio / Mapa o volver al mapa general</div>

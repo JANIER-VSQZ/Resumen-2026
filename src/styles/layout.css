@@ -1,9 +1,5 @@
 /* Cabecera, navegación y pie de página. */
 
-.brand strong {
-  font-family: var(--font-heading);
-}
-
 .topbar {
   position: relative;
   z-index: 20;
@@ -31,120 +27,10 @@
   pointer-events: auto;
 }
 
-.topbar.is-detail {
-  display: flex;
-  justify-content: flex-end;
-  min-height: var(--size-48);
-  padding: var(--space-4) var(--space-18);
-  background: var(--color-background);
-}
-
-.topbar.has-page-title {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-}
-
-.has-page-title .brand {
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: start;
-}
-
-.header-page-title {
-  grid-column: 2;
-  grid-row: 1;
-  margin: 0;
-  color: var(--color-green-dark);
-  font-family: var(--font-heading);
-  font-size: var(--header-page-title-size);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-normal);
-  text-align: center;
-}
-
-.has-page-title .righttools {
-  grid-column: 3;
-  grid-row: 1;
-  justify-self: end;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-dark);
-  text-align: left;
-}
-
-.brand img {
-  width: var(--size-110);
-  height: auto;
-  object-fit: contain;
-  /* background: var(--color-green-dark); */
-  padding: var(--space-3);
-  border-radius: var(--radius-11);
-}
-
-.brand strong {
-  display: block;
-  font-size: var(--font-size-21);
-  line-height: 1.15;
-  letter-spacing: -.8px;
-}
-
-.brand small {
-  display: block;
-  margin-top: var(--space-3);
-  color: var(--color-dark);
-  font-size: var(--font-size-8);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: .6px;
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: var(--space-6);
-}
-
-.nav button {
-  min-height: var(--size-42);
-  padding: var(--space-9) var(--space-13);
-  border: 0;
-  border-radius: var(--radius-10);
-  background: transparent;
-  color: var(--color-dark);
-  font-size: var(--font-size-12);
-  font-weight: var(--font-weight-semibold);
-  white-space: nowrap;
-}
-
-.nav button:hover {
-  background: var(--color-background);
-  color: var(--color-dark);
-}
-
-.nav .chosen {
-  background: var(--color-green-light);
-  color: var(--color-dark);
-}
-
 .righttools {
   display: flex;
   align-items: center;
   gap: var(--space-8);
-}
-
-.edition {
-  margin-right: var(--space-8);
-  color: var(--color-dark);
-  font-size: var(--font-size-9);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: .8px;
-  white-space: nowrap;
 }
 
 .iconbutton {
@@ -195,13 +81,6 @@
   font-weight: var(--font-weight-bold);
 }
 
-@media (max-width: 1200px) {
-
-  .edition {
-    display: none;
-  }
-}
-
 @media (max-width: 900px) {
 
   .topbar {
@@ -209,34 +88,6 @@
     grid-template-columns: 1fr auto;
     gap: var(--space-6);
     padding-block: var(--space-8) var(--space-6);
-  }
-
-  .topbar.has-page-title {
-    grid-template-columns: minmax(0, 1fr) auto;
-    row-gap: var(--space-8);
-  }
-
-  .has-page-title .header-page-title {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    padding-top: var(--space-6);
-    border-top: var(--border-default);
-  }
-
-  .has-page-title .righttools {
-    grid-column: 2;
-  }
-
-  .nav {
-    grid-row: 2;
-    grid-column: 1 / -1;
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-5);
-  }
-
-  .nav button {
-    flex: 1;
-    padding: var(--space-7) var(--space-10);
   }
 
   .righttools {
@@ -249,36 +100,6 @@
 
   .topbar {
     padding-inline: var(--space-18);
-  }
-
-  .brand {
-    gap: var(--space-9);
-  }
-
-  .brand img {
-    width: var(--size-60);
-    height: var(--size-60);
-    border-radius: var(--radius-9);
-  }
-
-  .brand strong {
-    font-size: var(--font-size-19);
-  }
-
-  .brand small {
-    font-size: var(--font-size-7);
-    letter-spacing: .3px;
-  }
-
-  .nav {
-    gap: var(--space-4);
-  }
-
-  .nav button {
-    min-height: var(--size-36);
-    font-size: var(--font-size-11);
-    padding: var(--space-7);
-    white-space: normal;
   }
 
   .global-footer {

@@ -54,7 +54,7 @@
   color: var(--color-dark);
 }
 
-.gallery-img.is-interactive:hover {
+.gallery-img:hover {
   border-color: var(--color-green-dark);
   box-shadow: var(--shadow);
 }
@@ -78,7 +78,7 @@
   transition: transform var(--duration-image);
 }
 
-.gallery-img.is-interactive:hover .photo-frame > img {
+.gallery-img:hover .photo-frame > img {
   transform: scale(1.025);
 }
 

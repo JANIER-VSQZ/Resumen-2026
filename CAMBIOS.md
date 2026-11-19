@@ -1,5 +1,18 @@
 # Registro de cambios
 
+## 2026-11-19 · Panel informativo limitado a la galería
+
+- En la distribución de dos columnas, la altura de cada panel informativo queda limitada por su propia galería. El texto adicional se consulta con scroll dentro del panel, también mediante el teclado.
+- En pantallas de hasta 900 px, los bloques se apilan y el panel recupera su altura natural, conservando el botón para mostrar u ocultar actividades y logros.
+
+## 2026-11-19 · Limpieza y refactorización del código
+
+- Eliminadas la pantalla territorial anterior, las secciones comentadas de portada, los filtros antiguos, las cifras globales ocultas y sus componentes, hooks y estilos sin uso.
+- Unificado el cálculo de cobertura, actividades y fotografías del catálogo. La portada conserva únicamente los estados y las miniaturas que necesita, sin duplicar las galerías por departamento.
+- Simplificadas las propiedades de los componentes y la selección del mapa general. Se conserva el bloqueo territorial al entrar desde un departamento y la exploración libre al abrir el proyecto completo.
+- Corregidos el foco de la evidencia territorial, su etiqueta accesible y las claves de galería cuando el contenido repite identificadores de fotografías.
+- Actualizadas las pruebas y la documentación al acceso real desde el mapa de portada. El visor opcional, los archivos de contenido y las fotografías se conservan; el ejecutable se mantiene sin actualizar.
+
 ## 2026-11-18 · Detalles limitados al departamento consultado
 
 - Los detalles abiertos desde un departamento mantienen su selección y evidencia. Los demás departamentos quedan deshabilitados en los mapas y las cápsulas, también en las páginas con varios proyectos.

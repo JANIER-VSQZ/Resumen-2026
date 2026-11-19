@@ -1,4 +1,4 @@
-/* Portada, mapa de presentación y temas institucionales. */
+/* Portada y mapa de presentación. */
 
 .cover {
   padding: 0 var(--space-20);
@@ -46,16 +46,6 @@
   object-fit: contain;
 }
 
-.cover-identity > .eyebrow {
-  display: inline-flex;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  padding: var(--space-8) var(--space-14);
-  background: var(--color-white);
-  color: var(--color-dark);
-  letter-spacing: 1px;
-}
-
 .cover h1 {
   margin: 0 0 var(--space-20);
   font-size: var(--font-size-hero);
@@ -96,45 +86,6 @@
 
 .cover-copy > p:empty {
   display: none;
-}
-
-.cta-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-18) var(--space-24);
-  margin-top: var(--space-30);
-}
-
-.explore-note {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  margin-top: var(--space-30);
-  color: var(--color-dark);
-  font-size: var(--font-size-12);
-  line-height: var(--line-height-caption);
-}
-
-.explore-note strong {
-  display: block;
-  color: var(--color-dark);
-  font-size: var(--font-size-12);
-  font-weight: var(--font-weight-semibold);
-}
-
-.explore-note span {
-  display: block;
-}
-
-.note-icon {
-  width: 39px;
-  height: 39px;
-  display: grid !important;
-  place-items: center;
-  background: var(--color-background);
-  border-radius: var(--radius-circle);
-  color: var(--color-dark);
 }
 
 .cover-map-block, .cover-map-preview {
@@ -245,115 +196,14 @@
   stroke: var(--color-green-dark);
 }
 
-.cover-map-caption {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-10);
-  color: var(--color-dark);
-  font-size: var(--font-size-12);
-  margin-top: var(--space-12);
-}
-
-.cover-demo-label {
-  display: block;
-  text-align: center;
-  color: var(--color-dark);
-  font-size: var(--font-size-10);
-  margin-top: var(--space-10);
-}
-
-.cover-themes {
-  max-width: var(--content-max-width);
-  display: grid;
-  grid-template-columns: 1.05fr repeat(3, 1fr);
-  gap: var(--space-28);
-  align-items: center;
-  margin: 0 auto var(--space-30);
-  padding: var(--space-30) 0;
-  border-top: 1px solid var(--color-border);
-}
-
-.theme-intro h2 {
-  font-size: var(--font-size-22);
-  letter-spacing: -.8px;
-  margin: var(--space-7) 0 0;
-}
-
-.theme-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-12);
-}
-
-.theme-icon {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: var(--radius-14);
-}
-
-.theme-people {
-  background: var(--color-background);
-  color: var(--color-dark);
-}
-
-.theme-land {
-  background: var(--color-background);
-  color: var(--color-dark);
-}
-
-.theme-stories {
-  background: var(--color-background);
-  color: var(--color-dark);
-}
-
-.theme-item h3 {
-  margin: var(--space-2) 0 var(--space-7);
-  font-size: var(--font-size-13);
-  font-weight: var(--font-weight-extrabold);
-  letter-spacing: -.2px;
-}
-
-.theme-item p {
-  margin: 0;
-  color: var(--color-dark);
-  font-size: var(--font-size-12);
-  line-height: var(--line-height-caption);
-}
-
-@media (max-width: 1200px) {
-
-  .cover h1 {
-    font-size: var(--font-size-hero);
-  }
-
-  .cover-themes {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-28);
-  }
-}
-
 @media (max-width: 900px) {
 
   .cover-hero {
     min-height: min(570px, 100svh);
   }
 
-  .cover h1 {
-    font-size: var(--font-size-hero);
-  }
-
   .cover-copy > p {
     font-size: var(--font-size-15);
-  }
-
-  .cover-identity > .eyebrow {
-    font-size: var(--font-size-9);
-    padding: var(--space-7) var(--space-11);
-    letter-spacing: .7px;
   }
 }
 
@@ -381,32 +231,6 @@
   }
 
   .cover h1 {
-    font-size: var(--font-size-hero);
     margin: 0 0 var(--space-18);
-  }
-
-  .cover-copy > p {
-    font-size: var(--font-size-15);
-  }
-
-  .cta-row {
-    margin-top: var(--space-24);
-    gap: var(--space-8) var(--space-20);
-  }
-
-  .explore-note {
-    margin-top: var(--space-22);
-    font-size: var(--font-size-11);
-  }
-
-  .cover-map-block {
-    margin-top: 0;
-  }
-
-  .cover-themes {
-    grid-template-columns: 1fr;
-    gap: var(--space-24);
-    margin-bottom: var(--space-16);
-    padding-top: var(--space-24);
   }
 }

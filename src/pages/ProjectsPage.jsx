@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, MapPin, SlidersHorizontal, X } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ChevronDown, MapPin, SlidersHorizontal } from 'lucide-react';
 import { DEPARTMENTS } from '../content';
 import { filterProjectCatalog } from '../projects';
 import { getScreenHref } from '../navigation';
 import TerritoryMap from '../components/map/TerritoryMap';
 
-export default function ProjectsPage({ projects, content, features, filters, onFilterChange, department, onSelectDepartment, onOpenDepartment, onHome }) {
+export default function ProjectsPage({ projects, content, features, filters, onFilterChange, onOpenDepartment, onHome }) {
   const [hovered, setHovered] = useState(null);
   const [expanded, setExpanded] = useState(() => !window.matchMedia('(max-width: 900px)').matches);
-  const resultsRef = useRef(null);
   const filtered = useMemo(() => filterProjectCatalog(projects, filters), [projects, filters]);
   const coverage = useMemo(() => new Set(filtered.flatMap(project => project.departments)), [filtered]);
-  const results = department ? filtered.filter(project => project.departments.includes(department)) : filtered;
-  const hasFilters = Boolean(filters.project || filters.axis || department);
+  const hasFilters = Boolean(filters.project || filters.axis);
   const axes = useMemo(() => [...new Set(projects.filter(project => !filters.project || project.id === filters.project).flatMap(project => project.entries.map(entry => entry.project.axis)).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es')), [projects, filters.project]);
   const matches = useCallback(name => (!filters.project && !filters.axis) || coverage.has(name), [filters, coverage]);
   const departments = useMemo(() => Object.fromEntries(DEPARTMENTS.map(name => {
@@ -35,7 +33,6 @@ export default function ProjectsPage({ projects, content, features, filters, onF
 
   function changeFilters(next) {
     onFilterChange(next);
-    onSelectDepartment(null);
     setHovered(null);
     setExpanded(true);
   }
@@ -51,7 +48,7 @@ export default function ProjectsPage({ projects, content, features, filters, onF
 
   return (
     <main className="projectsview map-explorer-page" id="main-content" tabIndex={-1} aria-labelledby="page-title">
-      <TerritoryMap features={features} departments={departments} filters={{}} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} selected={department} overviewMode />
+      <TerritoryMap features={features} departments={departments} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} />
       <header className="map-explorer-heading">
         <span className="eyebrow">Nuestra labor · Honduras</span>
         <h1 className="page-title page-title--map" id="page-title">Proyectos <em>{content.period}.</em></h1>
@@ -82,16 +79,15 @@ export default function ProjectsPage({ projects, content, features, filters, onF
           </label>
         </div>
         <div className="overview-results-heading">
-          <h2 id="overview-results-title" tabIndex={-1} ref={resultsRef}>{department ? 'Proyectos en ' + department : 'Proyectos disponibles'}</h2>
-          <p role="status">{results.length} {results.length === 1 ? 'proyecto' : 'proyectos'}{department ? '' : ' · ' + coverage.size + (coverage.size === 1 ? ' departamento' : ' departamentos')}</p>
-          {department && <button className="overview-clear-department" onClick={() => { onSelectDepartment(null); resultsRef.current?.focus({ preventScroll: true }); }}><X size={14} aria-hidden="true" />Quitar selección de departamento</button>}
+          <h2 id="overview-results-title">Proyectos disponibles</h2>
+          <p role="status">{filtered.length} {filtered.length === 1 ? 'proyecto' : 'proyectos'} · {coverage.size} {coverage.size === 1 ? 'departamento' : 'departamentos'}</p>
         </div>
         <button className="overview-results-toggle" onClick={() => setExpanded(value => !value)} aria-expanded={expanded} aria-controls="overview-project-results">{expanded ? 'Ocultar proyectos' : 'Ver proyectos'}<ChevronDown size={17} aria-hidden="true" /></button>
         <div className="overview-project-results" id="overview-project-results" hidden={!expanded}>
-          {results.length ? <nav aria-labelledby="overview-results-title">
-            <ul className="overview-project-list">{results.map(project => (
+          {filtered.length ? <nav aria-labelledby="overview-results-title">
+            <ul className="overview-project-list">{filtered.map(project => (
               <li key={project.id}>
-                <a className="map-project-result" data-project-link={project.id} href={getScreenHref({ view: 'map', selected: project.id, department })}>
+                <a className="map-project-result" data-project-link={project.id} href={getScreenHref({ view: 'map', selected: project.id })}>
                   <h3>{project.name}</h3>
                   <p><MapPin size={15} aria-hidden="true" />{project.departments.join(' · ')}</p>
                   {project.demo && <span className="overview-demo-label">Demostración</span>}

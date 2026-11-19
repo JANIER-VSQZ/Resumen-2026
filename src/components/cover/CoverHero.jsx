@@ -1,9 +1,8 @@
 import React from 'react';
-import { Map } from 'lucide-react';
 import { hasContent } from '../../content';
 import MapPreview from '../map/MapPreview';
 
-export default function CoverHero({ subtitle, departments, features, hasDemos, onExplore, onHelp }) {
+export default function CoverHero({ subtitle, departments, features, onExplore }) {
   return (
     <section className="cover-hero" aria-labelledby="cover-title">
       <div className="cover-copy">
@@ -16,7 +15,6 @@ export default function CoverHero({ subtitle, departments, features, hasDemos, o
       </div>
       <div className="cover-identity">
         <img className="cover-logo institutional-logo" src="/assets/asonog-logo.png" alt="Logotipo de ASONOG" />
-
       </div>
     </section>
   );

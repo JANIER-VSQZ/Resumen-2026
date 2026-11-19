@@ -3,7 +3,6 @@ export const MAP_THUMBNAIL_CONTEXTS = ['cover', 'interactive', 'detail'];
 export const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/gi, '').toLowerCase();
 export const isPublished = record => record?.verified === true && record.demo !== true;
 export const hasContent = record => isPublished(record) || record?.demo === true;
-export const photoMatches = (photo, filters) => ['community', 'project', 'axis'].every(key => !filters[key] || photo[key] === filters[key]);
 export const orderedPhotos = photos => [...(photos || [])].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
 export const photoPosition = photo => `${photo.focalX ?? 50}% ${photo.focalY ?? 50}%`;
 export function formatDate(value) {
@@ -39,20 +38,6 @@ export function normalizeProject(project) {
   };
 }
 
-export function calculateMetrics(projects) {
-  const published = (projects || []).filter(isPublished);
-  const territories = published.flatMap(project => project.departments || []);
-  return {
-    departments: new Set(territories.flatMap(department => department.names)).size,
-    communities: new Set(territories.flatMap(department => (department.communities || []).map(community =>
-      JSON.stringify([[...department.names].sort(), community]),
-    ))).size,
-    activities: territories.reduce((count, department) => count + (department.activities || []).length, 0),
-    beneficiaries: !published.length || published.some(project => project.beneficiaries == null)
-      ? null : published.reduce((total, project) => total + project.beneficiaries, 0),
-  };
-}
-
 export function normalizeContent(input) {
   const data = structuredClone(input);
   data.mapThumbnails = Object.fromEntries(MAP_THUMBNAIL_CONTEXTS.map(context => [context, { ...(data.mapThumbnails?.[context] || {}) }]));
@@ -60,21 +45,17 @@ export function normalizeContent(input) {
   // La portada recibe una vista derivada. El JSON se mantiene organizado por proyecto.
   data.departments = Object.fromEntries(DEPARTMENTS.map(name => [name, {
     coverMapThumbnail: data.mapThumbnails.cover[name] || '',
-    verified: false, demo: false, projects: [], photos: [],
+    verified: false, demo: false,
   }]));
   for (const project of data.projects.filter(hasContent)) {
     for (const department of project.departments) {
-      const record = { ...department, id: project.id + ':' + department.id, name: project.name };
       for (const name of department.names) {
         const target = data.departments[name];
         target.verified ||= isPublished(project);
         target.demo = !target.verified && (target.demo || project.demo);
-        target.projects.push(record);
-        target.photos.push(...department.photos);
       }
     }
   }
-  data.metrics = calculateMetrics(data.projects);
   return data;
 }
 

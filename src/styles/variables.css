@@ -21,20 +21,10 @@
   --color-shadow: color-mix(in srgb, var(--color-dark) 50%, transparent);
   --color-overlay: color-mix(in srgb, var(--color-dark) 65%, transparent);
 
-  /* Cabecera */
-  --header-page-title-size: var(--font-size-22);
-  --department-logo-width: clamp(160px, 14vw, 220px);
-  --department-title-size: clamp(28px, 2.5vw, 42px);
-
   /* Relieve y entrada de los títulos de las tres pantallas */
   --title-text-shadow: 0 1px 0 var(--color-white), 0 2px 0 var(--color-border), 0 4px 8px var(--color-shadow);
   --title-reveal-duration: 650ms;
   --title-accent-duration: 850ms;
-
-  /* Entrada de las tarjetas del detalle al entrar en pantalla */
-  --card-entrance-duration: 480ms;
-  --card-entrance-distance: 12px;
-  --card-entrance-step: 55ms;
 
   /* Entrada e interacción de los logotipos */
   --logo-entrance-duration: 750ms;
@@ -65,8 +55,6 @@
   --map-department-hover-duration: .22s;
   --map-tooltip-width: 360px;
   --map-explorer-panel-width: 320px;
-  --map-logo-width: var(--cover-logo-width);
-  --map-title-size: var(--font-size-hero);
 
   /* Fuentes: cambia la familia una sola vez */
   --font-family-body: 'DM Sans';
@@ -74,7 +62,6 @@
   --font-heading: 'Manrope', Arial, sans-serif;
 
   /* Tamaños de texto: el número indica el valor inicial en px */
-  --font-size-7: 7px;
   --font-size-8: 8px;
   --font-size-9: 9px;
   --font-size-10: 10px;
@@ -83,23 +70,14 @@
   --font-size-13: 13px;
   --font-size-14: 14px;
   --font-size-15: 15px;
-  --font-size-16: 16px;
   --font-size-17: 17px;
-  --font-size-19: 19px;
-  --font-size-21: 21px;
-  --font-size-22: 22px;
   --font-size-23: 23px;
-  --font-size-25: 25px;
   --font-size-26: 26px;
   --font-size-27: 27px;
-  --font-size-30: 30px;
-  --font-size-32: 32px;
-  --font-size-38: 38px;
 
   /* Títulos adaptables: sus variantes están en las media queries */
   --font-size-hero: clamp(46px, 4.9vw, 82px);
   --font-size-section: clamp(26px, 2.6vw, 36px);
-  --font-size-department: clamp(28px, 2.7vw, 38px);
 
   /* Información del mapa y proyectos: mínimo móvil, escala fluida y máximo escritorio */
   --font-size-info-small: clamp(.75rem, calc(.6875rem + .2vw), .875rem);
@@ -131,23 +109,15 @@
   --space-12: 12px;
   --space-13: 13px;
   --space-14: 14px;
-  --space-15: 15px;
   --space-16: 16px;
-  --space-17: 17px;
   --space-18: 18px;
   --space-20: 20px;
-  --space-21: 21px;
   --space-22: 22px;
   --space-24: 24px;
-  --space-25: 25px;
   --space-28: 28px;
   --space-30: 30px;
-  --space-34: 34px;
   --space-36: 36px;
-  --space-42: 42px;
   --space-52: 52px;
-  --space-54: 54px;
-  --space-56: 56px;
   --space-60: 60px;
 
   /* Esquinas redondeadas */
@@ -157,10 +127,8 @@
   --radius-8: 8px;
   --radius-9: 9px;
   --radius-10: 10px;
-  --radius-11: 11px;
   --radius-12: 12px;
   --radius-13: 13px;
-  --radius-14: 14px;
   --radius-16: 16px;
   --radius-18: 18px;
   --radius-20: 20px;
@@ -172,7 +140,6 @@
   --focus-ring: 3px solid var(--color-green-dark);
   --focus-offset: 3px;
   --shadow: 0 12px 36px var(--color-shadow);
-  --shadow-primary: 0 6px 16px var(--color-shadow);
   --shadow-viewer: 0 24px 90px var(--color-shadow);
   --shadow-navigation: 0 4px 18px var(--color-shadow);
   --shadow-dialog: 0 24px 90px var(--color-shadow);
@@ -181,9 +148,7 @@
   --overlay-blur: 7px;
 
   /* Anchos y tamaños compartidos */
-  --content-max-width: 1440px;
   --header-gutter: clamp(20px, 4vw, 76px);
-  --cover-gutter: clamp(24px, 5.5vw, 110px);
   --page-gutter: clamp(24px, 4vw, 80px);
   --footer-gutter: clamp(24px, 4vw, 76px);
   --size-32: 32px;
@@ -191,11 +156,7 @@
   --size-40: 40px;
   --size-42: 42px;
   --size-44: 44px;
-  --size-48: 48px;
   --size-52: 52px;
-  --size-56: 56px;
-  --size-60: 60px;
-  --size-110: 110px;
   --project-info-width: 450px;
   --project-gallery-columns: 2;
   --project-photo-ratio: 4 / 3;
@@ -217,13 +178,9 @@
 
 @media (max-width: 640px) {
   :root {
-    --header-page-title-size: var(--font-size-16);
-    --department-logo-width: 112px;
-    --department-title-size: var(--font-size-25);
     --cover-map-float-distance: 7px;
     --cover-map-float-tilt: .3deg;
     --font-size-hero: clamp(40px, 10.5vw, 62px);
     --font-size-section: var(--font-size-26);
-    --font-size-department: var(--font-size-30);
   }
 }

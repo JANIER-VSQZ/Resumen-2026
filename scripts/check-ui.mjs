@@ -101,10 +101,6 @@ try {
     await evaluate(`(() => { const element = document.querySelector(${JSON.stringify(selector)}); element.value = ${JSON.stringify(value)}; element.dispatchEvent(new Event('change', {bubbles:true})); })()`);
     await settle();
   };
-  const input = async (selector, value) => {
-    await evaluate(`(() => { const element = document.querySelector(${JSON.stringify(selector)}); const setter = Object.getOwnPropertyDescriptor(element instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype, 'value').set; setter.call(element, ${JSON.stringify(value)}); element.dispatchEvent(new Event('input', {bubbles:true})); })()`);
-    await settle();
-  };
   const press = async (key, options = {}) => {
     const codes = { ArrowLeft: 37, ArrowRight: 39, Escape: 27, Enter: 13, ' ': 32 };
     await command('Input.dispatchKeyEvent', { type: 'keyDown', key, code: key, windowsVirtualKeyCode: codes[key], ...options });
@@ -203,7 +199,7 @@ try {
   }
   const coverImages = Object.values(content.mapThumbnails.cover).filter(Boolean).length;
   assert.equal(await evaluate("document.querySelectorAll('.preview-department image').length"), coverImages, 'The cover must retain its own thumbnails.');
-  await click('.cover-projects-button'); await assertScreen('projects');
+  await click('.map-preview-open'); await assertScreen('projects');
   assert.equal(await evaluate("!!document.querySelector('.map-explorer-page')"), true);
   assert.equal(await evaluate("document.querySelectorAll('.honduras-map .department').length"), 18);
   assert.equal(await evaluate("document.querySelectorAll('.honduras-map image').length"), Object.values(content.mapThumbnails.interactive).filter(Boolean).length, 'The interactive map must not inherit cover thumbnails.');
@@ -221,7 +217,7 @@ try {
   await press('ArrowRight', { modifiers: 2 }); await assertScreen('projects');
   await click('.global-footer button'); await press('ArrowRight'); await assertScreen('cover');
   assert.equal(await evaluate("!document.querySelector('.help-modal') && !document.querySelector('main').inert"), true);
-  await click('.cover-projects-button'); await assertScreen('projects');
+  await click('.map-preview-open'); await assertScreen('projects');
 
   if (projects.length) {
     const project = projects[0];
@@ -461,6 +457,7 @@ try {
     for (const key of ['Enter', ' ']) {
       await focus('.is-project-location'); await press(key);
       assert.equal(await evaluate("!!document.querySelector('.department.is-selected')"), true, 'Keyboard selection failed: ' + key);
+      assert.equal(await evaluate("document.activeElement === document.querySelector('.project-evidence')"), true, 'Selecting a department must focus its activities and photographs.');
       await click('.project-evidence-heading .back');
     }
     if (!desktop) {

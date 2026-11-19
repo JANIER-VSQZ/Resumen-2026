@@ -1,5 +1,5 @@
 import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
-import { Camera, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import TerritoryMap from '../components/map/TerritoryMap';
 import ProjectSection from '../components/projects/ProjectSection';
 
@@ -7,7 +7,6 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
   const instanceId = useId().replace(/:/g, '');
   const titleId = embedded ? 'project-' + instanceId + '-title' : 'page-title';
   const coverageId = embedded ? 'project-' + instanceId + '-coverage' : 'coverage-title';
-  const evidenceId = embedded ? 'project-' + instanceId + '-evidence' : 'project-evidence-title';
   const Container = embedded ? 'article' : 'main';
   const SectionTitle = embedded ? 'h3' : 'h2';
   const [hovered, setHovered] = useState(null);
@@ -21,7 +20,6 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
     projects: project.entries.filter(entry => entry.departments.includes(name)).map(entry => entry.project),
   }])), [project, thumbnails]);
   const visibleEntries = selectedDepartment ? project.entries.filter(entry => entry.departments.includes(selectedDepartment)) : project.entries;
-  const photoCount = visibleEntries.reduce((count, entry) => count + entry.project.photos.length, 0);
 
   function selectDepartment(name) {
     if (departmentLocked) return;
@@ -37,9 +35,9 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
         <h1 className="page-title project-nav-title" id={titleId}>{project.name}</h1>
         <button className="back" onClick={onBack}>Volver al mapa</button>
       </nav>}
-      <header className="project-map-heading">
-        {embedded && <h2 className="page-title" id={titleId}>{project.name}</h2>}
-      </header>
+      {embedded && <header className="project-map-heading">
+        <h2 className="page-title" id={titleId}>{project.name}</h2>
+      </header>}
       {project.demo && <p className="demo-notice">Proyecto de demostración. Este contenido no representa resultados institucionales.</p>}
       <section className="project-map-overview" aria-labelledby={coverageId}>
         <aside className="project-coverage">
@@ -54,18 +52,15 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
             <div><dt>Fotografías</dt><dd>{project.photos.length}</dd></div>
           </dl>
         </aside>
-        <TerritoryMap features={features} departments={departments} filters={{}} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} selected={selectedDepartment} selectionLocked={departmentLocked} projectMode />
+        <TerritoryMap features={features} departments={departments} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} selected={selectedDepartment} selectionLocked={departmentLocked} projectMode />
       </section>
-      <section className="project-evidence" aria-labelledby={evidenceId}>
+      <section className="project-evidence" ref={resultsRef} tabIndex={-1} aria-label={selectedDepartment ? 'Actividades y fotografías en ' + selectedDepartment : 'Actividades y fotografías del proyecto'}>
         <div className="project-evidence-heading">
-          <div>
-
-          </div>
           {selectedDepartment && !departmentLocked && <button className="back" onClick={() => selectDepartment(null)}>Mostrar todos los departamentos</button>}
         </div>
         <div className="project-list">
-          {visibleEntries.map(({ id, project: record, departments: coverage }, index) => (
-            <ProjectSection key={id} project={record} photos={record.photos} index={index} period={period} location={coverage.join(' · ')} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} />
+          {visibleEntries.map(({ id, project: record, departments: coverage }) => (
+            <ProjectSection key={id} project={record} period={period} location={coverage.join(' · ')} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} />
           ))}
         </div>
       </section>

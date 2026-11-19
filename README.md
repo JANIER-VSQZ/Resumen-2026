@@ -2,7 +2,7 @@
 
 Presentación de resultados institucionales en React + Vite, con una aplicación portátil para Windows. Incluye un mapa general a pantalla completa con filtros por proyecto y actividad, y detalles de proyecto con su propio mapa, actividades, logros y galerías. Todo el contenido se prepara manualmente en el proyecto y se distribuye junto con la aplicación.
 
-El estado actual de la interfaz y los ajustes manuales están documentados en [CAMBIOS.md](CAMBIOS.md). Algunas secciones descritas en este README se conservan en el código y están comentadas en las vistas actuales.
+El estado actual de la interfaz y los ajustes manuales están documentados en [CAMBIOS.md](CAMBIOS.md). El código contiene las vistas actuales y el visor de fotografías opcional, que se activa desde `src/config.js`.
 
 ## Desarrollo
 
@@ -23,19 +23,19 @@ src/
   pages/                 Portada, mapa general con filtros y detalle del proyecto
   components/
     layout/              Cabecera y pie de página
-    cover/               Presentación y temas de la portada
-    map/                 Mapa, departamentos, controles, filtros y cifras
-    projects/            Bloques de proyecto, información, filtros y galería
+    cover/               Presentación de la portada
+    map/                 Mapa, departamentos, controles, leyenda y fichas
+    projects/            Bloques de proyecto, información y galería
     photos/              Tarjeta fotográfica, visor y sus controles
-    common/              Selector de filtro, filtros activos y diálogo base
+    common/              Diálogo base
     help/                Contenido de la ventana de ayuda
-  hooks/                 Navegación de teclado, filtros, foco, zoom y gestos
+  hooks/                 Navegación de teclado, foco, zoom y gestos
   styles/                Variables globales y estilos por sección
   content.json           Proyectos con sus departamentos y resultados
   content.schema.json    Ayuda de edición y validación de la estructura
   config.js              Opciones de presentación, como activar el visor de fotos
   data.js                Preparación inicial del contenido y la cartografía
-  content.js             Reglas, validación y cálculos del contenido
+  content.js             Reglas, validación y normalización del contenido
   geometry.js            Preparación y validación del mapa
   projects.js            Preparación del menú y la cobertura de cada proyecto
   navigation.js          Rutas de proyectos y reglas de los atajos
@@ -49,18 +49,18 @@ Para realizar cambios puntuales:
 | Colores, tipografía, espacios o medidas compartidas | `styles/variables.css` | Variables globales `:root` |
 | Cabecera y navegación | `components/layout/AppHeader.jsx` | `styles/layout.css` |
 | Pie de página | `components/layout/AppFooter.jsx` | `styles/layout.css` |
-| Portada | `components/cover/CoverHero.jsx` y `CoverThemes.jsx` | `styles/cover.css` |
+| Portada | `components/cover/CoverHero.jsx` | `styles/cover.css` |
 | Siluetas y fotografías del mapa | `components/map/MapDepartment.jsx` | `styles/map.css` |
 | Zoom y controles del mapa | `components/map/MapControls.jsx` y `hooks/useMapCamera.js` | `styles/map.css` |
 | Mapa general, filtros y accesos a proyectos | `pages/ProjectsPage.jsx` | `styles/map-explorer.css` |
 | Detalle del proyecto y su mapa | `pages/MapPage.jsx` | `styles/project-navigation.css` |
-| Cifras publicadas | `components/map/MapMetrics.jsx` | `styles/map.css` |
+| Totales de actividades y fotografías | `projects.js` y `pages/MapPage.jsx` | `styles/project-navigation.css` |
 | Tarjeta de información a la derecha | `components/projects/ProjectInformation.jsx` | `styles/projects.css` |
 | Distribución de los proyectos | `components/projects/ProjectSection.jsx` | `styles/projects.css` |
 | Galería y tarjetas de fotografías | `components/projects/ProjectGallery.jsx` y `components/photos/GalleryPhoto.jsx` | `styles/gallery.css` |
 | Descripción debajo de cada fotografía | `components/photos/GalleryPhoto.jsx` | `styles/gallery.css` |
 | Visor conservado y miniaturas | `components/photos/Viewer*.jsx` y `PhotoViewer.jsx` | `styles/viewer.css` |
-| Filtros compartidos | `components/common/FilterSelect.jsx` y `FilterChips.jsx` | `styles/shared.css` |
+| Filtros del mapa general | `pages/ProjectsPage.jsx` | `styles/map-explorer.css` |
 | Ayuda y diálogos | `components/help/HelpModal.jsx` y `components/common/Modal.jsx` | `styles/modal.css` |
 
 Las rutas de la tabla son relativas a `src/`. El contenido institucional se edita en `content.json`; los componentes reciben ese contenido mediante propiedades. Los hooks concentran el comportamiento y los componentes la presentación. No se necesitan dependencias adicionales.
@@ -71,7 +71,7 @@ Los valores compartidos están agrupados en `src/styles/variables.css`, dentro d
 
 - Paleta única: `--color-primary: #EFAE0D`, `--color-dark: #343435`, `--color-secondary: #66A330`, `--color-green-dark: #4C8030`, `--color-green-light: #81B631`, `--color-yellow-light: #FAB833`, `--color-background: #E9E8E5`, `--color-border: #D9D6D5` y `--color-white: #FFFFFF`.
 - Uso uniforme: texto en `--color-dark`, fondos de página y etiquetas en `--color-background`, tarjetas y controles en `--color-white`, y bordes en `--color-border`. Los textos secundarios se distinguen por su tamaño y jerarquía, sin añadir otro gris.
-- Acentos: botones principales y subrayados en `--color-primary`, hover del botón principal en `--color-yellow-light`, énfasis y foco en `--color-green-dark`, y selección de navegación en `--color-green-light`.
+- Acentos: subrayados en `--color-primary`, y énfasis, selección y foco en `--color-green-dark`. La paleta institucional completa permanece disponible en `variables.css`.
 - Los dos mapas y su leyenda comparten `--color-map-published` (verde secundario), `--color-map-demo` (dorado) y `--color-map-empty` (gris de borde). Puedes ajustar esas tres asignaciones sin tocar cada mapa.
 - Se eliminaron las variables de color por componente y los degradados de las superficies. Solo `--color-shadow` y `--color-overlay` usan transparencia del gris oscuro, para sombras y fondos de diálogos.
 - Tipografía: `--font-family-body`, `--font-heading` y tamaños como `--font-size-12`.
@@ -79,17 +79,17 @@ Los valores compartidos están agrupados en `src/styles/variables.css`, dentro d
 - Espaciados: `--space-8`, `--space-12`, `--space-16`, etc. Se utilizan en márgenes, rellenos y separaciones.
 - Esquinas: `--radius-10`, `--radius-16`, `--radius-pill`, etc.
 - Bordes y efectos: `--color-border`, `--border-default`, `--shadow`, `--focus-ring` y `--duration-fast`.
-- Distribución: `--content-max-width`, `--page-gutter`, `--header-gutter`, `--cover-gutter` y tamaños compartidos como `--size-40`.
+- Distribución: `--page-gutter`, `--header-gutter`, `--footer-gutter` y tamaños compartidos como `--size-40`.
 - Proyectos: `--project-info-width` (ancho de la tarjeta), `--project-gallery-columns` (columnas de fotografías) y `--project-photo-ratio` (proporción de las imágenes).
 - Portada y mapa interactivo: sus títulos aparecen en la esquina superior izquierda, usan `--font-size-hero` y dejan el ancho disponible al mapa. Los logotipos se sitúan en la parte inferior; `--cover-logo-width` controla su tamaño. El detalle conserva el logotipo en la cabecera. Los títulos usan el peso 800.
-- Título de cabecera: `--header-page-title-size` controla el texto del mapa y el nombre del departamento en la vista de detalle.
+- Títulos del recorrido: `.map-explorer-heading h1` y `.project-page-nav .project-nav-title` controlan los títulos del mapa general y los detalles.
 - Flotación del mapa de inicio: `--cover-map-float-duration` (duración del ciclo), `--cover-map-float-distance` (desplazamiento), `--cover-map-float-tilt` (inclinación) y las variables `--cover-map-elevation-shadow` y `--cover-map-ground-*` (sombras). El movimiento es más suave en móvil y se desactiva cuando el sistema solicita movimiento reducido.
 - Seguimiento del cursor en ese mapa: `--cover-map-hover-distance` (desplazamiento máximo), `--cover-map-hover-duration` y `--cover-map-hover-easing` (suavidad). El comportamiento está en `hooks/useMapHover.js`; vuelve al centro al salir del mapa y respeta el movimiento reducido y los gestos táctiles.
 - Mapa interactivo: `--map-elevation-shadow` (sombra general), `--map-department-hover-scale` (ampliación del departamento), `--map-department-hover-shadow` y `--map-department-hover-duration`. El departamento señalado se muestra por encima de los demás; su área de selección permanece fija para conservar el clic y el arrastre. El foco del teclado también lo destaca, y el movimiento reducido desactiva la ampliación.
 
 Los sufijos numéricos indican el valor inicial en píxeles. Por ejemplo, cambiar `--space-12: 12px` a `--space-12: 14px` actualiza todos los espaciados que utilizan esa variable, sin cambiar los tamaños de texto ni las esquinas.
 
-Los títulos usan `--font-size-hero`, `--font-size-section` y `--font-size-department`. Las variantes globales para tabletas y móviles están al final de `variables.css`. Cada archivo de sección contiene sus propias media queries para ajustar la distribución.
+Los títulos usan `--font-size-hero` y `--font-size-section`. Las variantes globales para tabletas y móviles están al final de `variables.css`. Cada archivo de sección contiene sus propias media queries para ajustar la distribución.
 
 Para un cambio compartido, modifica una variable global. Para uno particular, edita el selector del archivo correspondiente y reutiliza `var(--nombre)`; si necesitas un valor compartido nuevo, decláralo en `variables.css`. Los estilos del proyecto usan clases explícitas, sin módulos CSS ni valores de color repetidos fuera de las variables. Los estilos en línea se reservan para el encuadre de imágenes, las transformaciones calculadas del visor y las variables de posición del cursor en el mapa de inicio.
 
@@ -144,12 +144,12 @@ Ejemplo de la nueva estructura:
 ```
 
 - `id` identifica el proyecto y su enlace. Debe ser único, en minúsculas y sin espacios ni tildes. Cambiar `name` conserva el enlace si mantienes el mismo `id`.
-- `verified: true` y `demo: false` publican el proyecto completo. `demo: true` identifica una demostración y la excluye de las cifras institucionales.
+- `verified: true` y `demo: false` publican el proyecto completo. `demo: true` identifica una demostración que se muestra con su propia etiqueta.
 - Cada bloque de `departments` contiene `names`, una lista de nombres exactos de departamentos. Usa bloques separados cuando tengan información distinta.
 - Para trabajo compartido, escribe por ejemplo `"names": ["La Paz", "Intibucá"]` en un solo bloque. Ambos departamentos aparecen en el mapa y la evidencia se cuenta una vez.
 - `axis` y `summary` son opcionales. Puedes definirlos en el proyecto para que los hereden los bloques que no indiquen sus propios valores.
 - `communities`, `activities`, `achievements` y `photos` admiten cualquier cantidad, incluso listas vacías. Pueden omitirse mientras completas la información. Un proyecto publicado necesita al menos un bloque con departamentos.
-- `beneficiaries` corresponde al proyecto completo y puede quedar en `null`. Las cifras usan proyectos publicados: departamentos únicos, comunidades únicas por grupo territorial y actividades contadas una vez por bloque.
+- `beneficiaries` corresponde al proyecto completo y puede quedar en `null`; la interfaz actual no muestra esta cifra. Los detalles cuentan los departamentos únicos y las actividades y fotografías una vez por bloque territorial.
 
 Copia las fotografías a una carpeta de `public/`. Por ejemplo, `public/FotosProyectos/taller.png` se escribe como `/FotosProyectos/taller.png`. En cada foto solo `src` es obligatorio. Puedes añadir `description`, `community`, `date`, `featured`, `thumbnail`, `width`, `height`, `thumbnailWidth`, `focalX` y `focalY`. El nombre del proyecto, su identificador, el eje y los departamentos se heredan automáticamente. `featured: true` coloca la imagen al principio y los valores de encuadre van de 0 a 100.
 
@@ -163,7 +163,7 @@ La aplicación muestra los datos incluidos en su compilación. Después de edita
 
 ## Recorrido
 
-- La portada ofrece «Explorar el mapa» y su mapa fotográfico como accesos al mapa general.
+- El mapa fotográfico de la portada abre el mapa general.
 - El mapa general ocupa casi toda la pantalla, con zoom, arrastre y nombres opcionales. Colorea los departamentos donde hay proyectos; sus miniaturas independientes se incorporarán cuando se seleccionen.
 - El panel permite filtrar por proyecto y actividad principal. El mapa resalta únicamente los departamentos donde se realizó la intervención que coincide con ambos filtros.
 - Hacer clic en un departamento abre directamente su proyecto cuando solo hay uno. Si hay varios, muestra todos los proyectos completos en la misma página, uno debajo del otro, con sus mapas, actividades, logros y fotografías; si no hay proyectos, muestra un aviso.

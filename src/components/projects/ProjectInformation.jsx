@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Check, ChevronDown, MapPin } from 'lucide-react';
 
-export default function ProjectInformation({ project, community, id, expandedByDefault = false }) {
-  const [expanded, setExpanded] = useState(expandedByDefault);
+export default function ProjectInformation({ project, id }) {
+  const [expanded, setExpanded] = useState(true);
   return (
-    <aside className={'project-info' + (expanded ? ' info-expanded' : '')} aria-label={'Información de ' + project.name}>
+    <aside className={'project-info' + (expanded ? ' info-expanded' : '')} aria-label={'Información de ' + project.name} tabIndex={0}>
       {project.axis && (
         <header className="project-info-heading">
           <span>Actividad principal</span>
@@ -14,7 +14,7 @@ export default function ProjectInformation({ project, community, id, expandedByD
       {project.summary && <p className="project-summary">{project.summary}</p>}
       <section className="info-block project-communities">
         <h4><MapPin size={14} aria-hidden="true" />Comunidades de intervención</h4>
-        <ul>{project.communities.map(name => <li key={name} className={community === name ? 'selected-community' : undefined}>{name}</li>)}</ul>
+        <ul>{project.communities.map(name => <li key={name}>{name}</li>)}</ul>
       </section>
       <button className="information-toggle" onClick={() => setExpanded(value => !value)} aria-expanded={expanded} aria-controls={id}>
         {expanded ? 'Ocultar actividades y logros' : 'Ver actividades y logros'}<ChevronDown size={16} />

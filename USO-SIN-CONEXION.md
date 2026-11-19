@@ -4,7 +4,7 @@
 
 1. Copia `release/ASONOG-proyectos-2026.exe` a una memoria USB o al equipo de destino.
 2. Ábrelo con doble clic en Windows 10 u 11 de 64 bits.
-3. Abre «Explorar el mapa», filtra por proyecto o actividad y utiliza «Ver detalle del proyecto» para consultar su mapa, actividades y fotografías. No necesita internet ni instalar Node.js.
+3. Selecciona el mapa de la portada, filtra por proyecto o actividad y utiliza «Ver detalle del proyecto» para consultar su mapa, actividades y fotografías. No necesita internet ni instalar Node.js.
 
 Solo necesitas copiar el `.exe`. La primera apertura puede tardar unos segundos mientras prepara sus archivos.
 
@@ -24,7 +24,7 @@ npm.cmd run check:desktop
 
 5. Distribuye el nuevo archivo `release/ASONOG-proyectos-2026.exe`.
 
-Cada versión muestra los datos incluidos al generarla. Los ejemplos están identificados como demostración y se excluyen de las cifras publicadas. El README explica los campos del archivo de contenido.
+Cada versión muestra los datos incluidos al generarla. Los ejemplos están identificados como demostración. El README explica los campos del archivo de contenido.
 
 La preparación verifica las imágenes locales, copia las fuentes y licencias, compila la aplicación y crea el ejecutable. Los archivos de fotografías se incorporan manualmente a `public/`, por ejemplo con rutas `/FotosProyectos/taller.png`; las rutas de `src/content.json` se conservan. Si hay imágenes externas, la preparación pide una ruta local para que el ejecutable funcione sin conexión. Internet se necesita para instalar dependencias o conseguir nuevos recursos de forma manual.
 

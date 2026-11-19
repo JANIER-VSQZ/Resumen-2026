@@ -258,24 +258,6 @@
   line-height: var(--line-height-normal);
 }
 
-.overview-clear-department {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-4);
-  min-height: var(--size-40);
-  margin-bottom: var(--space-8);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-green-dark);
-  font-size: .875rem;
-  text-align: left;
-}
-
-.overview-clear-department svg {
-  flex-shrink: 0;
-}
-
 .overview-results-toggle {
   display: none;
 }

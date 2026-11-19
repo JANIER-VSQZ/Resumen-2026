@@ -5,7 +5,7 @@ import MapControls from './MapControls';
 import MapFeedback from './MapFeedback';
 import MapLegend from './MapLegend';
 
-export default function TerritoryMap({ features, departments, filters, matches, hovered, onHover, onOpen, preview, onClosePreview, selected, selectionLocked = false, projectMode = false, overviewMode = false }) {
+export default function TerritoryMap({ features, departments, matches, hovered, onHover, onOpen, selected, selectionLocked = false, projectMode = false }) {
   const idPrefix = 'map-' + useId().replace(/:/g, '') + '-';
   const [labels, setLabels] = useState(true);
   const [failed, setFailed] = useState(() => new Set());
@@ -33,7 +33,6 @@ export default function TerritoryMap({ features, departments, filters, matches, 
               hovered={hovered === feature.name}
               selected={selected === feature.name}
               projectMode={projectMode}
-              overviewMode={overviewMode}
               labels={labels}
               zoom={camera.zoom}
               failedSources={failed}
@@ -45,9 +44,9 @@ export default function TerritoryMap({ features, departments, filters, matches, 
           {activeFeature && <use className="department-hover-overlay" href={'#' + idPrefix + 'visual-' + activeFeature.key} aria-hidden="true" focusable="false" />}
         </svg>
         <MapControls zoom={camera.zoom} onZoom={zoom} onReset={reset} />
-        <MapFeedback hovered={hovered} preview={preview} departments={departments} filters={filters} matches={matches} onClosePreview={onClosePreview} />
+        <MapFeedback hovered={hovered} departments={departments} matches={matches} />
       </div>
-      <MapLegend projectMode={projectMode} overviewMode={overviewMode} />
+      <MapLegend projectMode={projectMode} />
     </div>
   );
 }

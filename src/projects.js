@@ -1,22 +1,25 @@
 import { hasContent, normalizeProject, orderedPhotos } from './content.js';
 
+function summarizeProject(project, entries) {
+  return {
+    ...project,
+    entries,
+    departments: [...new Set(entries.flatMap(entry => entry.departments))].sort((a, b) => a.localeCompare(b, 'es')),
+    photos: orderedPhotos(entries.flatMap(entry => entry.project.photos)),
+    activityCount: entries.reduce((count, entry) => count + entry.project.activities.length, 0),
+  };
+}
+
 // Cada proyecto del JSON produce una entrada del menú con sus propios territorios.
 export function buildProjectCatalog(projects) {
   return (projects || []).filter(hasContent).map(source => {
     const project = normalizeProject(source);
     const entries = project.departments.map(department => ({
       id: department.id,
-      department: department.names[0],
       departments: department.names,
       project: { ...department, name: project.name },
     }));
-    return {
-      ...project,
-      entries,
-      departments: [...new Set(project.departments.flatMap(department => department.names))].sort((a, b) => a.localeCompare(b, 'es')),
-      photos: orderedPhotos(project.departments.flatMap(department => department.photos)),
-      activityCount: project.departments.reduce((count, department) => count + department.activities.length, 0),
-    };
+    return summarizeProject(project, entries);
   }).sort((a, b) => a.name.localeCompare(b.name, 'es'));
 }
 
@@ -24,13 +27,7 @@ export function buildProjectCatalog(projects) {
 export function filterProjectCatalog(projects, filters) {
   return projects.filter(project => !filters.project || project.id === filters.project).map(project => {
     const entries = project.entries.filter(entry => !filters.axis || entry.project.axis === filters.axis);
-    return {
-      ...project,
-      entries,
-      departments: [...new Set(entries.flatMap(entry => entry.departments))].sort((a, b) => a.localeCompare(b, 'es')),
-      photos: orderedPhotos(entries.flatMap(entry => entry.project.photos)),
-      activityCount: entries.reduce((count, entry) => count + entry.project.activities.length, 0),
-    };
+    return summarizeProject(project, entries);
   }).filter(project => project.entries.length);
 }
 

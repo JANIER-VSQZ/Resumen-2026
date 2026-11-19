@@ -1,170 +1,12 @@
-/* Ficha del departamento, agrupación por proyectos y tarjeta de información. */
+/* Evidencia territorial y tarjetas de información de cada proyecto. */
 
-.detailview {
-  padding: var(--space-22) var(--page-gutter) var(--space-36);
-  background: var(--color-background);
-}
-
-.detail-intro h2 {
-  margin: 0 0 var(--space-6);
-  font-size: var(--font-size-section);
-  line-height: var(--line-height-tight);
-  letter-spacing: -.055em;
-}
-
-.detailview {
-  padding-top: var(--space-16);
-}
-
-.department-heading {
-  display: grid;
-  grid-template-columns: var(--department-logo-width) minmax(0, 1fr) var(--department-logo-width);
-  align-items: center;
-  gap: var(--space-12) var(--space-24);
-  margin-bottom: var(--space-20);
-}
-
-.department-brand {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-  align-self: start;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-10);
-  background: transparent;
-}
-
-.department-brand img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.department-heading h1 {
-  grid-column: 2;
-  margin: 0;
-  color: var(--color-green-dark);
-  font-size: var(--department-title-size);
-  font-weight: var(--font-weight-extrabold);
-  line-height: var(--line-height-tight);
-  letter-spacing: -.025em;
-  text-align: center;
-  overflow-wrap: anywhere;
-}
-
-.detail-header {
-  grid-column: 2 / -1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-8);
-  color: var(--color-dark);
+.project-heading .section-marker {
   font-size: var(--font-size-info-small);
-}
-
-.detail-header > span {
-  max-width: 100%;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-
-.detail-header .back, .project-heading .section-marker {
-  font-size: var(--font-size-info-small);
-}
-
-.detail-intro {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-20);
-  margin: var(--space-16) 0;
-}
-
-.detail-intro h2 {
-  margin: var(--space-3) 0 0;
-  font-size: var(--font-size-department);
-  overflow-wrap: anywhere;
-}
-
-.detail-intro .eyebrow {
-  font-size: var(--font-size-9);
-}
-
-.period {
-  color: var(--color-dark);
-}
-
-.detail-status {
-  display: inline-block;
-  flex-shrink: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  background: var(--color-background);
-  color: var(--color-dark);
-  padding: var(--space-8) var(--space-12);
-  font-size: var(--font-size-10);
-  line-height: var(--line-height-relaxed);
-}
-
-.demo-status {
-  background: var(--color-primary);
-  color: var(--color-dark);
-  border-color: var(--color-border);
-}
-
-.department-summary {
-  max-width: 80ch;
-  margin: 0 0 var(--space-14);
-  color: var(--color-dark);
-  font-size: var(--font-size-13);
-  line-height: var(--line-height-relaxed);
-}
-
-.project-filters {
-  padding: 0 var(--space-18);
-  border: var(--border-default);
-  border-radius: var(--radius-14);
-  background: var(--color-white);
-}
-
-.project-results {
-  margin: var(--space-16) 0;
-  color: var(--color-dark);
-  font-size: var(--font-size-12);
 }
 
 .project-list {
   display: grid;
   gap: var(--space-30);
-}
-
-.detailview [data-card-entrance='pending'] {
-  opacity: 0;
-  transform: translateY(var(--card-entrance-distance));
-}
-
-.detailview [data-card-entrance='visible'] {
-  animation: detail-card-enter var(--card-entrance-duration) cubic-bezier(.2, .8, .2, 1) calc(var(--card-entrance-order, 0) * var(--card-entrance-step)) backwards;
-}
-
-@keyframes detail-card-enter {
-  from {
-    opacity: 0;
-    transform: translateY(var(--card-entrance-distance));
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .detailview [data-card-entrance] {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
 }
 
 .project-section {
@@ -201,7 +43,12 @@
 
 .project-info {
   grid-area: information;
+  align-self: stretch;
   min-width: 0;
+  min-height: 0;
+  /* La galería define la altura de la fila; el texto se desplaza dentro. */
+  contain: size;
+  overflow-y: auto;
   padding: var(--space-20);
   border: var(--border-default);
   border-radius: var(--radius-16);
@@ -266,11 +113,6 @@
   color: var(--color-dark);
   font-size: var(--font-size-info-small);
   overflow-wrap: anywhere;
-}
-
-.project-communities .selected-community {
-  background: var(--color-green-dark);
-  color: var(--color-white);
 }
 
 .project-activities ol, .project-achievements ul {
@@ -342,6 +184,8 @@
   }
 
   .project-info {
+    contain: none;
+    overflow-y: visible;
     padding: var(--space-16) var(--space-18);
   }
 
@@ -381,53 +225,6 @@
 }
 
 @media (max-width: 640px) {
-
-  .detailview {
-    padding: var(--space-16) var(--space-18) var(--space-28);
-  }
-
-  .department-heading {
-    grid-template-columns: var(--department-logo-width) minmax(0, 1fr);
-    column-gap: var(--space-16);
-    margin-bottom: var(--space-16);
-  }
-
-  .department-brand {
-    grid-row: 1;
-  }
-
-  .detail-header {
-    grid-column: 1 / -1;
-    gap: var(--space-10);
-  }
-
-  .detail-header .back {
-    padding-inline: var(--space-10);
-  }
-
-  .detail-intro {
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: var(--space-10);
-    margin: var(--space-14) 0 var(--space-12);
-  }
-
-  .detail-intro h2 {
-    font-size: var(--font-size-department);
-  }
-
-  .detail-status {
-    padding: var(--space-6) var(--space-9);
-    font-size: var(--font-size-9);
-  }
-
-  .detail-intro .detail-status {
-    margin-top: var(--space-15);
-  }
-
-  .detailview > .demo-notice {
-    margin-top: 0;
-  }
 
   .project-info {
     padding: var(--space-13) var(--space-14);
