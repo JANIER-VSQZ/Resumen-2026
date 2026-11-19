@@ -98,7 +98,7 @@
 
 .project-map-overview {
   display: grid;
-  grid-template-columns: minmax(240px, .8fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, 3fr);
   gap: var(--space-24);
   align-items: stretch;
   height: 65dvh;
@@ -292,9 +292,11 @@
   margin-top: var(--space-30);
 }
 
+
 @media (max-width: 900px) {
   .project-map-overview {
     grid-template-columns: 1fr;
+    height: auto;
   }
 
   .project-coverage {
@@ -351,4 +353,6 @@
   .project-evidence-heading {
     align-items: flex-start;
   }
+
+ 
 }

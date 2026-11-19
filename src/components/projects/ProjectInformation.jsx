@@ -7,7 +7,6 @@ export default function ProjectInformation({ project, id }) {
     <aside className={'project-info' + (expanded ? ' info-expanded' : '')} aria-label={'Información de ' + project.name} tabIndex={0}>
       {project.axis && (
         <header className="project-info-heading">
-          <span>Actividad principal</span>
           <h4>{project.axis}</h4>
         </header>
       )}

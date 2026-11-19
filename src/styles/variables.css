@@ -59,7 +59,7 @@
   /* Fuentes: cambia la familia una sola vez */
   --font-family-body: 'DM Sans';
   --font-body: var(--font-family-body), Arial, sans-serif;
-  --font-heading: 'Manrope', Arial, sans-serif;
+  --font-heading: 'navidad', Arial, sans-serif;
 
   /* Tamaños de texto: el número indica el valor inicial en px */
   --font-size-8: 8px;
@@ -157,7 +157,7 @@
   --size-42: 42px;
   --size-44: 44px;
   --size-52: 52px;
-  --project-info-width: 450px;
+  --project-info-width: 500px;
   --project-gallery-columns: 2;
   --project-photo-ratio: 4 / 3;
 }

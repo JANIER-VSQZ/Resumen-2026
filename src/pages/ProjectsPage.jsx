@@ -50,8 +50,12 @@ export default function ProjectsPage({ projects, content, features, filters, onF
     <main className="projectsview map-explorer-page" id="main-content" tabIndex={-1} aria-labelledby="page-title">
       <TerritoryMap features={features} departments={departments} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} />
       <header className="map-explorer-heading">
-        <span className="eyebrow">Nuestra labor · Honduras</span>
-        <h1 className="page-title page-title--map" id="page-title">Proyectos <em>{content.period}.</em></h1>
+        <h1 className="page-title page-title--map" id="page-title">
+          <span className="map-title-context"></span>
+          Resumen <span>proyectos </span>
+          <span><em>{content.period}.</em></span>
+        </h1>
+        
       </header>
       <aside className="map-project-panel" aria-label="Filtros y proyectos del mapa">
         <div className="map-project-panel-heading">

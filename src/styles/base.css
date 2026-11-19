@@ -17,11 +17,43 @@
 }
 
 @font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/assets/fonts/BebasNeue-Regular.woff2') format('woff2');
+}
+
+@font-face {
   font-family: 'Manrope';
   font-style: normal;
   font-weight: 200 800;
   font-display: swap;
   src: url('/assets/fonts/manrope-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Kageno';
+  src: url('/assets/fonts/Kageno.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Navidad';
+  src: url('/assets/fonts/Home Christmas.otf') format('opentype');
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'heavitas';
+  src: url('/assets/fonts/Heavitas.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
 }
 
 * {

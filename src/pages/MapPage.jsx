@@ -40,18 +40,6 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
       </header>}
       {project.demo && <p className="demo-notice">Proyecto de demostración. Este contenido no representa resultados institucionales.</p>}
       <section className="project-map-overview" aria-labelledby={coverageId}>
-        <aside className="project-coverage">
-          <SectionTitle className="project-coverage-title" id={coverageId}><MapPin size={22} aria-hidden="true" />Dónde trabajamos</SectionTitle>
-          <p>{project.departments.length} {project.departments.length === 1 ? 'departamento' : 'departamentos'} de Honduras</p>
-          <p>Los departamentos en verde forman parte del proyecto. {departmentLocked ? 'Estás consultando ' + selectedDepartment + '.' : 'Selecciona uno para ver sus actividades e imágenes.'}</p>
-          <div className="project-territories" aria-label="Departamentos del proyecto">
-            {project.departments.map(name => <button key={name} disabled={departmentLocked && selectedDepartment !== name} aria-pressed={selectedDepartment === name} onClick={() => selectDepartment(name)}>{name}</button>)}
-          </div>
-          <dl className="project-totals">
-            <div><dt>Actividades</dt><dd>{project.activityCount}</dd></div>
-            <div><dt>Fotografías</dt><dd>{project.photos.length}</dd></div>
-          </dl>
-        </aside>
         <TerritoryMap features={features} departments={departments} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} selected={selectedDepartment} selectionLocked={departmentLocked} projectMode />
       </section>
       <section className="project-evidence" ref={resultsRef} tabIndex={-1} aria-label={selectedDepartment ? 'Actividades y fotografías en ' + selectedDepartment : 'Actividades y fotografías del proyecto'}>

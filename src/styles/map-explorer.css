@@ -119,7 +119,8 @@
 
 .map-explorer-heading h1 {
   margin: var(--space-8) 0 0;
-  font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+  font-size: clamp(2.5rem, 3.5vw, 4.5rem);
+  width: 250px;
   font-weight: var(--font-weight-extrabold);
   line-height: 1.1;
   letter-spacing: -.05em;

@@ -3,6 +3,8 @@
 .page-title {
   position: relative;
   isolation: isolate;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-extrabold);
   text-shadow: var(--title-text-shadow);
   animation: title-reveal var(--title-reveal-duration) cubic-bezier(.2, .8, .2, 1) both;
 }
