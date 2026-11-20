@@ -33,7 +33,7 @@ export default function MapPreview({ features, departments, hasContent, onExplor
             <path className="preview-dept-border" d={feature.path} fillRule="evenodd" />
           </g>;
         })}
-      </svg> : <span className="map-preview-pending">Preparando el mapa…</span>}
+      </svg> : <span className="map-preview-pending">Preparando el mapa...</span>}
     </button>
   </div>;
 }
