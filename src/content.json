@@ -648,7 +648,10 @@
               "featured": false
             }
             
-          ]
+          ],
+          "videos": {
+            "srcVideo" : "/Videos/C0001.MP4"
+          }
         }
       ]
     }

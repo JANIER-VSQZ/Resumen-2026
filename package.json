@@ -26,7 +26,7 @@
     "electron-builder": "^26.18.0",
     "vite": "^6.0.5"
   },
-  "description": "Memoria institucional de ASONOG 2026, con mapas y fotografías disponibles sin conexión.",
+  "description": "",
   "author": "ASONOG",
   "main": "desktop/main.cjs",
   "allowScripts": {

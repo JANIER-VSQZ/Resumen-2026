@@ -8,7 +8,7 @@
   --color-green-dark: #4C8030;
   --color-green-light: #81B631;
   --color-yellow-light: #FAB833;
-  --color-background: #E9E8E5;
+  --color-background: #d2d2be;
   --color-border: #D9D6D5;
   --color-white: #FFFFFF;
 
@@ -32,7 +32,7 @@
   --logo-hover-shadow: 0 5px 6px var(--color-shadow);
 
   /* Logotipo sobre el título de la portada */
-  --cover-logo-width: clamp(400px, 10vw, 500px);
+  --cover-logo-width: clamp(200px, 25vw, 400px);
 
   /* Flotación del mapa de la portada */
   --cover-map-float-duration: 7s;
