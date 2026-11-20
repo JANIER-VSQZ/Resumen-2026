@@ -224,7 +224,7 @@
             "Intibucá"
           ],
           "axis": "Programas Municipales de Transparencia",
-          "summary": "En el marco del Proyecto ACTUAH, se impulsa el diseño e implementación de 45 Programas Municipales de Transparencia (PMT), orientados a fortalecer la transparencia, la rendición de cuentas y la participación ciudadana en los gobiernos locales. Estos programas promueven presupuestos municipales participativos con enfoque de género e inclusión. En municipios de Copán, Lempira e Intibucá, se desarrollan jornadas de fortalecimiento de capacidades dirigidas a Comisiones Ciudadanas de Transparencia, Comisionados Municipales y Gobiernos Locales.",
+          "summary": "Mediante el Proyecto ACTUAH, se impulsa la implementación de 45 Programas Municipales de Transparencia, fortaleciendo la rendición de cuentas, la participación ciudadana y las capacidades de actores locales en municipios de Copán, Lempira e Intibucá.",
           "communities": [
             "Copan",
             "Lempira",
@@ -382,7 +382,7 @@
             "La Paz"
           ],
           "axis": "Compromiso para el Cambio para Personas Desfavorecidas.",
-          "summary": "Se desarrollaron cuatro encuentros nacionales e internacionales orientados al fortalecimiento de la educación superior, el liderazgo juvenil y la cooperación regional. Entre ellos destaca el Foro Nacional sobre Educación Superior en Honduras, el Encuentro Centroamericano de Juventudes Becarias, el Encuentro Red Alumni Honduras, y el Encuentro Internacional de Programas de Becas 2026, Estas iniciativas contribuyeron a fortalecer los vínculos regionales, la participación juvenil y el compromiso con la transformación social de los territorios.",
+          "summary": "Se realizaron cuatro encuentros nacionales e internacionales enfocados en fortalecer la educación superior, el liderazgo juvenil y la cooperación regional, promoviendo la participación de jóvenes, el intercambio de experiencias y la transformación social de los territorios.",
           "communities": [
             "Copán",
             "Lempira",
@@ -392,14 +392,14 @@
             "La Paz"
           ],
           "activities": [
-            "Se desarrolló el Foro Nacional “Retos y Desafíos de la Educación Superior en Honduras”, con la participación de 69 personas representantes de universidades públicas y privadas, organizaciones de la sociedad civil y la Red Alumni. El evento promovió el diálogo, el análisis y la reflexión participativa sobre los principales desafíos de la educación superior en el país",
-            "Se desarrolló el Encuentro Centroamericano de Juventudes Becarias y Becarios de PPM en Mesoamérica 2026, un espacio de intercambio y aprendizaje colectivo entre jóvenes de distintos países de la región. El encuentro permitió compartir experiencias, identificar desafíos comunes y fortalecer la identidad, la solidaridad y los vínculos regionales, promoviendo el liderazgo juvenil, la participación comunitaria y el compromiso con la defensa de la vida, la Madre Tierra y el territorio.",
-            "Se desarrolló el Encuentro Red Alumni Honduras, un espacio de reflexión y planificación colectiva para evaluar avances, identificar desafíos y definir acciones que fortalezcan la organización y sostenibilidad de la red. El encuentro permitió revisar las líneas de trabajo de las comisiones, promover la vinculación entre exbecarios y generar propuestas de desarrollo profesional, colaboración e incidencia, fortaleciendo el liderazgo y la participación de las personas egresadas en los procesos de transformación social.",
-            "Se desarrolló el Encuentro Internacional de Programas de Becas 2026, orientado a fortalecer la cooperación entre los programas de becas de la Red CONNECT en Latinoamérica. El encuentro promovió el intercambio de experiencias, el análisis de los desafíos de la educación superior y la construcción de compromisos conjuntos, impulsando el liderazgo juvenil y la transformación social en los territorios."  
+            "Se realizó el Foro Nacional sobre Educación Superior en Honduras, con 69 representantes de universidades, sociedad civil y Red Alumni, propiciando el diálogo y la reflexión sobre los principales desafíos del sector educativo.",
+            "Se realizó el Encuentro Centroamericano de Juventudes Becarias de PPM 2026, promoviendo el intercambio de experiencias, el liderazgo juvenil, la solidaridad y la articulación regional en defensa de la vida, la Madre Tierra y el territorio.",
+            "Se realizó el Encuentro Red Alumni Honduras, orientado a fortalecer la organización y sostenibilidad de la red mediante la evaluación de avances, planificación de acciones y promoción de la colaboración, el desarrollo profesional y la incidencia de las personas exbecarias.",
+            "Se realizó el Encuentro Internacional de Programas de Becas 2026, fortaleciendo la cooperación regional, el intercambio de experiencias y la construcción de compromisos conjuntos para impulsar la educación superior, el liderazgo juvenil y la transformación social."  
           ],
           "achievements": [
-            "Se fortalecieron las capacidades personales, sociales y comunitarias de las personas becarias mediante procesos formativos, desarrollo de habilidades socioemocionales, acompañamiento psicosocial e intercambio de experiencias. Estas acciones impulsaron el liderazgo, la participación y el compromiso social en iniciativas de derechos humanos, equidad de género y protección del medio ambiente.",
-            "Se promovió el acceso de jóvenes a la educación superior, fortaleciendo sus conocimientos, competencias y habilidades profesionales. Estas acciones contribuyeron a su desarrollo personal y profesional, así como a su compromiso con la transformación social de sus comunidades."
+            "Se impulsó el liderazgo y compromiso social de las personas becarias mediante formación y acompañamiento en derechos humanos, equidad de género y protección ambiental.",
+            "Se facilitó el acceso de jóvenes a la educación superior, fortaleciendo sus competencias profesionales y su compromiso con el desarrollo y la transformación social de sus comunidades."  
           ],
           "photos": [
             {
@@ -472,6 +472,179 @@
               "height": 1067,
               "thumbnailWidth": 600,
               "id": "Becas-Proyecto-1-foto-1",
+              "featured": false
+            }
+            
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cbm",
+      "name": "CBM.",
+      "verified": true,
+      "demo": false,
+      "beneficiaries": null,
+      "departments": [
+        {
+          "names": [
+            "Francisco Morazán",
+            "Copán",
+            "Lempira"
+          ],
+          "axis": "Fortaleciendo la inclusión y los derechos de las personas con discapacidad en Honduras.",
+          "summary": "Se fortalecieron las capacidades de OPD y OSC, promoviendo alianzas, incidencia legal, inclusión y participación comunitaria mediante procesos de formación y articulación institucional.",
+          "communities": [
+            "Tegucigalpa",
+            "San Juan de Opoa",
+            "Corquín",
+            "Talgua",
+            "Santa RIta",
+            "Quelacasque"
+          ],
+          "activities": [
+            "Se fortalecieron las capacidades técnicas, organizativas y financieras de 23 organizaciones y redes, mediante la actualización de planes estratégicos y la capacitación de 77 líderes, impulsando una agenda mínima de discapacidad para su presentación ante el Congreso Nacional.",
+            "Se formalizaron alianzas y acuerdos de coordinación e incidencia con 12 organizaciones y redes, fortaleciendo la articulación interinstitucional para impulsar acciones de inclusión.",
+            "Se avanzó en la incidencia legislativa mediante el diagnóstico institucional de CONAMIREDIS, con 17 actores clave, y la formulación de propuestas de reforma a la Ley de Protección al Migrante Hondureño, junto a 33 representantes de OPD.",
+            "Se desarrollaron procesos formativos en género, inclusión, transformación digital y protección de personas migrantes, fortaleciendo las capacidades de redes de mujeres y comunidades."  
+          ],
+          "achievements": [
+            "Se avanzó en la gestión y carnetización de 2,008 personas con discapacidad y 800 buzos lesionados en La Moskitia, así como en la inscripción de niños sin documento de identificación.",
+            "Se promovió la defensa de los derechos de las personas con discapacidad mediante foros nacionales y políticos, con espacios de diálogo sobre inclusión, accesibilidad y migración.",
+            "Se fortaleció la incidencia legal e institucional mediante el diagnóstico de CONAMIREDIS, propuestas de reforma a la Ley de Protección al Migrante Hondureño y alianzas con 12 organizaciones y redes.",
+            "Se impulsó la comunicación accesible y la participación comunitaria mediante cinco videos en LESHO con subtítulos, el fortalecimiento de redes de mujeres y un alcance de 35,600 personas."  
+          ],
+          "photos": [
+            {
+              "src": "/FotosProyectos/CBM-Proceso.png",
+              "community": "-",
+              "date": "-",
+              "description": "Proceso integral de fortalecimiento de capacidades en género, inclusión, transformación digital y Ley de Protección del Migrante.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "CBM-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/CBM-Firma.png",
+              "community": "-",
+              "date": "-",
+              "description": "Firma de convenios y acuerdos de coordinación e incidencia con Organizaciones de Personas con Discapacidad (OPD).",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "CBM-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/CBM-Formacion-Liderazgo.png",
+              "community": "-",
+              "date": "-",
+              "description": "Procesos de formación en Liderazgo, Fortalecimiento Organizativo e incidencia política.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "CBM-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/CBM-Foro.png",
+              "community": "-",
+              "date": "-",
+              "description": "Foro de 20 años de ratificación de la convención de los derechos de las personas con Discapacidad.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "CBM-Proyecto-1-foto-1",
+              "featured": false
+            }
+            
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trocaire",
+      "name": "TROCAIRE",
+      "verified": true,
+      "demo": false,
+      "beneficiaries": null,
+      "departments": [
+        {
+          "names": [
+            "Choluteca"
+          ],
+          "axis": "Gestion del riesgo.",
+          "summary": "Se fortalecieron las capacidades de OPD y OSC, promoviendo alianzas, incidencia legal, inclusión y participación comunitaria mediante procesos de formación y articulación institucional.",
+          "communities": [
+            "Orocuina: Mal Paso, Brasilar, Los Encuentros, Barrial Limones, Combali",
+            "Namasigüe: Posa Grande, La Danta, La 20 de Mayo, El Quebrachal, Guamerú",
+            "Yusguare: Tablones Arriba, Tablones Abajo, El Cerro, La Permuta",
+            "Choluteca: El Palenque, Santa Lucia, El Tulito, El Anillo, El Fantaceoso"
+          ],
+          "activities": [
+            "Asambleas comunitarias para la estructuración de CODEL. Y reuniones con autoridades para estructuración de CODEM.",
+            "Desarrollo de talleres de formación sobre Gestión De Riesgos con miembros de unidades técnicas, CODEM y Con miembros de CODEL (Acompañados por CODEM)",
+            "Desarrollo de procesos de formación en materia de incidencia política enfocada en la gestión del riesgo a desastres con énfasis en temas de salvaguardia, principios de protección y VBG",
+            "Se fortalecieron las capacidades de los actores participantes del CODEL de Guameru, y el CODEM de Namasigue para realizar Evaluaciones de Riesgo Local (ERL), generando evidencia técnica y participativa sobre amenazas, vulnerabilidades y capacidades existentes en los territorios. "
+          ],
+          "achievements": [
+            "La promoción para el desarrollo de dos asambleas en coordinación con COPECO y el CODEM de los municipios de Namasigue y Orocuina para el fortalecimiento organizativo, además de la coordinación con CARE-SUR EN ACCION",
+            "Incremento de las capacidades para la preparación y respuesta ante situaciones de emergencia, mediante el fortalecimiento de conocimientos sobre organización, coordinación y aplicación de procedimientos básicos de respuesta",
+            "Se fortalecieron las capacidades de preparación y respuesta de los CODEM de Yusguare, Namasigüe, Choluteca y Orocuina mediante la implementación de acciones priorizadas en sus planes de preparación y respuesta, incluyendo la dotación de equipos de protección personal, herramientas para despeje de vías, radios portátiles y medios para el monitoreo de alertas."  
+          ],
+          "photos": [
+            {
+              "src": "/FotosProyectos/Trocaire-Choluteca-1.jpg",
+              "community": "Guameru, Namasigue, Choluteca",
+              "date": "-",
+              "description": "Taller de conceptos basicos de Gestión de Riesgos. Primeros auxilios basicos, roles, y funciones de la junta directva del CODEL y sus respectivas comisiones de apoyo, para tener claridad en las acciones de respuesta a eventos adversos.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "Trocaire-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Trocaire-Choluteca-2.jpg",
+              "community": "Namasigüe, Choluteca",
+              "date": "-",
+              "description": "Juramentacion del comité de Emergencia Municipal de Namasigüe, Choluteca para el periodo 2026-2028, proceso promovido en el marco del proyecto para fortalecer las capacidades de preparacion y respuesta municipal.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "Trocaire-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Trocaire-Choluteca-3.jpg",
+              "community": "Namasigüe, Choluteca",
+              "date": "-",
+              "description": "Proceso de acompañamiento de implementación de acciones de preparación y respuesta municipal con la entrega de equipamiento básico para la protección personal, despeje de vías de acceso, comunicaciones y monitoreo de alertas",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "trocaire-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Trocaire-Choluteca-4.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Proceso de seguimiento, monitoreo y acompañamiento de TROCAIRE y ASONOG al proyecto para visibilizar avances, logros, retos y desafíos en la implementación del proyecto en el periodo 2026.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "CBM-Proyecto-1-foto-1",
               "featured": false
             }
             

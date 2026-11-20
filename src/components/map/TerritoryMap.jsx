@@ -14,6 +14,7 @@ export default function TerritoryMap({ features, departments, matches, hovered, 
   useEffect(() => setFailed(new Set()), [features]);
   const activeFeature = features.find(feature => feature.name === hovered && matches(feature.name));
 
+  console.log(departments);
   return (
     <div className={'map-panel' + (projectMode ? ' project-territory-map' : '')}>
       <div className="map-toolbar">

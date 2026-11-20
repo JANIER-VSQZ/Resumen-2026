@@ -35,6 +35,8 @@ test('multiple projects show maps, activities, achievements and photos together 
   assert.equal((html.match(/<main\b/g) || []).length, 1);
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.equal(html.includes('data-project-link='), false);
+  assert.match(html, /data-department-project-filter/);
+  assert.match(html, /Todos los proyectos/);
   for (const name of ['Proyecto A', 'Proyecto B']) {
     for (const label of ['ACTIVIDAD ', 'LOGRO ', 'FOTO ']) assert.ok(html.includes(label + name));
     assert.equal(html.includes('OTRO TERRITORIO ' + name), false);

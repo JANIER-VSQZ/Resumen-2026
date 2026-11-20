@@ -105,7 +105,7 @@ export default function ProjectsPage({ projects, content, features, filters, onF
           </div>}
         </div>
       </aside>
-      <button className="overview-home-brand" onClick={onHome} aria-label="Ir a portada"><img className="institutional-logo" src="/assets/asonog-logo.png" alt="ASONOG" /></button>
+      <button className="overview-home-brand" onClick={onHome} aria-label="Ir a portada"><img className="institutional-logo Interactive-Map-Logo" src="/assets/asonog-logo.png" alt="ASONOG" /></button>
     </main>
   );
 }

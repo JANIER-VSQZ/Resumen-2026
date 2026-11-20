@@ -40,6 +40,14 @@
   font-display: swap;
 }
 
+@font-face{
+  font-family: 'Montserrat-bold';
+  src: url('/assets/fonts/Montserrat-ExtraBold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'Navidad';
   src: url('/assets/fonts/Home Christmas.otf') format('opentype');

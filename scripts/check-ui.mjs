@@ -152,12 +152,10 @@ try {
     assert.deepEqual(await evaluate("[...document.querySelectorAll('.map-project-result')].map(node=>node.dataset.projectLink).sort()"), expectedProjects.map(project => project.id).sort(), 'The results must follow the project filters without retaining a department.');
   };
   const assertDepartmentLocked = async (name, pointer = false) => {
-    const snapshot = () => evaluate("({hash:location.hash,selected:[...document.querySelectorAll('.department.is-selected')].map(node=>node.dataset.department),pressed:[...document.querySelectorAll('.project-territories button[aria-pressed=\"true\"]')].map(node=>node.textContent),photos:[...document.querySelectorAll('.gallery-img img')].map(node=>node.getAttribute('src')),activities:[...document.querySelectorAll('.project-activities li')].map(node=>node.textContent)})");
+    const snapshot = () => evaluate("({hash:location.hash,selected:[...document.querySelectorAll('.department.is-selected')].map(node=>node.dataset.department),photos:[...document.querySelectorAll('.gallery-img img')].map(node=>node.getAttribute('src')),activities:[...document.querySelectorAll('.project-activities li')].map(node=>node.textContent)})");
     const before = await snapshot();
     assert.ok(before.selected.length > 0);
     assert.ok(before.selected.every(department => department === name));
-    assert.ok(before.pressed.every(department => department === name));
-    assert.equal(await evaluate("[...document.querySelectorAll('.project-territories button[aria-pressed=\"false\"]')].every(node=>node.disabled)"), true);
     assert.equal(await evaluate("[...document.querySelectorAll('.honduras-map .department:not(.is-selected)')].every(node=>node.getAttribute('aria-disabled')==='true'&&node.tabIndex===-1)"), true);
     assert.equal(await evaluate("document.querySelectorAll('.project-evidence-heading .back').length"), 0, 'Department details must keep the evidence scoped to the chosen department.');
     const ids = await evaluate("[...document.querySelectorAll('[data-project-detail]')].map(node=>node.dataset.projectDetail)");
@@ -166,7 +164,6 @@ try {
       const other = root + ' .is-project-location:not(.is-selected)';
       if (!await evaluate('!!document.querySelector(' + JSON.stringify(other) + ')')) continue;
       await click(other); await press('Enter'); await press(' ');
-      await click(root + ' .project-territories button[aria-pressed="false"]');
       assert.deepEqual(await snapshot(), before, 'Disabled map regions and capsules must not change the department or evidence.');
       if (pointer && !desktop) {
         await evaluate('document.querySelector(' + JSON.stringify(root + ' .map-panel') + ').scrollIntoView({block:"center"})');
@@ -257,7 +254,6 @@ try {
       if (destination.view === 'map') {
         const item = projects.find(project => project.id === destination.selected);
         const entries = item.entries.filter(entry => entry.departments.includes(name));
-        assert.equal(await evaluate("document.querySelector('.project-territories button[aria-pressed=\"true\"]')?.textContent"), name);
         assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), entries.reduce((count, entry) => count + entry.project.photos.length, 0));
         assert.equal(await evaluate("document.querySelector('.department.is-selected')?.dataset.department"), name);
         assert.equal(await evaluate("new URLSearchParams(location.hash.split('?')[1]||'').get('departamento')"), name);
@@ -293,6 +289,15 @@ try {
       await assertDepartmentDestination(shared);
       assert.equal(await evaluate("document.querySelectorAll('[data-project-link]').length"), 0);
       await assertDepartmentLocked(shared);
+      const sharedProjects = getDepartmentProjects(projects, shared);
+      assert.equal(await evaluate("document.querySelectorAll('[data-department-project-filter]').length"), 1, 'A department with multiple projects needs its own project filter.');
+      const selectedProject = sharedProjects[0];
+      await select('[data-department-project-filter]', selectedProject.id);
+      assert.deepEqual(await evaluate("[...document.querySelectorAll('[data-project-detail]')].map(node=>node.dataset.projectDetail)"), [selectedProject.id]);
+      assert.equal(await evaluate("document.querySelectorAll('.honduras-map').length"), 1);
+      assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), selectedProject.entries.filter(entry => entry.departments.includes(shared)).reduce((count, entry) => count + entry.project.photos.length, 0));
+      await click('.department-project-filter-clear');
+      assert.deepEqual(await evaluate("[...document.querySelectorAll('[data-project-detail]')].map(node=>node.dataset.projectDetail).sort()"), sharedProjects.map(project => project.id).sort());
       await screenshot('department-projects-together-desktop');
       await viewport(390, 844);
       assert.equal(await evaluate("document.documentElement.scrollWidth>innerWidth"), false);
@@ -385,13 +390,13 @@ try {
     for (const name of project.departments) {
       const expected = project.entries.filter(entry => entry.departments.includes(name));
       await click('[data-department=' + JSON.stringify(name) + ']');
-      assert.equal(await evaluate("document.querySelector('.project-territories button[aria-pressed=\"true\"]')?.textContent"), name);
       assert.equal(await evaluate("document.querySelectorAll('.project-section').length"), expected.length);
       assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), expected.reduce((count, entry) => count + entry.project.photos.length, 0));
       assert.equal(await evaluate("document.querySelector('.department.is-selected')?.dataset.department"), name);
-      await click('.project-evidence-heading .back');
+      await evaluate("location.hash=" + JSON.stringify(getScreenHref({ view: 'map', selected: project.id })));
+      await waitFor("document.querySelector('main')?.dataset.selectedProject === " + JSON.stringify(project.id) + " && !document.querySelector('.department.is-selected')");
       assert.equal(await evaluate("document.querySelectorAll('.gallery-img').length"), project.photos.length);
-      assert.equal(await evaluate("document.querySelectorAll('.department.is-selected, .project-territories button[aria-pressed=\"true\"]').length"), 0);
+      assert.equal(await evaluate("document.querySelectorAll('.department.is-selected').length"), 0);
     }
     await viewport(390, 844);
     assert.equal(await evaluate("[...document.querySelectorAll('.detail-information')].every(node=>getComputedStyle(node).display!=='none')"), true, 'Activities should initially be visible on mobile.');
@@ -452,7 +457,8 @@ try {
       await command('Input.dispatchMouseEvent', { type: 'mouseReleased', x: tap.x, y: tap.y, button: 'left', clickCount: 1 });
       await settle();
       assert.equal(await evaluate("document.querySelector('.department.is-selected')?.dataset.department"), tap.name, 'Mouse selection should show the chosen territory.');
-      await click('.project-evidence-heading .back');
+      await evaluate("location.hash=" + JSON.stringify(getScreenHref({ view: 'map', selected: project.id })));
+      await waitFor("!document.querySelector('.department.is-selected')");
     }
     for (const key of ['Enter', ' ']) {
       await focus('.is-project-location'); await press(key);
@@ -471,7 +477,7 @@ try {
       mapPinchZoom = true;
     }
     await click('[aria-label="Mostrar todo Honduras"]'); await screenshot('project-map-mobile');
-    await click('.project-territories button');
+    await click('.is-project-location');
     assert.equal(await evaluate("!!document.querySelector('.department.is-selected')"), true);
     await focus('#main-content'); await press('ArrowLeft'); await assertScreen('projects');
     await assertOverviewDepartmentCleared();

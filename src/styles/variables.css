@@ -32,7 +32,7 @@
   --logo-hover-shadow: 0 5px 6px var(--color-shadow);
 
   /* Logotipo sobre el título de la portada */
-  --cover-logo-width: clamp(140px, 12vw, 190px);
+  --cover-logo-width: clamp(400px, 10vw, 500px);
 
   /* Flotación del mapa de la portada */
   --cover-map-float-duration: 7s;
@@ -59,7 +59,7 @@
   /* Fuentes: cambia la familia una sola vez */
   --font-family-body: 'DM Sans';
   --font-body: var(--font-family-body), Arial, sans-serif;
-  --font-heading: 'navidad', Arial, sans-serif;
+  --font-heading: 'Montserrat-bold', Arial, sans-serif;
 
   /* Tamaños de texto: el número indica el valor inicial en px */
   --font-size-8: 8px;

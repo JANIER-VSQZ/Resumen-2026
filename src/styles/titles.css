@@ -7,6 +7,7 @@
   font-weight: var(--font-weight-extrabold);
   text-shadow: var(--title-text-shadow);
   animation: title-reveal var(--title-reveal-duration) cubic-bezier(.2, .8, .2, 1) both;
+  
 }
 
 .page-title:not(.page-title--cover):not(.page-title--map)::after {
