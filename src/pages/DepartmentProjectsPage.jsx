@@ -12,18 +12,7 @@ import TerritoryMap from '../components/map/TerritoryMap';
 
 
 
-export default function DepartmentProjectsPage({
-  department,
-  projects,
-  hasFilters,
-  period,
-  features,
-  thumbnails,
-  onOpenPhoto,
-  onClearFilters,
-  onBack,
-  onHome
-}) {
+export default function DepartmentProjectsPage({department, projects, hasFilters, period, features, thumbnails, onOpenPhoto, onClearFilters, onBack, onHome}) {
   const [selectedProject, setSelectedProject] = useState('');
   const selectId = useId();
 
@@ -113,6 +102,8 @@ console.log(visibleDepartments);
   const [hovered, setHovered] = useState(null);
 
   console.log (mapDepartments)
+
+  console.log ("Departemento: " + department)
 
   return (
     <main
