@@ -28,8 +28,8 @@
 
 .cover-identity {
   position: absolute;
-  left: 0;
-  bottom: var(--space-20);
+  top: var(--space-20);
+  right: -75%;
   z-index: 1;
   max-width: 100%;
   display: flex;

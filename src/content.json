@@ -1,5 +1,4 @@
 {
-  "$schema": "./content.schema.json",
   "institution": "ASONOG",
   "period": "2026",
   "subtitle": "",
@@ -235,11 +234,11 @@
             "Diseño de Programas Municipales de Transparencia: Impulso a la elaboración participativa de planes que promuevan la transparencia en la gestión municipal.",
             "Acompañamiento presupuestario: Promoción de presupuestos municipales participativos con enfoque de género e inclusión, destinados a financiar acciones de transparencia.",
             "Promoción de mecanismos de rendición de cuentas: Impulso a portales de transparencia, cabildos abiertos, liquidaciones y divulgación de la ejecución presupuestaria."
-            ],
+          ],
           "achievements": [
-              "Mayor empoderamiento y compromiso de las Comisiones Ciudadanas de Transparencia, Comisionados Municipales y Gobiernos Locales en la construcción de planes de transparencia.",
-              "Fortalecimiento de capacidades locales para promover la participación ciudadana, la transparencia y la rendición de cuentas.",
-              "Mayor articulación entre autoridades municipales y sociedad civil, favoreciendo la elaboración participativa de los Programas Municipales de Transparencia."
+            "Mayor empoderamiento y compromiso de las Comisiones Ciudadanas de Transparencia, Comisionados Municipales y Gobiernos Locales en la construcción de planes de transparencia.",
+            "Fortalecimiento de capacidades locales para promover la participación ciudadana, la transparencia y la rendición de cuentas.",
+            "Mayor articulación entre autoridades municipales y sociedad civil, favoreciendo la elaboración participativa de los Programas Municipales de Transparencia."
           ],
           "photos": [
             {
@@ -395,11 +394,11 @@
             "Se realizó el Foro Nacional sobre Educación Superior en Honduras, con 69 representantes de universidades, sociedad civil y Red Alumni, propiciando el diálogo y la reflexión sobre los principales desafíos del sector educativo.",
             "Se realizó el Encuentro Centroamericano de Juventudes Becarias de PPM 2026, promoviendo el intercambio de experiencias, el liderazgo juvenil, la solidaridad y la articulación regional en defensa de la vida, la Madre Tierra y el territorio.",
             "Se realizó el Encuentro Red Alumni Honduras, orientado a fortalecer la organización y sostenibilidad de la red mediante la evaluación de avances, planificación de acciones y promoción de la colaboración, el desarrollo profesional y la incidencia de las personas exbecarias.",
-            "Se realizó el Encuentro Internacional de Programas de Becas 2026, fortaleciendo la cooperación regional, el intercambio de experiencias y la construcción de compromisos conjuntos para impulsar la educación superior, el liderazgo juvenil y la transformación social."  
+            "Se realizó el Encuentro Internacional de Programas de Becas 2026, fortaleciendo la cooperación regional, el intercambio de experiencias y la construcción de compromisos conjuntos para impulsar la educación superior, el liderazgo juvenil y la transformación social."
           ],
           "achievements": [
             "Se impulsó el liderazgo y compromiso social de las personas becarias mediante formación y acompañamiento en derechos humanos, equidad de género y protección ambiental.",
-            "Se facilitó el acceso de jóvenes a la educación superior, fortaleciendo sus competencias profesionales y su compromiso con el desarrollo y la transformación social de sus comunidades."  
+            "Se facilitó el acceso de jóvenes a la educación superior, fortaleciendo sus competencias profesionales y su compromiso con el desarrollo y la transformación social de sus comunidades."
           ],
           "photos": [
             {
@@ -474,7 +473,6 @@
               "id": "Becas-Proyecto-1-foto-1",
               "featured": false
             }
-            
           ]
         }
       ]
@@ -506,13 +504,13 @@
             "Se fortalecieron las capacidades técnicas, organizativas y financieras de 23 organizaciones y redes, mediante la actualización de planes estratégicos y la capacitación de 77 líderes, impulsando una agenda mínima de discapacidad para su presentación ante el Congreso Nacional.",
             "Se formalizaron alianzas y acuerdos de coordinación e incidencia con 12 organizaciones y redes, fortaleciendo la articulación interinstitucional para impulsar acciones de inclusión.",
             "Se avanzó en la incidencia legislativa mediante el diagnóstico institucional de CONAMIREDIS, con 17 actores clave, y la formulación de propuestas de reforma a la Ley de Protección al Migrante Hondureño, junto a 33 representantes de OPD.",
-            "Se desarrollaron procesos formativos en género, inclusión, transformación digital y protección de personas migrantes, fortaleciendo las capacidades de redes de mujeres y comunidades."  
+            "Se desarrollaron procesos formativos en género, inclusión, transformación digital y protección de personas migrantes, fortaleciendo las capacidades de redes de mujeres y comunidades."
           ],
           "achievements": [
             "Se avanzó en la gestión y carnetización de 2,008 personas con discapacidad y 800 buzos lesionados en La Moskitia, así como en la inscripción de niños sin documento de identificación.",
             "Se promovió la defensa de los derechos de las personas con discapacidad mediante foros nacionales y políticos, con espacios de diálogo sobre inclusión, accesibilidad y migración.",
             "Se fortaleció la incidencia legal e institucional mediante el diagnóstico de CONAMIREDIS, propuestas de reforma a la Ley de Protección al Migrante Hondureño y alianzas con 12 organizaciones y redes.",
-            "Se impulsó la comunicación accesible y la participación comunitaria mediante cinco videos en LESHO con subtítulos, el fortalecimiento de redes de mujeres y un alcance de 35,600 personas."  
+            "Se impulsó la comunicación accesible y la participación comunitaria mediante cinco videos en LESHO con subtítulos, el fortalecimiento de redes de mujeres y un alcance de 35,600 personas."
           ],
           "photos": [
             {
@@ -563,14 +561,13 @@
               "id": "CBM-Proyecto-1-foto-1",
               "featured": false
             }
-            
           ]
         }
       ]
     },
     {
-      "id": "trocaire",
-      "name": "TROCAIRE",
+      "id": "trocairesur",
+      "name": "TROCAIRE SUR",
       "verified": true,
       "demo": false,
       "beneficiaries": null,
@@ -596,7 +593,7 @@
           "achievements": [
             "La promoción para el desarrollo de dos asambleas en coordinación con COPECO y el CODEM de los municipios de Namasigue y Orocuina para el fortalecimiento organizativo, además de la coordinación con CARE-SUR EN ACCION",
             "Incremento de las capacidades para la preparación y respuesta ante situaciones de emergencia, mediante el fortalecimiento de conocimientos sobre organización, coordinación y aplicación de procedimientos básicos de respuesta",
-            "Se fortalecieron las capacidades de preparación y respuesta de los CODEM de Yusguare, Namasigüe, Choluteca y Orocuina mediante la implementación de acciones priorizadas en sus planes de preparación y respuesta, incluyendo la dotación de equipos de protección personal, herramientas para despeje de vías, radios portátiles y medios para el monitoreo de alertas."  
+            "Se fortalecieron las capacidades de preparación y respuesta de los CODEM de Yusguare, Namasigüe, Choluteca y Orocuina mediante la implementación de acciones priorizadas en sus planes de preparación y respuesta, incluyendo la dotación de equipos de protección personal, herramientas para despeje de vías, radios portátiles y medios para el monitoreo de alertas."
           ],
           "photos": [
             {
@@ -647,11 +644,196 @@
               "id": "CBM-Proyecto-1-foto-1",
               "featured": false
             }
-            
           ],
           "videos": {
-            "srcVideo" : "/Videos/C0001.MP4"
+            "srcVideo": "/Videos/C0001.MP4"
           }
+        }
+      ]
+    },
+    {
+      "id": "uniocafe",
+      "name": "UNIOCAFE",
+      "verified": true,
+      "demo": false,
+      "beneficiaries": null,
+      "departments": [
+        {
+          "names": [
+            "Ocotepeque"
+          ],
+          "axis": "UNIOCAFE",
+          "summary": "",
+          "communities": [
+            "Ocotepeque: El Salitre, Las Hojas, Las Lajitas",
+            "Sinuapa: El Barcal, El Comedero, La Laborcita"
+          ],
+          "activities": [
+            "Celebración del Dia del Caficultor: participación de ASONOG en la actividad dedicada a los socios y beneficiarios del proyecto, donde se recibió un reconocimiento por el apoyo de ASONOG. ",
+            "Levantamiento de línea base: visitas a fincas de 64 productores para recopilar información y evaluar buenas prácticas ambientales. ",
+            "Capacitaciones: desarrollo de jornadas en temas sociales, empresariales y ambientales para participantes vinculados con UNIOCAFÉ. ",
+            "Socialización de instrumentos sociales: presentación del MQRS y de instrumentos relacionados con género, relevo generacional, comunicación y responsabilidad social empresarial. "
+          ],
+          "achievements": [
+            "Levantamiento de línea base y sensibilización de productores: se visitó a 64 productores, lo que permitió recopilar información sobre sus fincas, socializar el proyecto y promover el conocimiento de buenas prácticas agrícolas y la importancia del cuidado ambiental. ",
+            "Fortalecimiento de capacidades sociales, ambientales y empresariales: se desarrollaron capacitaciones orientadas a promover buenas prácticas agrícolas y el cuidado ambiental, así como la concientización sobre derechos humanos, igualdad de género y empoderamiento. Además, se fortaleció a UNIOCAFÉ mediante capacitaciones empresariales y la socialización de estrategias sociales. "
+          ],
+          "photos": [
+            {
+              "src": "/FotosProyectos/Uniocafe-Dia-Caficultor.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Reconocimiento recibido por ASONOG",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "uniocafe-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Uniocafe-Linea-Base.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Levantamiento de linea base.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "uniocafe-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Uniocafe-Linea-Base-2.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Levantamiento de linea base.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "uniocafe-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Uniocafe-Capacitaciones.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Capacitaciones recibidas por participante vinculados con UNIOCAFÉ.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "uniocafe-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/UnioCafe-Capacitacione-2.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Capacitaciones recibidas por participante vinculados con UNIOCAFÉ.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "uniocafe-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Uniocafe-Socializacion.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Socialización de instrumentos sociales.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "uniocafe-Proyecto-1-foto-1",
+              "featured": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inkota",
+      "name": "INKOTA",
+      "verified": true,
+      "demo": false,
+      "beneficiaries": null,
+      "departments": [
+        {
+          "names": [
+            "Copán"
+          ],
+          "axis": "Fomento de la agricultura agroecologica.",
+          "summary": "",
+          "communities": [
+            "Santa Rosa de Copán: El Zapote, La Esperancita, El Rosario.",
+            "San Juan de Opoa: El Portillo, Las Guarumas.",
+            "Concepcion: Candelaria, Montaña Adentro, Vertientes."
+
+          ],
+          "activities": [
+            "Fortalecimiento de la producción agroecológica familiar: Implementación y acompañamiento de huertos familiares agroecológicos incluyendo la entrega de 50 kits, diversificación de cultivos y formación práctica en producción sostenible.",
+            "Fortalecimiento de infraestructura y tecnologías agroecológicas: Impulso y seguimiento de casas malla, bancos comunitarios de semillas y sistemas de lombricompostaje para fortalecer la producción y disponibilidad de insumos orgánicos.",
+            "Promoción de la adaptación al cambio climático: Desarrollo de prácticas de conservación de suelos y agua, diversificación productiva.",
+            "Se fortaleció la articulación institucional mediante espacios de diálogo y la firma de una coalición interinstitucional para impulsar acciones de seguridad alimentaria y nutricional, en el marco de la política PyENSAN, con participación de instituciones públicas, mancomunidades y organizaciones sociales."
+          ],
+          "achievements": [
+            "210 familias con huertos familiares agroecológicos Se fortaleció la producción de alimentos mediante el establecimiento de huertos familiares, incorporando 11 variedades de cultivos de hortaliza y promoviendo la diversificación de la dieta familiar.",
+            "Se fortaleció la infraestructura agroecológica con la inauguración de cuatro casas malla en Las Guarumas y la articulación territorial mediante una coalición para impulsar acciones de seguridad alimentaria en el occidente del país."  
+          ],
+          "photos": [
+            {
+              "src": "/FotosProyectos/Inkota-Casa-Maya.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Inauguracion de la casa malla.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "trokaire-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Inkota-Kits-Huertos.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Entrega de Kits de huertos familiares agroecologicos.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "trokaire-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Inkota-Adaptacion.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Promocion de adaptacion al cambio climatico.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "trokaire-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Inkota-PyENSAN.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Coalición de instituciones y organizaciones para realizar acciones por la seguridad alimentaria en el marco de la política de la PyENSAN.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "trokaire-Proyecto-1-foto-1",
+              "featured": false
+            }
+          ]
         }
       ]
     }
