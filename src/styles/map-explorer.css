@@ -7,6 +7,169 @@
   gap: var(--space-24);
 }
 
+.department-project-nav {
+  display: flex;
+  justify-content: flex-end;
+  min-height: var(--size-42);
+  margin-bottom: var(--space-10);
+  padding-right: var(--space-60);
+}
+
+.department-hero {
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  height: clamp(320px, 42vw, 600px);
+  overflow: hidden;
+  border: var(--border-default);
+  border-radius: var(--radius-20);
+  background: var(--color-background);
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.department-hero::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+
+  content: '';
+  pointer-events: none;
+}
+
+.department-hero-map {
+  width: 80%;
+  height: 100%;
+  inset: 0;
+  opacity: 1;
+}
+
+.department-hero-map .map-panel {
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  height: 70%;
+}
+
+.department-hero-map .map-toolbar {
+  display: none;
+}
+
+.department-hero-map .map-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.department-hero-map .honduras-map {
+  transform: scale(1.18);
+  transform-origin: center;
+}
+
+.department-hero-map .map-labels {
+  padding: var(--space-8) var(--space-10);
+  border-radius: var(--radius-10);
+  background: color-mix(in srgb, var(--color-white) 85%, transparent);
+}
+
+.department-hero-map .map-tooltip,
+.department-hero-map .map-legend,
+.department-hero-map .map-zoom {
+  display: none;
+}
+
+.department-hero-map .department.filtered-out .dept-base {
+  fill: color-mix(in srgb, var(--color-white) 70%, var(--color-background));
+}
+
+.department-hero-map .department.filtered-out .dept-border {
+  stroke: color-mix(in srgb, var(--color-dark) 30%, var(--color-white));
+}
+
+.department-hero-map .department.is-selected .dept-base {
+  fill: var(--color-green-dark);
+}
+
+.department-hero-map .department.is-selected .dept-border {
+  stroke: var(--color-primary);
+  stroke-width: 2;
+}
+
+.department-hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--space-20), 5vw, var(--space-60));
+  width: min(100%, 900px);
+  pointer-events: none;
+  flex-direction: column;
+}
+
+.department-hero-brand {
+  flex: 0 0 clamp(150px, 22vw, 260px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.department-hero-brand img {
+  display: block;
+  width: 70%;
+  height: auto;
+}
+
+.department-hero-copy {
+  min-width: 0;
+}
+
+.department-hero-eyebrow {
+  margin: 0 0 var(--space-8);
+  color: var(--color-green-dark);
+  font-size: .875rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.department-hero-title {
+  margin: 0;
+  color: var(--color-dark);
+  font-size: clamp(2.75rem, 6.5vw, 6rem);
+  font-weight: var(--font-weight-bold);
+  line-height: .98;
+  letter-spacing: -.055em;
+  overflow-wrap: anywhere;
+  text-shadow: var(--title-text-shadow);
+}
+
+.department-hero .department-project-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-10) var(--space-20);
+  margin: var(--space-24) 0 0;
+  color: var(--color-dark);
+  font-size: clamp(.875rem, 1.5vw, 1.125rem);
+}
+
+.department-hero .department-project-totals span {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.department-hero .department-project-totals strong {
+  color: var(--color-green-dark);
+  font-size: 1.5em;
+  font-weight: var(--font-weight-bold);
+}
+
+.department-projects-intro {
+  justify-content: flex-end;
+  margin-top: var(--space-20);
+}
+
 .department-project-details {
   display: grid;
   gap: var(--space-36);
@@ -534,5 +697,57 @@
 
   .overview-project-results {
     max-height: 25svh;
+  }
+}
+
+@media (max-width: 640px) {
+  .department-project-nav {
+    min-height: 36px;
+    margin-bottom: var(--space-8);
+    padding-right: var(--space-60);
+  }
+
+  .department-hero {
+    min-height: 420px;
+    align-items: flex-end;
+    flex-direction: column;
+    height: fit-content;
+  }
+
+  .department-hero-map {
+    width: 100%;
+  }
+
+  .department-hero-map .honduras-map {
+    transform: scale(1.12);
+  }
+
+  .department-hero-content {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-20);
+  }
+
+  .department-hero-brand {
+    flex-basis: auto;
+    width: clamp(130px, 42vw, 190px);
+  }
+
+  .department-hero-title {
+    font-size: clamp(2.75rem, 13vw, 4.5rem);
+  }
+
+  .department-hero .department-project-totals {
+    gap: var(--space-8) var(--space-12);
+    margin-top: var(--space-16);
+  }
+
+  .department-hero .department-project-totals span {
+    font-size: .8rem;
+  }
+
+  .department-projects-intro {
+    justify-content: stretch;
   }
 }

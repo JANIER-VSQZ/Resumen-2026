@@ -1,18 +1,14 @@
 import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
-import { MapPin } from 'lucide-react';
 import TerritoryMap from '../components/map/TerritoryMap';
 import ProjectSection from '../components/projects/ProjectSection';
 
 export default function MapPage({ project, period, features, thumbnails = {}, department, departmentLocked = false, onDepartmentChange, onBack, onHome, onOpenPhoto, embedded = false, hideMap = false }) {
   const instanceId = useId().replace(/:/g, '');
   const titleId = embedded ? 'project-' + instanceId + '-title' : 'page-title';
-  const coverageId = embedded ? 'project-' + instanceId + '-coverage' : 'coverage-title';
   const Container = embedded ? 'article' : 'main';
-  const SectionTitle = embedded ? 'h3' : 'h2';
   const [hovered, setHovered] = useState(null);
   const selectedDepartment = department || null;
   const resultsRef = useRef(null);
-  const selectId = useId();
   const matches = useCallback(name => project.departments.includes(name), [project]);
   const departments = useMemo(() => Object.fromEntries(project.departments.map(name => [name, {
     verified: !project.demo,
@@ -21,6 +17,9 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
     projects: project.entries.filter(entry => entry.departments.includes(name)).map(entry => entry.project),
   }])), [project, thumbnails]);
   const visibleEntries = selectedDepartment ? project.entries.filter(entry => entry.departments.includes(selectedDepartment)) : project.entries;
+  const activityCount = project.activityCount ?? project.entries.reduce((count, entry) => count + entry.project.activities.length, 0);
+  const achievementCount = project.entries.reduce((count, entry) => count + entry.project.achievements.length, 0);
+  const photoCount = project.photos.length;
 
   function selectDepartment(name) {
     if (departmentLocked) return;
@@ -29,48 +28,57 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
     resultsRef.current?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
 
-  let embedido = embedded ? true : false;
-
   return (
     <Container className={embedded ? 'project-map-embedded' : 'mapview project-map-page'} id={embedded ? undefined : 'main-content'} tabIndex={embedded ? undefined : -1} aria-labelledby={titleId} data-selected-project={embedded ? undefined : project.id} data-project-detail={project.id}>
-      {!embedded && <nav className="project-page-nav" aria-label="Navegación del proyecto">
-        <button className="project-page-brand" onClick={onHome} aria-label="Ir a portada"><img className="institutional-logo Map-Page-Logo" src="/assets/asonog-logo.png" alt="ASONOG" /></button>
-        <h1 className="page-title project-nav-title" id={titleId}>{project.name}</h1>
+      {!embedded && <nav className="project-page-nav project-detail-nav" aria-label="Navegación del proyecto">
         <button className="back" onClick={onBack}>Volver al mapa</button>
       </nav>}
 
-      
-
-      {project.demo && <p className="demo-notice">Proyecto de demostración. Este contenido no representa resultados institucionales.</p>}
-      {!hideMap && (
-        <section
-          className="project-map-overview"
-          aria-labelledby={coverageId}
-        >
-          <h2 id={coverageId} className="sr-only">
-            Cobertura territorial del proyecto
-          </h2>
-
-          <TerritoryMap
-            features={features}
-            departments={departments}
-            matches={matches}
-            hovered={hovered}
-            onHover={setHovered}
-            onOpen={selectDepartment}
-            selected={selectedDepartment}
-            selectionLocked={departmentLocked}
-            projectMode
-          />
+      {!embedded && !hideMap && (
+        <section className="project-hero" aria-labelledby={titleId}>
+          
+          <div className="project-hero-content">
+            <button className="project-hero-brand" onClick={onHome} aria-label="Ir a portada">
+              <img className="institutional-logo" src="/assets/asonog-logo.png" alt="ASONOG" />
+            </button>
+            <div className="project-hero-copy">
+              {project.axis && <p className="project-hero-eyebrow">{project.axis}</p>}
+              <h1 className="project-hero-title" id={titleId}>{project.name}</h1>
+              {project.summary && <p className="project-hero-summary">{project.summary}</p>}
+              <dl className="project-hero-stats" aria-label="Resumen del proyecto">
+                <div><dt>Departamentos</dt><dd>{project.departments.length}</dd></div>
+                <div><dt>Actividades</dt><dd>{activityCount}</dd></div>
+                <div><dt>Logros</dt><dd>{achievementCount}</dd></div>
+                <div><dt>Fotografías</dt><dd>{photoCount}</dd></div>
+              </dl>
+              {project.demo && <p className="project-hero-demo">Proyecto de demostración · No representa resultados institucionales</p>}
+            </div>
+          </div>
+          <div className="project-hero-map">
+            <TerritoryMap
+              features={features}
+              departments={departments}
+              matches={matches}
+              hovered={hovered}
+              onHover={setHovered}
+              onOpen={selectDepartment}
+              selected={selectedDepartment}
+              selectionLocked={departmentLocked}
+              projectMode
+            />
+          </div>
         </section>
       )}
+
+      {embedded && project.demo && <p className="demo-notice">Proyecto de demostración. Este contenido no representa resultados institucionales.</p>}
+
       <section className="project-evidence" ref={resultsRef} tabIndex={-1} aria-label={selectedDepartment ? 'Actividades y fotografías en ' + selectedDepartment : 'Actividades y fotografías del proyecto'}>
         <div className="project-evidence-heading">
           {selectedDepartment && !departmentLocked && <button className="back" onClick={() => selectDepartment(null)}>Mostrar todos los departamentos</button>}
         </div>
         <div className="project-list">
           {visibleEntries.map(({ id, project: record, departments: coverage }) => (
-            <ProjectSection key={id} project={record} period={period} location={coverage.join(' · ')} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} embed = {embedido}/>
+            <ProjectSection key={id} project={record} period={period} location={coverage.join(' · ')} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} embed={embedded} />
           ))}
         </div>
       </section>
