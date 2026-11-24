@@ -31,7 +31,7 @@
 
 .project-page-nav {
   display: grid;
-  grid-template-columns: minmax(0, var(--cover-logo-width)) minmax(0, 1fr) auto;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
   gap: var(--space-16);
   padding-right: var(--space-60);

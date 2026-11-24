@@ -1,10 +1,6 @@
 
 import React, { useEffect, useId, useState } from 'react';
-import {
-  FolderOpen,
-  SlidersHorizontal,
-  ChevronDown
-} from 'lucide-react';
+import {FolderOpen, SlidersHorizontal, ChevronDown} from 'lucide-react';
 
 import MapPage from './MapPage';
 import TerritoryMap from '../components/map/TerritoryMap';
@@ -23,16 +19,12 @@ export default function DepartmentProjectsPage({department, projects, hasFilters
     )
   );
 
-  console.log("Departamentos: " + departmentProjects);
-
   
 
   // Proyectos visibles según el filtro seleccionado.
-  const visibleProjects = selectedProject
-    ? departmentProjects.filter(
+  const visibleProjects = selectedProject ? departmentProjects.filter(
       project => project.id === selectedProject
-    )
-    : departmentProjects;
+    ): departmentProjects;
 
   // Entradas correspondientes al departamento.
   const entries = visibleProjects.flatMap(project =>

@@ -18,7 +18,6 @@ export function getScreenHref(screen) {
 export function getDepartmentDestination(projects, department) {
   if (!DEPARTMENTS.includes(department)) return { view: 'projects' };
   const matches = projects.filter(project => project.departments?.includes(department));
-  //if (matches.length === 1) return { view: 'map', selected: matches[0].id, department };
   return { view: 'department-projects', department };
 }
 
