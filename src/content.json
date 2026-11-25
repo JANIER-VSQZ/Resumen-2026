@@ -562,6 +562,87 @@
               "featured": false
             }
           ]
+        },
+        {
+          "names": [
+            "Choluteca"
+          ],
+          "axis": "Fortalecimiento de los sistemas territoriales y la acción humanitaria inclusiva para la acción anticipatoria.",
+          "summary": "",
+          "communities": ["Namasigüe", "Marcovia", "Choluteca"],
+          "activities": [
+            "Socialización del proyecto: Se socializó el proyecto de acción humanitaria inclusiva, orientado a fortalecer la resiliencia climática y las capacidades comunitarias y municipales en gestión del riesgo y acción anticipatoria, priorizando a las poblaciones vulnerables del corredor seco del sur de Honduras.",
+            "Se desarrolló un taller participativo para definir criterios y priorizar preliminarmente las zonas y hogares mas vulnerables ante los riesgos climaticos en Choluteca, Namasigüe y Marcovia. Se consideraron las condiciones de exposición, las necesidades específicas, las barreras asociadas a discapacidad, género y edad, así como las condiciones de vida y capacidades territoriales, con el propósito de orientar una intervención inclusiva y focalizada desde el enfoque de acción anticipatoria. ",
+            "Se realizó un diagnóstico territorial inclusivo en los tres municipios de intervención, identificando vulnerabilidades climáticas, personas con discapacidad, condiciones sanitarias, capacidades municipales, actores clave y comunidades piloto, para fortalecer la planificación y orientar acciones anticipatorias y respuestas humanitarias inclusivas.",
+            "Se desarrollaron tres talleres participativos en Choluteca, Marcovia y Namasigüe, orientados a identificar y priorizar zonas y hogares vulnerables ante los riesgos climáticos, fortaleciendo las bases para la gestión integral del riesgo, la acción anticipatoria y los sistemas de alerta temprana con enfoque inclusivo."  
+          ],
+          "achievements": [
+            "Se logró socializar el proyecto de acción humanitaria inclusiva con organizaciones de personas con discapacidad, autoridades municipales y CODEM de Choluteca, Marcovia y Namasigüe, promoviendo la coordinación para la gestión del riesgo y la acción anticipatoria.",
+            "Se establecieron criterios inclusivos para la identificación y priorización preliminar de las poblaciones con mayor vulnerabilidad ante los riesgos climáticos, considerando factores de discapacidad, género, edad, condiciones de vida y capacidades territoriales.",
+            "Se desarrollaron tres talleres participativos que contribuyeron a la generación de información estratégica sobre vulnerabilidades climáticas, necesidades de las poblaciones y capacidades territoriales, sentando las bases para la planificación de acciones anticipatorias y respuestas humanitarias inclusivas."
+          ],
+          "photos": [
+            {
+              "src": "/FotosProyectos/CBM-Choluteca-Socializacion-1.jpg",
+              "community": "",
+              "date": "-",
+              "description": "Socialización del proyecto de acción humanitaria inclusiva en el corredor seco del sur de Honduras.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "cbm-CHO-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/CBM-Choluteca-Socializacion-2.jpg",
+              "community": "",
+              "date": "-",
+              "description": "Promoción de la inclusión y protección de las poblaciones más vulnerables ante los riesgos climáticos.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "cbm-CHO-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/CBM-Choluteca-Taller-1.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Taller participativo para la identificación y priorización de zonas y hogares vulnerables ante los riesgos climáticos.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "cbm-CHO-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/CBM-Choluteca-Diagnostico-1.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Desarrollo de talleres participativos para el diagnóstico territorial inclusivo en el sur de Honduras.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "cbm-CHO-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/CBM-Choluteca-Diagnostico-2.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Generación de información territorial para orientar la planificación de acciones humanitarias inclusivas.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "cbm-CHO-Proyecto-1-foto-1",
+              "featured": false
+            }
+          ]
         }
       ]
     },
@@ -772,7 +853,6 @@
             "Santa Rosa de Copán: El Zapote, La Esperancita, El Rosario.",
             "San Juan de Opoa: El Portillo, Las Guarumas.",
             "Concepcion: Candelaria, Montaña Adentro, Vertientes."
-
           ],
           "activities": [
             "Fortalecimiento de la producción agroecológica familiar: Implementación y acompañamiento de huertos familiares agroecológicos incluyendo la entrega de 50 kits, diversificación de cultivos y formación práctica en producción sostenible.",
@@ -782,7 +862,7 @@
           ],
           "achievements": [
             "210 familias con huertos familiares agroecológicos Se fortaleció la producción de alimentos mediante el establecimiento de huertos familiares, incorporando 11 variedades de cultivos de hortaliza y promoviendo la diversificación de la dieta familiar.",
-            "Se fortaleció la infraestructura agroecológica con la inauguración de cuatro casas malla en Las Guarumas y la articulación territorial mediante una coalición para impulsar acciones de seguridad alimentaria en el occidente del país."  
+            "Se fortaleció la infraestructura agroecológica con la inauguración de cuatro casas malla en Las Guarumas y la articulación territorial mediante una coalición para impulsar acciones de seguridad alimentaria en el occidente del país."
           ],
           "photos": [
             {
