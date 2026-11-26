@@ -103,7 +103,7 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
         </div>
         <div className="project-list">
           {visibleEntries.map(({ id, project: record, departments: coverage }) => (
-            <ProjectSection key={id} project={record} period={period} location={selectedDepartment ? selectedDepartment : coverage.join(" . ")} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} embed={embedded} />
+            <ProjectSection key={id} project={record} period={period} location={selectedDepartment ? selectedDepartment : coverage.join(" · ")} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} embed={embedded} />
           ))}
         </div>
       </section>
