@@ -20,6 +20,10 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
   const activityCount = project.activityCount ?? project.entries.reduce((count, entry) => count + entry.project.activities.length, 0);
   const achievementCount = project.entries.reduce((count, entry) => count + entry.project.achievements.length, 0);
   const photoCount = project.photos.length;
+  const heroPhoto = useMemo(() => {
+    const photos = project.photos?.filter(photo => photo.src) || [];
+    return photos.length ? photos[Math.floor(Math.random() * photos.length)] : null;
+  }, [project.id, project.photos]);
 
   function selectDepartment(name) {
     if (departmentLocked) return;
@@ -27,6 +31,11 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
     resultsRef.current?.focus({ preventScroll: true });
     resultsRef.current?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
+
+  console.log(selectedDepartment);
+
+  console.log ("embedded: "+ embedded);
+  console.log ("departement locked: "+departmentLocked);
 
   return (
     <Container className={embedded ? 'project-map-embedded' : 'mapview project-map-page'} id={embedded ? undefined : 'main-content'} tabIndex={embedded ? undefined : -1} aria-labelledby={titleId} data-selected-project={embedded ? undefined : project.id} data-project-detail={project.id}>
@@ -36,7 +45,9 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
 
       {!embedded && !hideMap && (
         <section className="project-hero" aria-labelledby={titleId}>
-
+          {heroPhoto && (
+            <div className="hero-background" style={{ backgroundImage: `url("${heroPhoto.src}")` }} aria-hidden="true" />
+          )}
           <div className="project-hero-content">
             <button className="project-hero-brand" onClick={onHome} aria-label="Ir a portada">
               <img className="institutional-logo" src="/assets/asonog-logo.png" alt="ASONOG" />
@@ -92,7 +103,7 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
         </div>
         <div className="project-list">
           {visibleEntries.map(({ id, project: record, departments: coverage }) => (
-            <ProjectSection key={id} project={record} period={period} location={coverage.join(' · ')} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} embed={embedded} />
+            <ProjectSection key={id} project={record} period={period} location={selectedDepartment ? selectedDepartment : coverage.join(" . ")} headingLevel={embedded ? 4 : 3} onOpenPhoto={onOpenPhoto} embed={embedded} />
           ))}
         </div>
       </section>

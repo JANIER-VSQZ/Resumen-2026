@@ -283,7 +283,7 @@
     },
     {
       "id": "promocionyprotecciondederechoshumanos",
-      "name": "Promocion y protección de derechos humanos.",
+      "name": "Promoción y protección de derechos humanos.",
       "verified": true,
       "demo": false,
       "beneficiaries": null,
@@ -294,7 +294,7 @@
             "Intibucá"
           ],
           "axis": "Derechos Humanos",
-          "summary": "Durante el año se desarrollaron cuatro actividades destacadas: formación en derechos humanos para 20 jóvenes, participación en el Foro Centroamericano Unidos por la Vida, una Escuela de Incidencia Política para 25 líderes y lideresas, y un conversatorio sobre las reformas al Código Penal. Las acciones se realizaron en Chinacla y Marcala (La Paz) e Intibucá (Intibucá), logrando fortalecer las capacidades de organizaciones sociales, redes de mujeres, jóvenes y consejos indígenas lencas en derechos humanos, participación ciudadana e incidencia política. Además, se brindó acompañamiento y asesoría en la defensa de la tierra, el agua y el territorio, así como orientación y protección a personas defensoras de derechos humanos en situaciones de riesgo.",
+          "summary": "Se fortalecieron las capacidades de organizaciones sociales, jóvenes, redes de mujeres y consejos indígenas lencas en derechos humanos, participación ciudadana e incidencia política, mediante espacios de formación y diálogo en La Paz e Intibucá. Asimismo, se brindó acompañamiento en la defensa de la tierra, el agua y el territorio, y protección a personas defensoras de derechos humanos en situaciones de riesgo.",
           "communities": [
             "Chinacla",
             "Marcala",
@@ -731,7 +731,7 @@
             }
           ],
           "videos": {
-            "srcVideo": "/Videos/C0001.MP4"
+            "srcVideo": "https://www.youtube.com/embed/Imeq3GeRttw"
           }
         }
       ]
@@ -748,7 +748,7 @@
             "Ocotepeque"
           ],
           "axis": "UNIOCAFE",
-          "summary": "",
+          "summary": "Se fortaleció el acompañamiento al sector cafetalero mediante la participación en la celebración del Día del Caficultor, donde ASONOG recibió un reconocimiento por su apoyo; el levantamiento de una línea base en fincas de 64 productores; el desarrollo de capacitaciones en temas sociales, empresariales y ambientales; y la socialización de instrumentos sobre género, relevo generacional, comunicación, responsabilidad social empresarial y MQRS.",
           "communities": [
             "Ocotepeque: El Salitre, Las Hojas, Las Lajitas",
             "Sinuapa: El Barcal, El Comedero, La Laborcita"

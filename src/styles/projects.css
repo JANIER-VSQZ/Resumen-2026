@@ -142,19 +142,41 @@
   border-top: var(--border-default);
 }
 
-.project-achievements svg {
+.project-activities summary, .project-achievements summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-10);
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--font-size-info-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.project-activities summary::-webkit-details-marker, .project-achievements summary::-webkit-details-marker {
+  display: none;
+}
+
+.project-activities summary svg, .project-achievements summary svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) ease-out;
+}
+
+.project-activities[open] summary svg, .project-achievements[open] summary svg {
+  transform: rotate(180deg);
+}
+
+.project-achievements li svg {
   margin-top: var(--space-3);
   color: var(--color-green-dark);
 }
 
-.project-communities h4 svg, .project-achievements svg, .information-toggle svg {
+.project-communities h4 svg, .project-achievements li svg {
   width: 1em;
   height: 1em;
   flex-shrink: 0;
-}
-
-.information-toggle {
-  display: none;
 }
 
 .detail-information {
@@ -195,33 +217,6 @@
     border: 0;
   }
 
-  .information-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    min-height: var(--size-40);
-    padding: var(--space-10) 0 0;
-    border: 0;
-    background: transparent;
-    color: var(--color-dark);
-    font-size: var(--font-size-info-body);
-  }
-
-  .detail-information {
-    display: none;
-  }
-
-  .info-expanded .detail-information {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-14);
-    padding-top: var(--space-14);
-  }
-
-  .info-expanded .information-toggle svg {
-    transform: rotate(180deg);
-  }
 }
 
 @media (max-width: 640px) {
@@ -229,10 +224,6 @@
   .project-info {
     padding: var(--space-13) var(--space-14);
     border-radius: var(--radius-13);
-  }
-
-  .info-expanded .detail-information {
-    grid-template-columns: 1fr;
   }
 
 }

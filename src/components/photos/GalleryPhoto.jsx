@@ -36,7 +36,6 @@ export default function GalleryPhoto({ photo, onClick, featured }) {
       <Caption className="photo-caption">
         <strong>{photo.community || 'Comunidad sin registrar'}</strong>
         <small>{formatDate(photo.date)}</small>
-        <span>{photo.project || 'Archivo del territorio'}</span>
         {photo.description && <Description className="photo-description">{photo.description}</Description>}
       </Caption>
     </Container>

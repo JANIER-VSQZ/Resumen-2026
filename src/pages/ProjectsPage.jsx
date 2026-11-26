@@ -1,3 +1,5 @@
+{/* Controla los filtros del mapa interactivo */}
+
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronDown, MapPin, SlidersHorizontal } from 'lucide-react';
 import { DEPARTMENTS } from '../content';
@@ -68,15 +70,6 @@ export default function ProjectsPage({ projects, content, features, filters, onF
               <select id="overview-project" value={filters.project} onChange={event => changeProject(event.target.value)}>
                 <option value="">Todos los proyectos</option>
                 {projects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)}
-              </select>
-              <ChevronDown size={16} aria-hidden="true" />
-            </span>
-          </label>
-          <label htmlFor="overview-axis">Actividad principal
-            <span className="overview-select-wrap">
-              <select id="overview-axis" value={filters.axis} onChange={event => changeFilters({ ...filters, axis: event.target.value })}>
-                <option value="">Todas las actividades</option>
-                {axes.map(axis => <option key={axis} value={axis}>{axis}</option>)}
               </select>
               <ChevronDown size={16} aria-hidden="true" />
             </span>

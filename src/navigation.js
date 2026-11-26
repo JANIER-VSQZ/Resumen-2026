@@ -4,7 +4,6 @@ export function getAdjacentScreen(current, direction) {
   if (current.view === 'cover') return { view: 'projects' };
   if (current.view === 'projects') return { view: 'cover' };
   if (['map', 'department-projects'].includes(current.view) && direction < 0) return { view: 'projects' };
-  // Los detalles se abren desde los proyectos disponibles en el mapa general.
   return null;
 }
 

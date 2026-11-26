@@ -1,6 +1,8 @@
 /*Estilos de los hero panel de las pantallas de detalle por departamento o proyecto*/
 
-.department-hero, .project-hero{
+.department-hero,
+.project-hero {
+  position: relative;
   isolation: isolate;
   display: flex;
   align-items: center;
@@ -11,32 +13,50 @@
   background: var(--color-background);
   flex-direction: row;
   justify-content: space-between;
+  padding: var(--space-10);
 }
 
-.project-hero-demo, .department-hero-demo {
+.project-hero-demo,
+.department-hero-demo {
   margin: var(--space-12) 0 0;
   color: var(--color-dark);
   font-size: .8rem;
   font-weight: var(--font-weight-semibold);
 }
 
-.department-hero::after, .project-hero::after{
+.department-hero::before,
+.project-hero::before {
   position: absolute;
   z-index: 1;
   inset: 0;
-
   content: '';
   pointer-events: none;
+  background: var(--color-hero)
 }
 
-.department-hero-map, .project-hero-map{
+
+
+.hero-background {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-color: var(--color-background);
+  background-position: center;
+  background-size: cover;
+  transform: scale(1.04);
+}
+
+.department-hero-map,
+.project-hero-map {
   width: 100%;
   height: 100%;
   inset: 0;
   opacity: 1;
+  z-index: 2;
 }
 
-.department-hero-map .map-panel, .project-hero .map-panel {
+.department-hero-map .map-panel,
+.project-hero .map-panel {
   inset: 0;
   border: 0;
   border-radius: 0;
@@ -45,70 +65,84 @@
   width: 100%;
 }
 
-.department-hero-map .map-toolbar, .project-hero-map .map-toolbar {
+.department-hero-map .map-toolbar,
+.project-hero-map .map-toolbar {
   display: none;
 }
 
-.department-hero-map .map-stage, .project-hero-map .map-stage {
+.department-hero-map .map-stage,
+.project-hero-map .map-stage {
   position: absolute;
   inset: 0;
 }
 
-.department-hero-map .honduras-map, .project-hero-map .honduras-map {
+.department-hero-map .honduras-map,
+.project-hero-map .honduras-map {
   transform-origin: center;
 }
 
-.department-hero-map .map-labels, .project-hero-map .map-labels {
+.department-hero-map .map-labels,
+.project-hero-map .map-labels {
   padding: var(--space-8) var(--space-10);
   border-radius: var(--radius-10);
   background: color-mix(in srgb, var(--color-white) 85%, transparent);
 }
 
-.department-hero-map .map-tooltip, .project-hero-map .map-tooltip,
-.department-hero-map .map-legend, .project-hero-map .map-legend,
-.department-hero-map .map-zoom, .project-hero-map .map-zoom {
+.department-hero-map .map-tooltip,
+.project-hero-map .map-tooltip,
+.department-hero-map .map-legend,
+.project-hero-map .map-legend,
+.department-hero-map .map-zoom,
+.project-hero-map .map-zoom {
   display: none;
 }
 
-.department-hero-map .department.filtered-out .dept-base, .project-hero-map .department.filtered-out .dept-base {
+.department-hero-map .department.filtered-out .dept-base,
+.project-hero-map .department.filtered-out .dept-base {
   fill: color-mix(in srgb, var(--color-white) 70%, var(--color-background));
 }
 
-.department-hero-map .department.filtered-out .dept-border, .project-hero-map .department.filtered-out .dept-border {
+.department-hero-map .department.filtered-out .dept-border,
+.project-hero-map .department.filtered-out .dept-border {
   stroke: color-mix(in srgb, var(--color-dark) 30%, var(--color-white));
 }
 
-.department-hero-map .department.is-selected .dept-base, .project-hero-map .department.is-selected .dept-base {
+.department-hero-map .department.is-selected .dept-base,
+.project-hero-map .department.is-selected .dept-base {
   fill: var(--color-green-dark);
 }
 
-.department-hero-map .department.is-selected .dept-border, .project-hero-map .department.is-selected .dept-border {
+.department-hero-map .department.is-selected .dept-border,
+.project-hero-map .department.is-selected .dept-border {
   stroke: var(--color-primary);
   stroke-width: 2;
 }
 
-.project-hero-map .project-territory-map .map-stage, .project-hero-map .project-territory-map .map-stage {
+.project-hero-map .project-territory-map .map-stage,
+.project-hero-map .project-territory-map .map-stage {
   margin: 0;
 }
 
-.project-territory-map .honduras-map, .department-territory-map .honduras-map{
+.project-territory-map .honduras-map,
+.department-territory-map .honduras-map {
   position: absolute;
   inset: 0;
 }
 
-.department-hero-content, .project-hero-content{
-  position: relative;
+.department-hero-content,
+.project-hero-content {
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: clamp(var(--space-20), 5vw, var(--space-60));
+  gap: var(--space-10);
   width: min(100%, 900px);
   pointer-events: none;
   flex-direction: column;
   height: fit-content;
 }
 
-.department-hero-brand, .project-hero-brand{
+.department-hero-brand,
+.project-hero-brand {
   flex: 0 0 clamp(150px, 22vw, 260px);
   padding: 0;
   border: 0;
@@ -116,35 +150,37 @@
   pointer-events: auto;
 }
 
-.department-hero-brand img, .project-hero-brand img {
+.department-hero-brand img,
+.project-hero-brand img {
   display: block;
   width: 70%;
   height: auto;
 }
 
-.department-hero-copy, .project-hero-copy{
+.department-hero-copy,
+.project-hero-copy {
   min-width: 0;
   width: 100%;
   container-type: inline-size;
   padding: var(--space-20);
 }
 
-.project-hero-title, .department-hero-title{
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    column-gap: 0.25em;
-    row-gap: .1em;
+.project-hero-title,
+.department-hero-title {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  column-gap: 0.25em;
+  row-gap: .1em;
 
-    font-size: clamp(
-        3rem,
-        calc(360cqi / var(--text-length, 6)),
-        6rem
-    );
+  font-size: clamp(3rem,
+      calc(360cqi / var(--text-length, 6)),
+      5rem);
 }
 
-.project-hero-eyebrow, .department-hero-eyebrow {
+.project-hero-eyebrow,
+.department-hero-eyebrow {
   margin: 0 0 var(--space-8);
   color: var(--color-green-dark);
   font-size: .875rem;
@@ -153,28 +189,31 @@
   text-transform: uppercase;
 }
 
-.project-hero-title .hero-word, .department-hero-title .hero-word{
+.project-hero-title .hero-word,
+.department-hero-title .hero-word {
   display: inline-block;
-    white-space: nowrap;
-    flex-shrink: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.project-hero-title .hero-letter, .department-hero-title .hero-letter {
-    display: inline-block;
-    pointer-events: auto;
-    font-size: inherit;
-    color: var(--color-dark);
-    font-weight: var(--font-weight-bold);
-    line-height: .98;
-    letter-spacing: -.055em;
-    text-shadow: var(--title-text-shadow);
-    transition: transform .3s ease;
+.project-hero-title .hero-letter,
+.department-hero-title .hero-letter {
+  display: inline-block;
+  pointer-events: auto;
+  font-size: inherit;
+  color: var(--color-dark);
+  font-weight: var(--font-weight-bold);
+  line-height: .98;
+  letter-spacing: -.055em;
+  text-shadow: var(--title-text-shadow);
+  transition: transform .3s ease;
 }
 
-.project-hero-title .hero-letter:hover, .department-hero-title .hero-letter:hover {
-    transform: scale(1.2);
-    position: relative;
-    z-index: 1;
+.project-hero-title .hero-letter:hover,
+.department-hero-title .hero-letter:hover {
+  transform: scale(1.2);
+  position: relative;
+  z-index: 1;
 }
 
 
@@ -186,7 +225,8 @@
   line-height: var(--line-height-relaxed);
 }
 
-.project-hero-stats, .department-hero-stats {
+.project-hero-stats,
+.department-hero-stats {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -199,7 +239,8 @@
   padding: var(--space-20);
 }
 
-.project-hero-stats div, .department-hero-stats div {
+.project-hero-stats div,
+.department-hero-stats div {
   width: max-content;
   display: flex;
   align-items: baseline;
@@ -207,14 +248,17 @@
 }
 
 @media (hover: hover) {
-  .project-hero-stats  div, .department-hero-stats  div {
+
+  .project-hero-stats div,
+  .department-hero-stats div {
     position: relative;
     justify-self: start;
     pointer-events: auto;
     transition: transform var(--duration-fast) ease-out;
   }
 
-  .project-hero-stats  div::after, .department-hero-stats  div::after {
+  .project-hero-stats div::after,
+  .department-hero-stats div::after {
     position: absolute;
     inset: calc(-1 * var(--space-4)) calc(-1 * var(--space-6));
     border: 1px solid color-mix(in srgb, var(--color-primary) 75%, transparent);
@@ -226,25 +270,30 @@
     transition: opacity var(--duration-fast) ease-out;
   }
 
-  .project-hero-stats div:hover::after, .department-hero-stats div:hover::after {
+  .project-hero-stats div:hover::after,
+  .department-hero-stats div:hover::after {
     opacity: 1;
   }
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .project-hero-stats > div:hover, .department-hero-stats > div:hover {
+
+  .project-hero-stats>div:hover,
+  .department-hero-stats>div:hover {
     transform: scale(1.04);
   }
 }
 
-.project-hero-stats dt, .department-hero-stats dt{
+.project-hero-stats dt,
+.department-hero-stats dt {
   color: var(--color-dark);
   font-size: clamp(.875rem, 1.5vw, 1.125rem);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
 }
 
-.project-hero-stats dd, .department-hero-stats dd {
+.project-hero-stats dd,
+.department-hero-stats dd {
   order: -1;
   margin: 0;
   color: var(--color-green-dark);

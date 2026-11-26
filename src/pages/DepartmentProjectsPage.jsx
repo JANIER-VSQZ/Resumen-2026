@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useState } from 'react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
 import { ChevronDown, FolderOpen, SlidersHorizontal } from 'lucide-react';
 import MapPage from './MapPage';
 import TerritoryMap from '../components/map/TerritoryMap';
@@ -8,15 +8,23 @@ export default function DepartmentProjectsPage({ department, projects, hasFilter
   const [hovered, setHovered] = useState(null);
   const selectId = useId();
 
-  const departmentProjects = projects.filter(project =>
+  const departmentProjects = useMemo(() => projects.filter(project =>
     project.entries.some(entry => entry.departments.includes(department))
-  );
+  ), [projects, department]);
   const visibleProjects = selectedProject
     ? departmentProjects.filter(project => project.id === selectedProject)
     : departmentProjects;
   const entries = visibleProjects.flatMap(project =>
     project.entries.filter(entry => entry.departments.includes(department))
   );
+  const heroPhoto = useMemo(() => {
+    const photos = departmentProjects
+      .flatMap(project => project.entries
+        .filter(entry => entry.departments.includes(department))
+        .flatMap(entry => entry.project.photos || []))
+      .filter(photo => photo.src);
+    return photos.length ? photos[Math.floor(Math.random() * photos.length)] : null;
+  }, [department, departmentProjects]);
   const visibleDepartments = [department];
   const matches = name => visibleDepartments.includes(name);
   const mapDepartments = Object.fromEntries(visibleDepartments.map(name => {
@@ -51,7 +59,9 @@ export default function DepartmentProjectsPage({ department, projects, hasFilter
 
       {departmentProjects.length > 0 && (
         <section className="department-hero" aria-labelledby="page-title">
-          
+          {heroPhoto && (
+            <div className="hero-background" style={{ backgroundImage: `url("${heroPhoto.src}")` }} aria-hidden="true" />
+          )}
           <div className="department-hero-content">
             <button className="department-hero-brand" onClick={onHome} aria-label="Ir a portada">
               <img className="institutional-logo" src="/assets/asonog-logo.png" alt="ASONOG" />

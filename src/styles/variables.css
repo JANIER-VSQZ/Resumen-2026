@@ -13,8 +13,8 @@
   --color-white: #FFFFFF;
   --color-hero: linear-gradient(120deg,
         #eddcb2 0%,
-        #f5cf70 55%,
-        #fac84b 100%);
+        #f8e4b079 55%,
+        #ffffff00 100%);
 
   /* Estados compartidos por ambos mapas y su leyenda */
   --color-map-empty: var(--color-primary);

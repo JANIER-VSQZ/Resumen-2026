@@ -5,7 +5,6 @@ import ProjectGallery from './ProjectGallery';
 export default function ProjectSection({ project, period, location, headingLevel = 3, onOpenPhoto, embed = false }) {
   const id = useId();
   const Heading = 'h' + headingLevel;
-
   console.log(project);
   return (
     <article className="project-section " aria-labelledby={id + '-title'} data-project={project.id}>
@@ -16,22 +15,22 @@ export default function ProjectSection({ project, period, location, headingLevel
         <Heading className="project-section-title" id={id + '-title'}>{location}</Heading>
       </header>
       <div className="project-layout">
-        <ProjectInformation project={project} id={id + '-information'} />
+        <ProjectInformation project={project} />
         <ProjectGallery photos={project.photos} id={id + '-gallery'} onOpenPhoto={onOpenPhoto} />
 
       </div>
       {project.videos?.srcVideo && (
-        <div className='video-layout'>
-          <div className = "video-container">
-          <video className = "project-video" controls>
-            <source src={project.videos.srcVideo} type="video/mp4" />
-            Tu navegador no soporta videos.
-          </video>
-        </div>
-        </div>
-        
-          
-        )}
+        <section className="video-layout" aria-label={'Video de ' + project.name}>
+          <div className="video-container">
+            <iframe className="project-video" src={project.videos.srcVideo}
+              title={'Video de ' + project.name}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowFullScreen></iframe>
+          </div>
+        </section>
+
+
+      )}
     </article>
   );
 
