@@ -139,7 +139,7 @@
 
     font-size: clamp(
         3rem,
-        calc(160cqi / var(--text-length, 6)),
+        calc(360cqi / var(--text-length, 6)),
         6rem
     );
 }

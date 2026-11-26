@@ -12,7 +12,7 @@ export default function ProjectInformation({ project, id }) {
       )}
       {project.summary && <p className="project-summary">{project.summary}</p>}
       <section className="info-block project-communities">
-        <h4><MapPin size={14} aria-hidden="true" />Comunidades de intervención</h4>
+        <h4><MapPin size={14} aria-hidden="true" />Lugares de intervención</h4>
         <ul>{project.communities.map(name => <li key={name}>{name}</li>)}</ul>
       </section>
       <button className="information-toggle" onClick={() => setExpanded(value => !value)} aria-expanded={expanded} aria-controls={id}>
