@@ -48,7 +48,7 @@ export default function ProjectsPage({ projects, content, features, filters, onF
 
   return (
     <main className="projectsview map-explorer-page" id="main-content" tabIndex={-1} aria-labelledby="page-title">
-      <TerritoryMap features={features} departments={departments} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} />
+      <TerritoryMap features={features} departments={departments} matches={matches} hovered={hovered} onHover={setHovered} onOpen={selectDepartment} requireProjectsForSelection />
       <header className="map-explorer-heading">
         <h1 className="page-title page-title--map" id="page-title">
           <span className="map-title-context"></span>

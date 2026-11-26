@@ -8,9 +8,13 @@
   --color-green-dark: #4C8030;
   --color-green-light: #81B631;
   --color-yellow-light: #FAB833;
-  --color-background: #d2d2be;
+  --color-background: #eeddb2;
   --color-border: #D9D6D5;
   --color-white: #FFFFFF;
+  --color-hero: linear-gradient(120deg,
+        #eddcb2 0%,
+        #f5cf70 55%,
+        #fac84b 100%);
 
   /* Estados compartidos por ambos mapas y su leyenda */
   --color-map-empty: var(--color-primary);

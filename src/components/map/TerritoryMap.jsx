@@ -5,11 +5,11 @@ import MapControls from './MapControls';
 import MapFeedback from './MapFeedback';
 import MapLegend from './MapLegend';
 
-export default function TerritoryMap({ features, departments, matches, hovered, onHover, onOpen, selected, selectionLocked = false, projectMode = false }) {
+export default function TerritoryMap({ features, departments, matches, hovered, onHover, onOpen, selected, selectionLocked = false, projectMode = false, requireProjectsForSelection = false }) {
   const idPrefix = 'map-' + useId().replace(/:/g, '') + '-';
   const [labels, setLabels] = useState(true);
   const [failed, setFailed] = useState(() => new Set());
-  const canSelect = name => matches(name) && (!selectionLocked || name === selected);
+  const canSelect = name => matches(name) && (!requireProjectsForSelection || departments[name]?.projects?.length > 0) && (!selectionLocked || name === selected);
   const { camera, svgRef, viewBox, zoom, reset, pointerHandlers } = useMapCamera({ features, matches: canSelect, onOpen });
   useEffect(() => setFailed(new Set()), [features]);
   const activeFeature = features.find(feature => feature.name === hovered && matches(feature.name));

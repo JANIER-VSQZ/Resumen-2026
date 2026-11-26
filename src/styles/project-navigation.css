@@ -91,166 +91,14 @@
   padding-right: var(--space-60);
 }
 
-.project-hero {
-  isolation: isolate;
-  display: flex;
-  align-items: stretch;
-  height: clamp(380px, 43vw, 600px);
-  overflow: hidden;
-  border: var(--border-default);
-  border-radius: var(--radius-20);
-  background: var(--color-background);
-  flex-direction: row;
-  justify-content: space-between;
-}
 
-.project-hero::after {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  content: '';
-  pointer-events: none;
-}
 
-.project-hero-map {
-  width: 80%;
-  height: 100%;
-  inset: 0;
-  opacity: 1;
-}
 
-.project-hero-map .map-panel {
-  inset: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  height: 70%;
-}
 
-.project-hero-map .map-toolbar,
-.project-hero-map .map-legend,
-.project-hero-map .map-zoom,
-.project-hero-map .map-tooltip {
-  display: none;
-}
 
-.project-hero-map .map-stage {
-  position: absolute;
-  inset: 0;
-}
 
-.project-hero-map .project-territory-map .map-stage {
-  margin: 0;
-}
 
-.project-hero-map .honduras-map {
-  transform: scale(1.16);
-  transform-origin: center;
-}
 
-.project-hero-map .department.filtered-out .dept-base {
-  fill: color-mix(in srgb, var(--color-white) 70%, var(--color-background));
-}
-
-.project-hero-map .department.filtered-out .dept-border {
-  stroke: color-mix(in srgb, var(--color-dark) 30%, var(--color-white));
-}
-
-.project-hero-map .department.is-project-location .dept-base {
-  fill: var(--color-green-dark);
-}
-
-.project-hero-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: clamp(var(--space-20), 5vw, var(--space-60));
-  width: min(100%, 900px);
-  pointer-events: none;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.project-hero-brand {
-  flex: 0 0 clamp(150px, 22vw, 260px);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  pointer-events: auto;
-}
-
-.project-hero-brand img {
-  display: block;
-  width: 70%;
-  height: auto;
-}
-
-.project-hero-copy {
-  min-width: 0;
-}
-
-.project-hero-eyebrow {
-  margin: 0 0 var(--space-8);
-  color: var(--color-green-dark);
-  font-size: .875rem;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.project-hero-title {
-  margin: 0;
-  color: var(--color-dark);
-  font-size: clamp(2.75rem, 6.5vw, 6rem);
-  font-weight: var(--font-weight-bold);
-  line-height: .98;
-  letter-spacing: -.055em;
-  overflow-wrap: anywhere;
-  text-shadow: var(--title-text-shadow);
-}
-
-.project-hero-summary {
-  margin: var(--space-12) 0 0;
-  color: var(--color-dark);
-  font-size: clamp(.9rem, 1.2vw, 1.05rem);
-  line-height: var(--line-height-relaxed);
-}
-
-.project-hero-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-12) var(--space-16);
-  margin: var(--space-20) 0 0;
-}
-
-.project-hero-stats div {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-8);
-}
-
-.project-hero-stats dt {
-  color: var(--color-dark);
-  font-size: .875rem;
-  line-height: var(--line-height-tight);
-}
-
-.project-hero-stats dd {
-  order: -1;
-  margin: 0;
-  color: var(--color-green-dark);
-  font-size: clamp(1.5rem, 2.2vw, 2rem);
-  font-weight: var(--font-weight-bold);
-  line-height: 1;
-}
-
-.project-hero-demo {
-  margin: var(--space-12) 0 0;
-  color: var(--color-dark);
-  font-size: .8rem;
-  font-weight: var(--font-weight-semibold);
-}
 
 .project-page-nav .page-title::after,
 .project-map-heading .page-title::after {
@@ -394,11 +242,7 @@
   min-height: 330px;
 }
 
-.project-territory-map .honduras-map {
-  position: absolute;
-  inset: 0;
-  filter: none;
-}
+
 
 .project-territory-map .department.filtered-out {
   opacity: 1;

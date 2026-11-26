@@ -58,12 +58,26 @@ export default function DepartmentProjectsPage({ department, projects, hasFilter
             </button>
             <div className="department-hero-copy">
               <p className="department-hero-eyebrow">Trabajo territorial</p>
-              <h1 className="department-hero-title" id="page-title">{department}</h1>
-              <p className="department-project-totals" role="status">
-                <span><strong>{visibleProjects.length}</strong> {visibleProjects.length === 1 ? 'proyecto' : 'proyectos'}</span>
-                <span><strong>{activities}</strong> {activities === 1 ? 'actividad' : 'actividades'}</span>
-                <span><strong>{photos}</strong> {photos === 1 ? 'fotografía' : 'fotografías'}</span>
-              </p>
+              <h1
+                className="project-hero-title"
+                aria-label={department}
+                style={{ '--text-length': department.length }}
+              >
+                {department.trim().split(/\s+/).map((word, wordIndex) => (
+                  <span className="hero-word" key={wordIndex} aria-hidden="true">
+                    {Array.from(word).map((letter, letterIndex) => (
+                      <span className="hero-letter" key={letterIndex}>
+                        {letter}
+                      </span>
+                    ))}
+                  </span>
+                ))}
+              </h1>
+              <dl className="department-hero-stats">
+                <div><dt>{visibleProjects.length === 1 ? 'proyecto' : 'proyectos'}</dt> <dd>{visibleProjects.length}</dd></div>
+                <div><dt>{activities === 1 ? 'actividad' : 'actividades'}</dt> <dd>{activities}</dd> </div>
+                <div><dt>{photos === 1 ? 'fotografía' : 'fotografías'}</dt> <dd>{photos}</dd></div>
+              </dl>
             </div>
           </div>
           <div className="department-hero-map" aria-hidden="true">

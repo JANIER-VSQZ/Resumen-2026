@@ -569,12 +569,16 @@
           ],
           "axis": "Fortalecimiento de los sistemas territoriales y la acción humanitaria inclusiva para la acción anticipatoria.",
           "summary": "",
-          "communities": ["Namasigüe", "Marcovia", "Choluteca"],
+          "communities": [
+            "Namasigüe",
+            "Marcovia",
+            "Choluteca"
+          ],
           "activities": [
             "Socialización del proyecto: Se socializó el proyecto de acción humanitaria inclusiva, orientado a fortalecer la resiliencia climática y las capacidades comunitarias y municipales en gestión del riesgo y acción anticipatoria, priorizando a las poblaciones vulnerables del corredor seco del sur de Honduras.",
             "Se desarrolló un taller participativo para definir criterios y priorizar preliminarmente las zonas y hogares mas vulnerables ante los riesgos climaticos en Choluteca, Namasigüe y Marcovia. Se consideraron las condiciones de exposición, las necesidades específicas, las barreras asociadas a discapacidad, género y edad, así como las condiciones de vida y capacidades territoriales, con el propósito de orientar una intervención inclusiva y focalizada desde el enfoque de acción anticipatoria. ",
             "Se realizó un diagnóstico territorial inclusivo en los tres municipios de intervención, identificando vulnerabilidades climáticas, personas con discapacidad, condiciones sanitarias, capacidades municipales, actores clave y comunidades piloto, para fortalecer la planificación y orientar acciones anticipatorias y respuestas humanitarias inclusivas.",
-            "Se desarrollaron tres talleres participativos en Choluteca, Marcovia y Namasigüe, orientados a identificar y priorizar zonas y hogares vulnerables ante los riesgos climáticos, fortaleciendo las bases para la gestión integral del riesgo, la acción anticipatoria y los sistemas de alerta temprana con enfoque inclusivo."  
+            "Se desarrollaron tres talleres participativos en Choluteca, Marcovia y Namasigüe, orientados a identificar y priorizar zonas y hogares vulnerables ante los riesgos climáticos, fortaleciendo las bases para la gestión integral del riesgo, la acción anticipatoria y los sistemas de alerta temprana con enfoque inclusivo."
           ],
           "achievements": [
             "Se logró socializar el proyecto de acción humanitaria inclusiva con organizaciones de personas con discapacidad, autoridades municipales y CODEM de Choluteca, Marcovia y Namasigüe, promoviendo la coordinación para la gestión del riesgo y la acción anticipatoria.",
@@ -916,6 +920,88 @@
           ]
         }
       ]
+    },
+    {
+      "id": "poad",
+      "name": "Pueblos Origininarios en Adaptación",
+      "verified": true,
+      "demo": false,
+      "beneficiaries": null,
+      "departments": [
+        {
+          "names": [
+            "Gracias a Dios"
+          ],
+          "axis": "La Moskitia",
+          "summary": "Se impulsó el fortalecimiento de organizaciones indígenas y afrohondureñas mediante la realización de **20 diagnósticos institucionales y la elaboración de 20 Planes de Desarrollo y Fortalecimiento Organizacional**. Asimismo, se lanzó una convocatoria de proyectos locales de adaptación al cambio climático, logrando la formulación de **31 propuestas** mediante acompañamiento técnico, promoviendo el liderazgo comunitario, la gestión institucional y la construcción de soluciones climáticas con pertinencia cultural y territorial.",
+          "communities": [
+            "Rayaka: Ibans, Kukubila, Belén, Nueva Jerusalén y Rio Platano",
+            "Batiasta: Barra Patuca Centro",
+            "DIUNAT: Brus Laguna",
+            "Barauda: Tocamacho, Batalla y Plaplaya"
+          ],
+          "activities": [
+            "Levantamiendo de 20 diagnosticos institucionales de organizaciones locales con el proposito de conocer las condiciones actuales de organizaciones indígenas y afrohondureñas, identificando fortalezas, necesidades y oportunidades de mejora para orientar el fortalecimiento organizacional y sus capacidades de gestión.",
+            "Se elaboraron participativamente 20 Planes de Desarrollo y Fortalecimiento Organizacional, orientados a mejorar la gobernanza, la gestión institucional y la sostenibilidad de las organizaciones locales, promoviendo su participación en iniciativas de adaptación al cambio climático.",
+            "Se lanzó una convocatoria dirigida a organizaciones indígenas y afrohondureñas para la presentación de proyectos locales de adaptación al cambio climático, promoviendo la participación comunitaria, el liderazgo local y la incorporación de conocimientos tradicionales en la construcción de soluciones climáticas.",
+            "Se formularon 31 propuestas de proyectos locales de adaptación al cambio climático, mediante el acompañamiento técnico a organizaciones y comunidades, incorporando sus conocimientos, necesidades y prioridades territoriales con un enfoque de pertinencia cultural."
+          ],
+          "achievements": [
+            "Lanzamiento de convocatoria a presentacion de propuestas de proyectos locales: El lanzamiento de la convocatoria de proyectos locales constituyó un hito del Programa en 2026, promoviendo el acceso a financiamiento y el liderazgo de las organizaciones indígenas y afrohondureñas en la gestión de soluciones de adaptación al cambio climático.",
+            "Recepción de 31 propuestas de proyectos locales: Se recibieron 31 propuestas de proyectos locales, reflejando la participación y capacidad de iniciativa de los pueblos indígenas y afrohondureños para impulsar soluciones de adaptación al cambio climático con enfoque comunitario, pertinencia cultural y territorial."
+          ],
+          "photos": [
+            {
+              "src": "/FotosProyectos/Moskitia-Lanzamiento.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Evento de lanzamiento.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "Moskitia-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Moskitia-Lanzamiento-2.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Evento de lanzamiento.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "Moskitia-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Moskitia-Taller.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Talleres de acompañamiento y formulación de propuestas de proyectos..",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "Moskitia-Proyecto-1-foto-1",
+              "featured": false
+            },
+            {
+              "src": "/FotosProyectos/Moskitia-Diagnostico.jpg",
+              "community": "-",
+              "date": "-",
+              "description": "Desarrollo de diagnósticos y elaboración de planes de desarrollo.",
+              "thumbnail": "",
+              "width": 1600,
+              "height": 1067,
+              "thumbnailWidth": 600,
+              "id": "Moskitia-Proyecto-1-foto-1",
+              "featured": false
+            }
+          ]
+        }
+      ]
     }
   ],
   "mapThumbnails": {
@@ -940,44 +1026,8 @@
       "Yoro": "/fotosMapaCover/thumb-yoro.jpg"
     },
     "interactive": {
-      "Atlántida": "",
-      "Choluteca": "",
-      "Colón": "",
-      "Comayagua": "",
-      "Copán": "",
-      "Cortés": "",
-      "El Paraíso": "",
-      "Francisco Morazán": "",
-      "Gracias a Dios": "",
-      "Intibucá": "",
-      "Islas de la Bahía": "",
-      "La Paz": "",
-      "Lempira": "",
-      "Ocotepeque": "",
-      "Olancho": "",
-      "Santa Bárbara": "",
-      "Valle": "",
-      "Yoro": ""
     },
     "detail": {
-      "Atlántida": "",
-      "Choluteca": "",
-      "Colón": "",
-      "Comayagua": "",
-      "Copán": "",
-      "Cortés": "",
-      "El Paraíso": "",
-      "Francisco Morazán": "",
-      "Gracias a Dios": "",
-      "Intibucá": "",
-      "Islas de la Bahía": "",
-      "La Paz": "",
-      "Lempira": "",
-      "Ocotepeque": "",
-      "Olancho": "",
-      "Santa Bárbara": "",
-      "Valle": "",
-      "Yoro": ""
     }
   }
 }

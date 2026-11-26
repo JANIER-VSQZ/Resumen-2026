@@ -36,14 +36,28 @@ export default function MapPage({ project, period, features, thumbnails = {}, de
 
       {!embedded && !hideMap && (
         <section className="project-hero" aria-labelledby={titleId}>
-          
+
           <div className="project-hero-content">
             <button className="project-hero-brand" onClick={onHome} aria-label="Ir a portada">
               <img className="institutional-logo" src="/assets/asonog-logo.png" alt="ASONOG" />
             </button>
             <div className="project-hero-copy">
               {project.axis && <p className="project-hero-eyebrow">{project.axis}</p>}
-              <h1 className="project-hero-title" id={titleId}>{project.name}</h1>
+              <h1
+                className="project-hero-title"
+                aria-label={project.name}
+                style={{ '--text-length': project.name.length }}
+              >
+                {project.name.trim().split(/\s+/).map((word, wordIndex) => (
+                  <span className="hero-word" key={wordIndex} aria-hidden="true">
+                    {Array.from(word).map((letter, letterIndex) => (
+                      <span className="hero-letter" key={letterIndex}>
+                        {letter}
+                      </span>
+                    ))}
+                  </span>
+                ))}
+              </h1>
               {project.summary && <p className="project-hero-summary">{project.summary}</p>}
               <dl className="project-hero-stats" aria-label="Resumen del proyecto">
                 <div><dt>Departamentos</dt><dd>{project.departments.length}</dd></div>
